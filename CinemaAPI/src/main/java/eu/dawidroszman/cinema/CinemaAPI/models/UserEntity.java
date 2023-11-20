@@ -20,7 +20,7 @@ import java.util.List;
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
     private String username;
     private String password;
     private String email;
