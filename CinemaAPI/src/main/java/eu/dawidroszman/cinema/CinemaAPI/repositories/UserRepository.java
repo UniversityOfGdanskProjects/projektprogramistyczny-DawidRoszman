@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UserRepository extends Neo4jRepository<UserEntity, String> {
     Optional<UserEntity> findByUsername(String username);
+    boolean existsByUsername(String username);
 }
