@@ -3,6 +3,7 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +26,10 @@ public class CinemaController {
     @GetMapping("/movies")
     public List<MovieEntity> getAllMovies() {
         return movieService.getAllMovies();
+    }
+
+    @GetMapping("/movies/{title}")
+    public MovieEntity getMovieByTitle(@PathVariable String title) {
+        return movieService.getMovieByTitle(title);
     }
 }

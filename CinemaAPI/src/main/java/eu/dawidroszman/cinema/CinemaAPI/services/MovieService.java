@@ -5,6 +5,7 @@ import eu.dawidroszman.cinema.CinemaAPI.repositories.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -16,6 +17,10 @@ public class MovieService {
 
     public List<MovieEntity> getAllMovies() {
         return movieRepository.findAllMovies();
+    }
+
+    public MovieEntity getMovieByTitle(String title) {
+        return movieRepository.findByTitle(title).orElseThrow();
     }
 
 
