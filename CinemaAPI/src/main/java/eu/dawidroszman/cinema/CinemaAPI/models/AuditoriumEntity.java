@@ -1,6 +1,6 @@
 package eu.dawidroszman.cinema.CinemaAPI.models;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import lombok.Getter;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -8,16 +8,19 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 import java.util.List;
 
 
-@Node("Room")
-public class RoomEntity {
-    @Id @GeneratedValue
+@Getter
+@Node("Auditorium")
+public class AuditoriumEntity {
+    @Id
     private final Integer number;
     @Relationship(type = "HAS_SEATS")
     private List<SeatEntity> seats;
-    @Relationship(type = "PLAYS_MOVIE")
-    private List<MovieEntity> movies;
 
-    public RoomEntity(Integer number) {
+    public AuditoriumEntity(Integer number) {
         this.number = number;
+    }
+
+    public void setSeats(List<SeatEntity> seats) {
+        this.seats = seats;
     }
 }

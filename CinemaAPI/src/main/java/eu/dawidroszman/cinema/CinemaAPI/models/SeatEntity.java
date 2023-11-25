@@ -4,24 +4,24 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
+import java.util.UUID;
+
 @Node("Seat")
 public class SeatEntity {
     @Id @GeneratedValue
-    private final Integer id;
+    private final UUID id;
     private final Integer row;
     private final Integer column;
     private final Boolean isVip;
-    private final Boolean isTaken;
 
-    public SeatEntity(Integer number, Integer row, Integer column, Boolean isVip, Boolean isTaken) {
-        this.id = number;
+    public SeatEntity(UUID id, Integer row, Integer column, Boolean isVip) {
+        this.id = id;
         this.row = row;
         this.column = column;
         this.isVip = isVip;
-        this.isTaken = isTaken;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -37,7 +37,4 @@ public class SeatEntity {
         return isVip;
     }
 
-    public Boolean getTaken() {
-        return isTaken;
-    }
 }
