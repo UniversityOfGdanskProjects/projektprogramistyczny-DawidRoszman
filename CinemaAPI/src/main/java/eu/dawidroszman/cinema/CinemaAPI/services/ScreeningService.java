@@ -6,15 +6,14 @@ import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
     private final MovieService movieService;
 
-
-
-    public ScreeningService(ScreeningRepository screeningRepository, MovieService movieService) {
+    ScreeningService(ScreeningRepository screeningRepository, MovieService movieService) {
         this.screeningRepository = screeningRepository;
         this.movieService = movieService;
     }
@@ -27,4 +26,9 @@ public class ScreeningService {
         MovieEntity movie = movieService.getMovieByTitle(title);
         return screeningRepository.findByDateAndTimeAndMovie(date, time, movie);
     }
+
+    ScreeningEntity getScreeningById(UUID id) {
+        return screeningRepository.findById(id).orElseThrow();
+    }
+
 }

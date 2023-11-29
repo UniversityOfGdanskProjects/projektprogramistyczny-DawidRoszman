@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UUID> {
@@ -13,4 +14,6 @@ public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UU
     List<ScreeningEntity> findAll();
 
     ScreeningEntity findByDateAndTimeAndMovie(String date, String time, MovieEntity movie);
+
+    Optional<ScreeningEntity> findById(UUID screeningId);
 }
