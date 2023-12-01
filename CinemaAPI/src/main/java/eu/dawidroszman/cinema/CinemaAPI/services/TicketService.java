@@ -2,13 +2,7 @@ package eu.dawidroszman.cinema.CinemaAPI.services;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
-
-import eu.dawidroszman.cinema.CinemaAPI.models.UserEntity;
-import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
-
-import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.TicketEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.TicketRepository;
 

@@ -1,7 +1,6 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.TicketEntity;
-import eu.dawidroszman.cinema.CinemaAPI.models.UserEntity;
 import eu.dawidroszman.cinema.CinemaAPI.requests.TicketRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.TicketService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
@@ -16,7 +15,7 @@ public class TicketsController {
 
     TicketService ticketService;
 
-    public TicketsController(TicketService ticketService, UserService userService) {
+    public TicketsController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 

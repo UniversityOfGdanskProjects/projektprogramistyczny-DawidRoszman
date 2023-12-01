@@ -4,8 +4,6 @@ import eu.dawidroszman.cinema.CinemaAPI.models.AuditoriumEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.AuditoriumRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class AuditoriumService {
     private final AuditoriumRepository auditoriumRepository;
