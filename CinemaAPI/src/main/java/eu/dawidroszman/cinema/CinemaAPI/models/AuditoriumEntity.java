@@ -13,7 +13,7 @@ import java.util.List;
 public class AuditoriumEntity {
     @Id
     private final Integer number;
-    @Relationship(type = "HAS_SEATS")
+    @Relationship(type = "HAS")
     private List<SeatEntity> seats;
 
     public AuditoriumEntity(Integer number) {

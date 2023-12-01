@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cinema")
@@ -49,9 +50,17 @@ public class CinemaController {
         return screeningService.getAllScreenings();
     }
 
-    @GetMapping("/screenings/{date}/{time}/{title}")
-    public ScreeningEntity getScreeningByDateAndTimeAndMovie(@PathVariable String date, @PathVariable String time,
-            @PathVariable String title) {
-        return screeningService.getScreeningByDateAndTimeAndMovie(date, time, title);
+    @GetMapping("/screenings/{id}")
+    public ScreeningEntity getScreeningById(@PathVariable UUID id) {
+        return screeningService.getScreeningById(id);
     }
+
+    @GetMapping("/screenings/search")
+    public UUID getScreeningIdByDateTimeAuditoriumAndMovie(@RequestParam(name = "date") String date,
+                                                           @RequestParam(name = "auditorium") Integer auditoriumNumber,
+                                                           @RequestParam(name = "time") String time,
+                                                           @RequestParam(name = "title") String title) {
+        return screeningService.getScreeningIdByDateTimeAuditoriumAndMovie(date, auditoriumNumber, time, title);
+    }
+
 }
