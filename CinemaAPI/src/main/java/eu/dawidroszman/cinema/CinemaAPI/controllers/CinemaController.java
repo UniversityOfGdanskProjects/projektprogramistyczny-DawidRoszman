@@ -56,10 +56,10 @@ public class CinemaController {
     }
 
     @GetMapping("/screenings/search")
-    public UUID getScreeningIdByDateTimeAuditoriumAndMovie(@RequestParam(name = "date") String date,
-                                                           @RequestParam(name = "auditorium") Integer auditoriumNumber,
-                                                           @RequestParam(name = "time") String time,
-                                                           @RequestParam(name = "title") String title) {
+    public UUID getScreeningIdByDateTimeAuditoriumAndMovie(@RequestParam(required = false) String date,
+                                                           @RequestParam(name = "auditorium", required = false) Integer auditoriumNumber,
+                                                           @RequestParam(required = false) String time,
+                                                           @RequestParam(required = false) String title) {
         return screeningService.getScreeningIdByDateTimeAuditoriumAndMovie(date, auditoriumNumber, time, title);
     }
 

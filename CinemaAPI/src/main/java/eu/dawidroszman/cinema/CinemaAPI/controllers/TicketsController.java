@@ -1,6 +1,8 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
+import eu.dawidroszman.cinema.CinemaAPI.enums.Price;
 import eu.dawidroszman.cinema.CinemaAPI.models.TicketEntity;
+import eu.dawidroszman.cinema.CinemaAPI.objects.TicketDTO;
 import eu.dawidroszman.cinema.CinemaAPI.requests.TicketRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.TicketService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
@@ -20,12 +22,13 @@ public class TicketsController {
     }
 
     @GetMapping("/get")
-    public List<TicketEntity> getTickets(Principal principal) {
-        return ticketService.getTicketsByUsername(principal.getName());
+    public List<TicketDTO> getTickets(Principal principal) {
+        List<TicketEntity> tickets = ticketService.getTicketsByUsername(principal.getName());
+        return TicketDTO.from(tickets);
     }
 
     @PostMapping("/buy")
     public void buyTicket(Principal principal, @RequestBody TicketRequest ticketRequest) {
-        ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getSeatId());
+        ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getSeatId(), ticketRequest.getDiscount());
     }
 }

@@ -10,8 +10,7 @@ import eu.dawidroszman.cinema.CinemaAPI.models.SeatEntity;
 
 public interface SeatRepository extends Neo4jRepository<SeatEntity, UUID> {
 
-    SeatEntity findByRowAndColumn(Integer row, Integer column);
-
+    @Query("MATCH (s:Seat {id: $seatId}) RETURN s")
     Optional<SeatEntity> findById(UUID seatId);
 
 }

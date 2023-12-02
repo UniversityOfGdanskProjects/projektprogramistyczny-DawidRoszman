@@ -2,6 +2,7 @@ package eu.dawidroszman.cinema.CinemaAPI.models;
 
 import java.util.UUID;
 
+import eu.dawidroszman.cinema.CinemaAPI.enums.Price;
 import lombok.Getter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -21,6 +22,8 @@ public class TicketEntity {
     @Id
     @GeneratedValue
     private UUID id;
+
+    private Double price = Price.NORMAL;
 
     @Relationship("OWNED_BY")
     private UserEntity user;
