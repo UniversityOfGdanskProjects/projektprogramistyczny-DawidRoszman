@@ -30,17 +30,13 @@ function LoginForm() {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/v1/auth/login",
-        data
+        data,
       );
-      const cookieData = {
-        name: "token",
-        value: response.data,
-      };
       sessionStorage.setItem("token", response.data);
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation:",
-        error
+        error,
       );
     }
   };
@@ -48,7 +44,7 @@ function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center max-w-sm gap-4 p-6 bg-white shadow-md rounded-xl"
+      className="flex flex-col items-center bg-stone-700 max-w-sm gap-4 p-6 shadow-md rounded-xl"
     >
       <div className="flex-1">
         <input
