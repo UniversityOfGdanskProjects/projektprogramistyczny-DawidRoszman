@@ -1,7 +1,12 @@
 import React from "react";
+import NavMenu from "@/components/NavMenu";
 
 const page = () => {
-  return <div>Explore repertoire</div>;
+  return (
+    <div>
+      <NavMenu />
+    </div>
+  );
 };
 
 export default page;
