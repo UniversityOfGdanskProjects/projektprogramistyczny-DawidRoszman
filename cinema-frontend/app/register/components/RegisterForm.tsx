@@ -34,22 +34,22 @@ function RegisterForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/register",
-        data,
+        "https://pi.dawidroszman.eu:8080/api/v1/auth/register",
+        data
       );
       console.log(response.data);
       redirect("/login");
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation:",
-        error,
+        error
       );
     }
   };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center max-w-sm gap-3 p-6 mx-auto bg-stone-800 shadow-md rounded-xl"
+      className="flex flex-col items-center max-w-sm gap-3 p-6 mx-auto shadow-md bg-stone-800 rounded-xl"
     >
       <div className="flex-1">
         <input
@@ -118,4 +118,3 @@ function RegisterForm() {
 }
 
 export default RegisterForm;
-
