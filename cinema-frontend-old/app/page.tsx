@@ -9,7 +9,7 @@ export default function Home() {
           <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl lg:text-8xl">
             Welcome to Our Cinema
           </h1>
-          <p className="mb-8 text-lg md:text-xl lg:text-2xl">
+          <p className="mb-9 text-lg md:text-xl lg:text-2xl">
             Discover the magic of movies in the comfort of our theaters.
           </p>
           <div className="flex justify-center">

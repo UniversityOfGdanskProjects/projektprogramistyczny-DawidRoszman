@@ -5,24 +5,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "daisyui/dist/full.css";
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { agent } from "@/utils/httpsAgent";
 
 interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
   username: string;
   password: string;
 }
+
 const schema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required(),
   username: yup.string().required(),
-  password: yup.string().min(8).required(),
+  password: yup.string().required(),
 });
 
-function RegisterForm() {
+function LoginForm() {
   const {
     register,
     handleSubmit,
@@ -34,55 +29,25 @@ function RegisterForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "https://pi.dawidroszman.eu:8080/api/v1/auth/register",
-        data
+        "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
+        data,
+        { httpsAgent: agent },
       );
+      sessionStorage.setItem("token", response.data);
       console.log(response.data);
-      redirect("/login");
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation:",
-        error
+        error,
       );
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center max-w-sm gap-3 p-6 mx-auto shadow-md bg-stone-800 rounded-xl"
+      className="flex flex-col items-center max-w-sm gap-4 p-6 shadow-md bg-stone-700 rounded-xl"
     >
-      <div className="flex-1">
-        <input
-          {...register("firstName")}
-          placeholder="First Name"
-          className="w-full input input-bordered"
-        />
-        {errors.firstName && (
-          <p className="mt-1 text-xs text-red-500">This field is required</p>
-        )}
-      </div>
-
-      <div className="flex-1">
-        <input
-          {...register("lastName")}
-          placeholder="Last Name"
-          className="w-full input input-bordered"
-        />
-        {errors.lastName && (
-          <p className="mt-1 text-xs text-red-500">This field is required</p>
-        )}
-      </div>
-
-      <div className="flex-1">
-        <input
-          {...register("email")}
-          placeholder="Email"
-          className="w-full input input-bordered"
-        />
-        {errors.email && (
-          <p className="mt-1 text-xs text-red-500">This field is required</p>
-        )}
-      </div>
       <div className="flex-1">
         <input
           {...register("username")}
@@ -117,4 +82,4 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+export default LoginForm;
