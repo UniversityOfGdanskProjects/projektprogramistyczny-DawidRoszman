@@ -39,7 +39,6 @@ function Register() {
             values,
             { httpsAgent: agent },
           );
-          //TODO: do something with the form values
           console.log(values);
         }}
       >

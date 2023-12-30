@@ -6,25 +6,27 @@ import { redirect } from "next/navigation";
 import * as Yup from "yup";
 
 const LoginSchema = Yup.object().shape({
-  login: Yup.string().required("Required"),
+  username: Yup.string().required("Required"),
   password: Yup.string().min(2, "Too Short!").required("Required"),
 });
 
 function Login() {
+  if (sessionStorage.getItem("token") !== null) {
+    return redirect("/explore");
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={async (values, { resetForm }) => {
-          console.log(values);
+        onSubmit={async (values) => {
           const tokenRequest = await axios.post(
             "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
             values,
             { httpsAgent: agent },
           );
-          console.log(tokenRequest);
-          sessionStorage.setItem("token", tokenRequest.data.token);
+          sessionStorage.setItem("token", tokenRequest.data);
+          window.location.href = "/explore";
         }}
       >
         {({ errors, touched }) => (

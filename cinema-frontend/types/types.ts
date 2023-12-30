@@ -11,3 +11,9 @@ export interface Screening {
     seats: number;
   };
 }
+
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
