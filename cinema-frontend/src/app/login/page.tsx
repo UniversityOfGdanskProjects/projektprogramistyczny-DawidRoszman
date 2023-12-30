@@ -1,5 +1,8 @@
 "use client";
+import { agent } from "@/utils/httpsAgent";
+import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { redirect } from "next/navigation";
 import * as Yup from "yup";
 
 const LoginSchema = Yup.object().shape({
@@ -11,11 +14,17 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
       <Formik
-        initialValues={{ login: "", password: "" }}
+        initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => {
-          //TODO: do something with the form values
+        onSubmit={async (values, { resetForm }) => {
           console.log(values);
+          const tokenRequest = await axios.post(
+            "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
+            values,
+            { httpsAgent: agent },
+          );
+          console.log(tokenRequest);
+          sessionStorage.setItem("token", tokenRequest.data.token);
         }}
       >
         {({ errors, touched }) => (
@@ -25,15 +34,15 @@ function Login() {
                 Login
               </label>
               <Field
-                name="login"
-                type="login"
+                name="username"
+                type="text"
                 className={
                   "shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" +
-                  (errors.login && touched.login ? " border-error" : "")
+                  (errors.username && touched.username ? " border-error" : "")
                 }
               />
               <ErrorMessage
-                name="login"
+                name="username"
                 component="div"
                 className="text-error text-xs italic"
               />

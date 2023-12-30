@@ -9,7 +9,7 @@ import Loading from "@/components/Loading";
 export default async function Explore() {
   const data = await axios.get(
     "https://pi.dawidroszman.eu:8080/api/v1/cinema/screenings",
-    { httpsAgent: agent }
+    { httpsAgent: agent },
   );
   const screenings: Screening[] = data.data;
 

@@ -3,6 +3,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
+import { agent } from "@/utils/httpsAgent";
+import axios from "axios";
 
 const RegisterSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -31,7 +33,12 @@ function Register() {
           password: "",
         }}
         validationSchema={RegisterSchema}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          axios.post(
+            "https://pi.dawidroszman.eu:8080/api/v1/auth/register",
+            values,
+            { httpsAgent: agent },
+          );
           //TODO: do something with the form values
           console.log(values);
         }}
