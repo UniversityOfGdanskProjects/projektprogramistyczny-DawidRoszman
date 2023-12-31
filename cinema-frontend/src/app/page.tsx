@@ -13,10 +13,7 @@ export default function Home() {
             Discover the magic of movies in the comfort of our theaters.
           </p>
           <div className="flex justify-center">
-            <Link
-              href="/explore"
-              className="px-4 py-2 font-bold tracking-wide text-primary-content uppercase transition-all ease-in-out duration-500 bg-primary rounded-full hover:text-xl"
-            >
+            <Link href="/explore" className="btn btn-primary text-lg">
               Explore Now
             </Link>
           </div>

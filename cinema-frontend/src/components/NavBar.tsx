@@ -3,15 +3,17 @@ import axios from "axios";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { User } from "../../types/types";
+import { useCookies } from "next-client-cookies";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | undefined>(undefined);
+  const cookieStore = useCookies();
 
   useEffect(() => {
-    setToken(sessionStorage.getItem("token"));
+    setToken(cookieStore.get("token"));
     const fetchUser = async () => {
-      if (token !== null) {
+      if (token !== undefined) {
         const userData = await axios.get(
           "https://pi.dawidroszman.eu:8080/api/v1/user/get-info",
           {
@@ -29,7 +31,7 @@ function NavBar() {
   }, [token]);
 
   return (
-    <nav className="bg-neutral p-4 flex justify-between items-center">
+    <nav className="bg-base-200 p-4 flex justify-between items-center">
       <h1 className="text-white font-bold">Cinema</h1>
       {token ? (
         <Suspense fallback={<div>Loading...</div>}>
@@ -40,7 +42,7 @@ function NavBar() {
             <button
               className="btn btn-warning"
               onClick={() => {
-                sessionStorage.removeItem("token");
+                cookieStore.remove("token");
                 window.location.reload();
               }}
             >
@@ -50,10 +52,10 @@ function NavBar() {
         </Suspense>
       ) : (
         <div className="flex space-x-4">
-          <Link className="text-white" href="/login">
+          <Link className="btn btn-primary" href="/login">
             Login
           </Link>
-          <Link className="text-white" href="/register">
+          <Link className="btn btn-primary" href="/register">
             Register
           </Link>
         </div>

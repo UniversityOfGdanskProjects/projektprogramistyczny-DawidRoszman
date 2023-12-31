@@ -2,31 +2,43 @@
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useCookies } from "next-client-cookies";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 import * as Yup from "yup";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
-  password: Yup.string().min(2, "Too Short!").required("Required"),
+  password: Yup.string().required("Required"),
 });
 
 function Login() {
-  if (sessionStorage.getItem("token") !== null) {
+  const cookieStore = useCookies();
+
+  if (cookieStore.get("token") !== undefined) {
     return redirect("/explore");
   }
+
+  const [loginError, setLoginError] = useState("");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={async (values) => {
-          const tokenRequest = await axios.post(
-            "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
-            values,
-            { httpsAgent: agent },
-          );
-          sessionStorage.setItem("token", tokenRequest.data);
-          window.location.href = "/explore";
+          try {
+            const tokenRequest = await axios.post(
+              "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
+              values,
+              { httpsAgent: agent },
+            );
+            cookieStore.set("token", tokenRequest.data, { expires: 1 });
+            window.location.href = "/explore";
+          } catch (err) {
+            console.log(err);
+            setLoginError("Invalid username or password");
+          }
         }}
       >
         {({ errors, touched }) => (
@@ -78,6 +90,9 @@ function Login() {
                 Sign In
               </button>
             </div>
+            {loginError && (
+              <div className="text-error text-xs italic">{loginError}</div>
+            )}
           </Form>
         )}
       </Formik>

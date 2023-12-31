@@ -16,8 +16,11 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   username: Yup.string().required("Required"),
   password: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
+    .min(8, "Too Short!")
+    .matches(/[A-Z]+/, "Must include at least one capital letter")
+    .matches(/[a-z]+/, "Must include at least one lower-case letter")
+    .matches(/[0-9]+/, "Must include at least one number")
+    .matches(/[!@#$%^&&*()/, .:;<>?]+/, "Must include at least one symbol")
     .required("Required"),
 });
 
@@ -34,7 +37,7 @@ function Register() {
         }}
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
-          axios.post(
+          await axios.post(
             "https://pi.dawidroszman.eu:8080/api/v1/auth/register",
             values,
             { httpsAgent: agent },
