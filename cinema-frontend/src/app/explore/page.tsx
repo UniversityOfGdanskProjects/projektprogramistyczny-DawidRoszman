@@ -1,10 +1,11 @@
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
-import { Screening } from "../../../types/types";
 import { screeningsComparator } from "@/utils/sortingScreenings";
 import NavBar from "../../components/NavBar";
 import { Suspense } from "react";
 import Loading from "@/components/Loading";
+import Link from "next/link";
+import { Screening } from "@/types/types";
 
 export default async function Explore() {
   const data = await axios.get(
@@ -38,7 +39,18 @@ export default async function Explore() {
                       <p>{screening.date}</p>
                       <p>{screening.time}</p>
                       <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Buy ticket</button>
+                        <Link
+                          href={`/buy-ticket?id=${screening.id}`}
+                          className="btn btn-primary"
+                        >
+                          Buy ticket
+                        </Link>
+                        <Link
+                          href={`/details?id=${screening.id}`}
+                          className="btn btn-accent"
+                        >
+                          Details
+                        </Link>
                       </div>
                     </div>
                   </div>

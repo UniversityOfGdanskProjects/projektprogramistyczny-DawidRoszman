@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/Loading";
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -15,33 +16,35 @@ const LoginSchema = Yup.object().shape({
 function Login() {
   const cookieStore = useCookies();
 
+  const [loginError, setLoginError] = useState("");
+
   if (cookieStore.get("token") !== undefined) {
     return redirect("/explore");
   }
-
-  const [loginError, setLoginError] = useState("");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { setSubmitting }) => {
           try {
             const tokenRequest = await axios.post(
               "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
               values,
               { httpsAgent: agent },
             );
-            cookieStore.set("token", tokenRequest.data, { expires: 1 });
+            cookieStore.set("token", tokenRequest.data, { expires: 31 });
             window.location.href = "/explore";
           } catch (err) {
             console.log(err);
             setLoginError("Invalid username or password");
+          } finally {
+            setSubmitting(false);
           }
         }}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, isSubmitting }) => (
           <Form className="bg-base-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="login">
@@ -83,12 +86,16 @@ function Login() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="bg-primary hover:bg-opacity-60 text-primary-content font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Sign In
-              </button>
+              {!isSubmitting ? (
+                <button
+                  type="submit"
+                  className="bg-primary hover:bg-opacity-60 text-primary-content font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Sign In
+                </button>
+              ) : (
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+              )}
             </div>
             {loginError && (
               <div className="text-error text-xs italic">{loginError}</div>

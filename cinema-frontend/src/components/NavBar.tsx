@@ -2,8 +2,8 @@
 import axios from "axios";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
-import { User } from "../../types/types";
 import { useCookies } from "next-client-cookies";
+import { User } from "@/types/types";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
@@ -28,13 +28,13 @@ function NavBar() {
     };
 
     fetchUser();
-  }, [token]);
+  }, [token, cookieStore]);
 
   return (
     <nav className="bg-base-200 p-4 flex justify-between items-center">
       <h1 className="text-white font-bold">Cinema</h1>
-      {token ? (
-        <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
+        {token ? (
           <div className="text-white flex justify-center items-center gap-3">
             <div>
               {user?.firstName} {user?.lastName}
@@ -49,17 +49,17 @@ function NavBar() {
               Sign out
             </button>
           </div>
-        </Suspense>
-      ) : (
-        <div className="flex space-x-4">
-          <Link className="btn btn-primary" href="/login">
-            Login
-          </Link>
-          <Link className="btn btn-primary" href="/register">
-            Register
-          </Link>
-        </div>
-      )}
+        ) : (
+          <div className="flex space-x-4">
+            <Link className="btn btn-primary" href="/login">
+              Login
+            </Link>
+            <Link className="btn btn-primary" href="/register">
+              Register
+            </Link>
+          </div>
+        )}
+      </Suspense>
     </nav>
   );
 }
