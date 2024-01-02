@@ -36,14 +36,14 @@ export default async function Details({
                 alt="Movie"
               />
             </figure>
-            <div className="card-body">
+            <div className="card-body grid place-items-center">
               <p>
-                <h1 className="text-3xl text-primary font-bold">
+                <h1 className="text-center mb-4 text-3xl text-primary font-bold">
                   {screening.movie.title}
                 </h1>
                 <p>{screening.movie.description}</p>
               </p>
-              <p className="flex justify-center gap-40">
+              <p className="flex justify-evenly w-1/3">
                 <div>
                   <p className="text-accent">Directors:</p>
                   <ul>
