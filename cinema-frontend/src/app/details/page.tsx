@@ -1,11 +1,12 @@
 import ErrorPage from "@/components/ErrorPage";
-import GoBackBtn from "@/components/GoBackBtn";
 import Loading from "@/components/Loading";
 import { Screening } from "@/types/types";
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import WatchTrailer from "./components/WatchTrailer";
+import GoBackBtn from "@/components/GoBackBtn";
 
 export default async function Details({
   params,
@@ -28,19 +29,16 @@ export default async function Details({
     return (
       <Suspense fallback={<Loading />}>
         <div className="grid place-items-center md:mt-20">
-          <div className="card bg-base-200 shadow-xl md:image-side md:w-1/2 relative">
+          <div className="card bg-base-200 shadow-xl card-side md:w-1/2 relative">
             <GoBackBtn />
-            <figure>
-              <img src={screening.movie.imageUrl} alt="Movie" />
-            </figure>
-            <div className="card-body grid place-items-center">
+            <div className="card-body grid place-items-center w-1/2">
               <p>
                 <h1 className="text-center mb-4 text-3xl text-primary font-bold">
                   {screening.movie.title}
                 </h1>
                 <p>{screening.movie.description}</p>
               </p>
-              <p className="flex justify-evenly w-1/3">
+              <p className="text-center">
                 <div>
                   <p className="text-accent">Directors:</p>
                   <ul>
@@ -61,8 +59,16 @@ export default async function Details({
                     ))}
                   </ul>
                 </div>
+                <WatchTrailer trailer={screening.movie.trailer} />
               </p>
             </div>
+            <figure>
+              <img
+                className="w-96"
+                src={screening.movie.imageUrl}
+                alt="Movie"
+              />
+            </figure>
           </div>
         </div>
       </Suspense>
