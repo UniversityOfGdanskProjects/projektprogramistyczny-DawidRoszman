@@ -14,6 +14,8 @@ export interface Auditorium {
 export interface Movie {
   title: string;
   description: string;
+  imageUrl: string;
+  trailer: string;
   directors: Person[];
   actors: Person[];
 }

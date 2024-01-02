@@ -15,13 +15,20 @@ public class MovieEntity {
     private final String title;
     @Property("tagline")
     private final String description;
+    @Property
+    private final String imageUrl;
+    @Property
+    private final String trailer;
     @Relationship(type = "ACTED_IN", direction = INCOMING)
     private Set<PersonEntity> actors = new HashSet<>();
     @Relationship(type = "DIRECTED", direction = INCOMING)
     private Set<PersonEntity> directors = new HashSet<>();
-    public MovieEntity(String title, String description) {
+
+    public MovieEntity(String title, String description, String imageUrl, String trailer) {
         this.title = title;
         this.description = description;
+        this.imageUrl = imageUrl;
+        this.trailer = trailer;
     }
 
     public void setActors(Set<PersonEntity> actors) {

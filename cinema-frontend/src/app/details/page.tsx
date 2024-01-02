@@ -31,10 +31,7 @@ export default async function Details({
           <div className="card bg-base-200 shadow-xl md:image-side md:w-1/2 relative">
             <GoBackBtn />
             <figure>
-              <img
-                src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
-                alt="Movie"
-              />
+              <img src={screening.movie.imageUrl} alt="Movie" />
             </figure>
             <div className="card-body grid place-items-center">
               <p>
