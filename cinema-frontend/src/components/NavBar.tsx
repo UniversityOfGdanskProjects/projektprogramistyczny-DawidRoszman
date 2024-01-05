@@ -1,10 +1,10 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { User } from "@/types/types";
-import { agent } from "@/utils/httpsAgent";
+import fetchUserData from "@/utils/fetchUserData";
+import ThemeToggler from "./ThemeToggler";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
@@ -15,17 +15,7 @@ function NavBar() {
     setToken(cookieStore.get("token"));
     const fetchUser = async () => {
       if (token !== undefined) {
-        const userData = await axios.get(
-          "https://pi.dawidroszman.eu:8080/api/v1/user/get-info",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-            httpsAgent: agent,
-          },
-        );
-
-        setUser(userData.data);
+        setUser(await fetchUserData(token));
       }
     };
 
@@ -34,34 +24,37 @@ function NavBar() {
 
   return (
     <nav className="bg-base-200 p-4 flex justify-between items-center">
-      <h1 className="text-white font-bold">Cinema</h1>
-      <Suspense fallback={<div>Loading...</div>}>
-        {token ? (
-          <div className="text-white flex justify-center items-center gap-3">
-            <div>
-              {user?.firstName} {user?.lastName}
+      <h1 className="font-bold">Cinema</h1>
+      <div className="flex gap-4">
+        <Suspense fallback={<div>Loading...</div>}>
+          {token ? (
+            <div className="flex justify-center items-center gap-3">
+              <div className="text-base-conent">
+                {user?.firstName} {user?.lastName}
+              </div>
+              <button
+                className="btn btn-warning"
+                onClick={() => {
+                  cookieStore.remove("token");
+                  window.location.reload();
+                }}
+              >
+                Sign out
+              </button>
             </div>
-            <button
-              className="btn btn-warning"
-              onClick={() => {
-                cookieStore.remove("token");
-                window.location.reload();
-              }}
-            >
-              Sign out
-            </button>
-          </div>
-        ) : (
-          <div className="flex space-x-4">
-            <Link className="btn btn-primary" href="/login">
-              Login
-            </Link>
-            <Link className="btn btn-primary" href="/register">
-              Register
-            </Link>
-          </div>
-        )}
-      </Suspense>
+          ) : (
+            <div className="flex space-x-4">
+              <Link className="btn btn-primary" href="/login">
+                Login
+              </Link>
+              <Link className="btn btn-primary" href="/register">
+                Register
+              </Link>
+            </div>
+          )}
+        </Suspense>
+        <ThemeToggler />
+      </div>
     </nav>
   );
 }

@@ -4,13 +4,14 @@ import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { useCookies } from "next-client-cookies";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import fetchUserData from "@/utils/fetchUserData";
 import { User } from "@/types/types";
+import Loading from "@/components/Loading";
 
 const page = () => {
   const cookieStore = useCookies();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     const token = cookieStore.get("token");
@@ -39,10 +40,23 @@ const page = () => {
     fetchUser();
   }, [cookieStore]);
 
-  if (!isAdmin) {
-    return <div>Unauthorized</div>;
+  if (isAdmin === null) {
+    return <Loading />;
   }
-  return <div>Welcome to admin page {user !== null ? user.firstName : ""}</div>;
+
+  if (!isAdmin) {
+    return <div className="text-5xl text-center">Unauthorized</div>;
+  }
+  return (
+    <div>
+      <div className="text-center mt-10">
+        <h1 className="text-5xl">
+          Welcome to admin page {user !== null ? user.firstName : ""}
+        </h1>
+      </div>
+      <div></div>
+    </div>
+  );
 };
 
 export default page;

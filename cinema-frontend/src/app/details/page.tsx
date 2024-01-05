@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import WatchTrailer from "./components/WatchTrailer";
 import GoBackBtn from "@/components/GoBackBtn";
+import NavBar from "@/components/NavBar";
 
 export default async function Details({
   params,
@@ -28,6 +29,7 @@ export default async function Details({
 
     return (
       <Suspense fallback={<Loading />}>
+        <NavBar />
         <div className="grid place-items-center md:mt-20">
           <div className="card bg-base-200 shadow-xl card-side md:w-1/2 relative">
             <GoBackBtn />
@@ -73,7 +75,7 @@ export default async function Details({
         </div>
       </Suspense>
     );
-  } catch (err) {
+  } catch (err: any) {
     return (
       <Suspense fallback={<Loading />}>
         <ErrorPage errorMessage={err.message} />

@@ -16,7 +16,7 @@ export default async function Explore() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className="bg-neutral">
+      <div className="bg-base-100">
         <NavBar />
         <section className="p-5">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 place-items-center">
