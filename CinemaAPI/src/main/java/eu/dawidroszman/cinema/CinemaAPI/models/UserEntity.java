@@ -19,4 +19,8 @@ public class UserEntity {
     private String lastName;
     private String roles;
 
+    public boolean isAdmin() {
+        return roles.contains("ADMIN");
+    }
+
 }

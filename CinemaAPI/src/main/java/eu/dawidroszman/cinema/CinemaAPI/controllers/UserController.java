@@ -25,4 +25,10 @@ public class UserController {
         return UserDTO.from(user);
     }
 
+    @GetMapping("/is-admin")
+    public boolean isAdmin(Principal principal) {
+        UserEntity user = userService.getUserByUsername(principal.getName());
+        return user.isAdmin();
+    }
+
 }

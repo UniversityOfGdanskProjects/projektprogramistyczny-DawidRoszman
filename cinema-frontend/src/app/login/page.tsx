@@ -35,7 +35,7 @@ function Login() {
               { httpsAgent: agent },
             );
             cookieStore.set("token", tokenRequest.data, { expires: 31 });
-            window.location.href = "/explore";
+            window.history.back();
           } catch (err) {
             console.log(err);
             setLoginError("Invalid username or password");

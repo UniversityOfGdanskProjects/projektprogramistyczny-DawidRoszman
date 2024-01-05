@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { User } from "@/types/types";
+import { agent } from "@/utils/httpsAgent";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
@@ -20,6 +21,7 @@ function NavBar() {
             headers: {
               Authorization: "Bearer " + token,
             },
+            httpsAgent: agent,
           },
         );
 
