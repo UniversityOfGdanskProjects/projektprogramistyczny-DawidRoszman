@@ -11,7 +11,7 @@ const Movie = ({token}: {token: string}) => {
   return (
     <div>
       <MovieProvider>
-        <MovieList setSelectedMovie={setSelectedMovie} />
+        <MovieList token={token} setSelectedMovie={setSelectedMovie} />
         <MovieDetails token={token} selectedMovie={selectedMovie} />
         <AddMovieForm token={token} />
       </MovieProvider>

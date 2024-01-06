@@ -32,7 +32,7 @@ const ModifyMovieForm = ({ selectedMovie, token }: { selectedMovie: Movie, token
         trailer: selectedMovie.trailer || "",
       }}
       validationSchema={MovieSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, {setSubmitting}) => {
         dispatch({
           type: Type.MODIFY_MOVIE,
           payload: {
@@ -40,6 +40,7 @@ const ModifyMovieForm = ({ selectedMovie, token }: { selectedMovie: Movie, token
             movie: values,
           },
         });
+        setSubmitting(false);
       }}
     >
       {({ errors, touched, handleSubmit, isSubmitting }) => (

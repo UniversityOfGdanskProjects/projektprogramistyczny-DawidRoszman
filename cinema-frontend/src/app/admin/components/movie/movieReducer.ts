@@ -25,7 +25,7 @@ export interface Movie {
 const addMovie = async (payload: { movie: Movie; token: string }) => {
   const { movie, token } = payload;
   const response = await axios.post(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/movie/add",
+    "https://pi.dawidroszman.eu:8080/api/v1/admin/add-movie",
     movie,
     {
       headers: {
@@ -40,7 +40,7 @@ const addMovie = async (payload: { movie: Movie; token: string }) => {
 const removeMovie = async (payload: { movie: Movie; token: string }) => {
   const { movie, token } = payload;
   const response = await axios.delete(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/movie/remove/?title=" + movie.title,
+    "https://pi.dawidroszman.eu:8080/api/v1/admin/delete-movie/" + movie.title,
     {
       headers: { Authorization: "Bearer " + token },
       httpsAgent: agent,
@@ -52,7 +52,7 @@ const removeMovie = async (payload: { movie: Movie; token: string }) => {
 const modifyMovie = async (payload: { movie: Movie; token: string }) => {
   const { movie, token } = payload;
   const response = await axios.put(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/movie/modify",
+    "https://pi.dawidroszman.eu:8080/api/v1/admin/update-movie",
     movie,
     {
       headers: {

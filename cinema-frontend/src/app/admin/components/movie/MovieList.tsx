@@ -4,8 +4,10 @@ import { useMovie, useMovieDispatch } from "./MovieContext";
 
 const MovieList = ({
   setSelectedMovie,
+  token
 }: {
   setSelectedMovie: React.Dispatch<React.SetStateAction<Movie | null>>;
+  token: string
 }) => {
   const movies: Movie[] | null = useMovie();
   const dispatch = useMovieDispatch();
@@ -14,7 +16,7 @@ const MovieList = ({
     dispatch({
       type: Type.REMOVE_MOVIE,
       payload: {
-        token: "", // TODO: add token
+        token: token, 
         movie: movie,
       },
     });
