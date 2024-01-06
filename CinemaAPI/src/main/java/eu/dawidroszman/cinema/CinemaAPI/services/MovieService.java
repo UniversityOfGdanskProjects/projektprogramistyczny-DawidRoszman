@@ -35,6 +35,11 @@ public class MovieService {
     }
 
     public void updateMovie(MovieEntity movie) {
-        movieRepository.modifyMovie(movie);
+        String title = movie.getTitle();
+        String description = movie.getDescription();
+        Integer released = movie.getReleased();
+        String imageUrl = movie.getImageUrl();
+        String trailer = movie.getTrailer();
+        movieRepository.modifyMovie(title, description, released, imageUrl, trailer);
     }
 }

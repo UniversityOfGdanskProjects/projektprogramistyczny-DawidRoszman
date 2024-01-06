@@ -29,7 +29,7 @@ export default async function Explore() {
                     className="card w-96 bg-base-100 shadow-xl"
                   >
                     <figure>
-                      <img src={screening.movie.imageUrl} alt="Shoes" />
+                      <img src={screening.movie.imageUrl} alt="Movie posters" />
                     </figure>
                     <div className="card-body">
                       <h2 className="card-title">{screening.movie.title}</h2>

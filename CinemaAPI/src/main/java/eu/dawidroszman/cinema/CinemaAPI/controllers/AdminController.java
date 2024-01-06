@@ -13,6 +13,11 @@ public class AdminController {
     public AdminController(MovieService movieService) {
         this.movieService = movieService;
     }
+
+    @GetMapping()
+    public String index() {
+        return "Welcome to admin API";
+    }
     @PostMapping("/add-movie")
     public void addMovie(@RequestBody MovieEntity movie) {
         movieService.addMovie(movie);

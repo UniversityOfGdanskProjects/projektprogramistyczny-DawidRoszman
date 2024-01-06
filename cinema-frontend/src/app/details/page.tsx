@@ -31,16 +31,21 @@ export default async function Details({
       <Suspense fallback={<Loading />}>
         <NavBar />
         <div className="grid place-items-center md:mt-20">
-          <div className="card bg-base-200 shadow-xl card-side md:w-1/2 relative">
+          <div className="card bg-base-200 shadow-xl md:card-side lg:max-w-screen-md relative">
             <GoBackBtn />
-            <div className="card-body grid place-items-center w-1/2">
-              <p>
+            <div className="md:hidden block">
+              <MovieImage imageUrl={screening.movie.imageUrl} />
+            </div>
+            <div className="card-body grid place-items-center lg:w-1/2">
+              
+              <div>
                 <h1 className="text-center mb-4 text-3xl text-primary font-bold">
                   {screening.movie.title}
                 </h1>
                 <p>{screening.movie.description}</p>
-              </p>
-              <p className="text-center">
+                <p>Movie released in: {screening.movie.released}</p>
+              </div>
+              <div className="text-center">
                 <div>
                   <p className="text-accent">Directors:</p>
                   <ul>
@@ -62,16 +67,12 @@ export default async function Details({
                   </ul>
                 </div>
                 <WatchTrailer trailer={screening.movie.trailer} />
-              </p>
+              </div>
             </div>
-            <figure>
-              <img
-                className="w-96"
-                src={screening.movie.imageUrl}
-                alt="Movie"
-              />
-            </figure>
-          </div>
+            <div className="hidden md:block">
+              <MovieImage imageUrl={screening.movie.imageUrl} />
+            </div>
+            </div>
         </div>
       </Suspense>
     );
@@ -82,4 +83,15 @@ export default async function Details({
       </Suspense>
     );
   }
+}
+
+const MovieImage = ({imageUrl}: {imageUrl: string}) => {
+return <figure>
+              <img
+                className="w-96"
+                src={imageUrl}
+                alt="Movie"
+              />
+            </figure>
+
 }

@@ -15,7 +15,12 @@ function NavBar() {
     setToken(cookieStore.get("token"));
     const fetchUser = async () => {
       if (token !== undefined) {
-        setUser(await fetchUserData(token));
+        const userData = await fetchUserData(token);
+        if (!userData) {
+          cookieStore.remove("token");
+          return;
+        }
+        setUser(userData);
       }
     };
 
