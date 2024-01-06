@@ -34,7 +34,7 @@ public class AdminController {
         movieService.addMovie(movie);
     }
 
-    @PostMapping("/delete-movie")
+    @DeleteMapping("/delete-movie")
     public void deleteMovie(@RequestBody String movieTitle, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             throw new RuntimeException("You are not an admin!");
