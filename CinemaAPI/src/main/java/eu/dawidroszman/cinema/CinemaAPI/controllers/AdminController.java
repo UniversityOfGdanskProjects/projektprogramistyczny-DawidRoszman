@@ -39,6 +39,7 @@ public class AdminController {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             throw new RuntimeException("You are not an admin!");
         }
+        System.out.println(movieTitle);
         movieService.deleteMovie(movieTitle);
     }
 
