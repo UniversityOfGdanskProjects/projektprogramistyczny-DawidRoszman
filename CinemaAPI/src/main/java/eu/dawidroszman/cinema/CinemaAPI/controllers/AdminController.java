@@ -24,13 +24,13 @@ public class AdminController {
     }
 
     @PostMapping("/delete-movie")
-    public void deleteMovie(@RequestBody MovieEntity movie) {
-        movieService.deleteMovie(movie);
+    public void deleteMovie(@RequestBody String movieTitle) {
+        movieService.deleteMovie(movieTitle);
     }
 
     @PutMapping("/update-movie")
-    public void updateMovie(@RequestBody MovieEntity movie) {
-        movieService.updateMovie(movie);
+    public void updateMovie(@RequestBody String movieTitle) {
+        movieService.updateMovie(movieTitle);
     }
 
 }

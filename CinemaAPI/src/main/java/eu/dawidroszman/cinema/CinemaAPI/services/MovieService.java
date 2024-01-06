@@ -30,11 +30,13 @@ public class MovieService {
         movieRepository.save(movie);
     }
 
-    public void deleteMovie(MovieEntity movie) {
+    public void deleteMovie(String movieTitle) {
+        MovieEntity movie = movieRepository.findByTitle(movieTitle).orElseThrow();
         movieRepository.delete(movie);
     }
 
-    public void updateMovie(MovieEntity movie) {
+    public void updateMovie(String movieTitle) {
+        MovieEntity movie = movieRepository.findByTitle(movieTitle).orElseThrow();
         String title = movie.getTitle();
         String description = movie.getDescription();
         Integer released = movie.getReleased();
