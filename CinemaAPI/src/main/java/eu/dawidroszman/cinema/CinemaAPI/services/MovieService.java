@@ -31,7 +31,7 @@ public class MovieService {
     }
 
     public void deleteMovie(String movieTitle) {
-        MovieEntity movie = movieRepository.findByTitle(movieTitle).orElseThrow();
+        MovieEntity movie = movieRepository.findByTitle(movieTitle).orElseThrow(() -> new RuntimeException("Movie not found"));
         movieRepository.delete(movie);
     }
 
