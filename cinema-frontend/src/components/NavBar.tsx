@@ -23,7 +23,7 @@ function NavBar() {
   }, [token, cookieStore]);
 
   return (
-    <nav className="bg-base-200 p-4 flex justify-between items-center">
+    <nav className="bg-base-200 p-4 px-10 flex justify-between items-center">
       <h1 className="font-bold">Cinema</h1>
       <div className="flex gap-4">
         <Suspense fallback={<div>Loading...</div>}>

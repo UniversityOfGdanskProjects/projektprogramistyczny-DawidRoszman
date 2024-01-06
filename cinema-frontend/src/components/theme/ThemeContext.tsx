@@ -1,11 +1,5 @@
 "use client";
-import {
-  Dispatch,
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { Dispatch, createContext, useContext, useReducer } from "react";
 import { Action, Theme, ThemeReducer } from "./themeReducer";
 
 export const ThemeContext = createContext<Theme | null>(null);
@@ -19,23 +13,18 @@ export function useThemeDispatch() {
 }
 
 const initialState: Theme = {
-  theme: JSON.parse(localStorage.getItem("theme") || "0") || false,
+  theme: localStorage.getItem("theme") === "true" ? true : false,
 };
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, dispatch] = useReducer(ThemeReducer, initialState);
-
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      theme.theme ? "dark" : "light",
-    );
-  }, []);
   return (
-    <ThemeContext.Provider value={theme}>
-      <DispatchContext.Provider value={dispatch}>
-        {children}
-      </DispatchContext.Provider>
-    </ThemeContext.Provider>
+    <html lang="en" data-theme={theme.theme ? "light" : "dark"}>
+      <ThemeContext.Provider value={theme}>
+        <DispatchContext.Provider value={dispatch}>
+          {children}
+        </DispatchContext.Provider>
+      </ThemeContext.Provider>
+    </html>
   );
 }
 

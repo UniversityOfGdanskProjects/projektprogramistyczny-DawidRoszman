@@ -4,10 +4,12 @@ import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { useCookies } from "next-client-cookies";
 import { redirect } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import fetchUserData from "@/utils/fetchUserData";
 import { User } from "@/types/types";
 import Loading from "@/components/Loading";
+import Movie from "./components/movie/Movie";
+import { MovieProvider } from "./components/movie/MovieContext";
 
 const page = () => {
   const cookieStore = useCookies();
@@ -54,7 +56,9 @@ const page = () => {
           Welcome to admin page {user !== null ? user.firstName : ""}
         </h1>
       </div>
-      <div></div>
+      <div>
+        <Movie />
+      </div>
     </div>
   );
 };

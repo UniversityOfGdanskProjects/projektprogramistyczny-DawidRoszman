@@ -68,15 +68,17 @@ export const MovieReducer = (state: Movie[], action: Action) => {
   const { payload, type } = action;
   switch (type) {
     case Type.ADD_MOVIE:
-      addMovie(payload);
-      return [...state, payload];
+      // addMovie(payload);
+      return [...state, payload.movie];
     case Type.REMOVE_MOVIE:
-      removeMovie(payload);
+      // removeMovie(payload);
       return state.filter((movie) => movie.title !== payload.movie.title);
     case Type.MODIFY_MOVIE:
-      modifyMovie(payload);
+      // modifyMovie(payload);
       return state.map((movie) =>
-        movie.title === payload.movie.title ? payload : movie,
+        movie.title === payload.movie.title ? payload.movie : movie,
       );
+    default:
+      return state;
   }
 };

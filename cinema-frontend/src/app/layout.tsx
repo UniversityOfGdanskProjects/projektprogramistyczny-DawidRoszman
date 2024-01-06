@@ -17,12 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="">
+    <ThemeProvider>
       <body className={inter.className}>
-        <ThemeProvider>
-          <CookiesProvider>{children}</CookiesProvider>
-        </ThemeProvider>
+        <CookiesProvider>{children}</CookiesProvider>
       </body>
-    </html>
+    </ThemeProvider>
   );
 }
