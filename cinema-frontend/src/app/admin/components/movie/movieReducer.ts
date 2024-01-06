@@ -2,7 +2,7 @@ import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 
 export interface Action {
-  payload: { movie: Movie; token: string };
+  payload: any;
   type: Type;
 }
 
@@ -10,16 +10,26 @@ export enum Type {
   ADD_MOVIE = "ADD_MOVIE",
   REMOVE_MOVIE = "REMOVE_MOVIE",
   MODIFY_MOVIE = "MODIFY_MOVIE",
-  SEARCH_MOVIE = "SEARCH_MOVIE",
+  SET_MOVIES = "SET_MOVIES",
 }
 
 export interface Movie {
   title: string;
-  tagline: string;
+  description: string;
   released: number;
   imageUrl: string;
   trailer: string;
 }
+
+const getMovies = async () => {
+  const response = await axios.get(
+    "https://pi.dawidroszman.eu:8080/api/v1/movies",
+    {
+      httpsAgent: agent,
+    },
+  );
+  return response.data;
+};
 
 const addMovie = async (payload: { movie: Movie; token: string }) => {
   const { movie, token } = payload;
@@ -78,6 +88,8 @@ export const MovieReducer = (state: Movie[], action: Action) => {
       return state.map((movie) =>
         movie.title === payload.movie.title ? payload.movie : movie,
       );
+    case Type.SET_MOVIES:
+      return payload.movies;
     default:
       return state;
   }

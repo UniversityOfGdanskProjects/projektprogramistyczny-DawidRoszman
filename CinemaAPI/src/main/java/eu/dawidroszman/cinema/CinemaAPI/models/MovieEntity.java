@@ -16,6 +16,8 @@ public class MovieEntity {
     @Property("tagline")
     private final String description;
     @Property
+    private final Integer released;
+    @Property
     private final String imageUrl;
     @Property
     private final String trailer;
@@ -24,9 +26,10 @@ public class MovieEntity {
     @Relationship(type = "DIRECTED", direction = INCOMING)
     private Set<PersonEntity> directors = new HashSet<>();
 
-    public MovieEntity(String title, String description, String imageUrl, String trailer) {
+    public MovieEntity(String title, String description, Integer released, String imageUrl, String trailer) {
         this.title = title;
         this.description = description;
+        this.released = released;
         this.imageUrl = imageUrl;
         this.trailer = trailer;
     }

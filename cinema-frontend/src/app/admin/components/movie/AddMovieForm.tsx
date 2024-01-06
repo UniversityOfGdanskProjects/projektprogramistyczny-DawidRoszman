@@ -8,7 +8,7 @@ const MovieSchema = Yup.object().shape({
   title: Yup.string()
     .matches(/^[A-Z]./, "Must start with a capital letter")
     .required("Required"),
-  tagline: Yup.string()
+  description: Yup.string()
     .matches(/^[A-Z]./, "Must start with a capital letter")
     .required("Required"),
   released: Yup.number()
@@ -26,7 +26,7 @@ const AddMovieForm = () => {
     <Formik
       initialValues={{
         title: "",
-        tagline: "",
+        description: "",
         released: 2024,
         imageUrl: "",
         trailer: "",
@@ -53,10 +53,10 @@ const AddMovieForm = () => {
             {errors.title && touched.title && errors.title}
           </div>
           <div>
-            <label htmlFor="tagline">Tagline: </label>
-            <Field name="tagline" type="textarea" />
+            <label htmlFor="description">Description: </label>
+            <Field name="description" type="textarea" />
             <br />
-            {errors.tagline && touched.tagline && errors.tagline}
+            {errors.description && touched.description && errors.description}
           </div>
           <div>
             <label className="pr-2 " htmlFor="released">

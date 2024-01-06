@@ -15,4 +15,7 @@ public interface MovieRepository extends Neo4jRepository<MovieEntity, String> {
 
     @Query("MATCH (m:Movie) WHERE m.title CONTAINS $title RETURN m")
     List<MovieEntity> findByTitleContaining(String title);
+
+    @Query("MATCH (m:Movie) WHERE m.title = $title SET m = $movie")
+    void modifyMovie(MovieEntity movie);
 }

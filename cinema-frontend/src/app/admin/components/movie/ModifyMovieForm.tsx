@@ -8,7 +8,7 @@ const MovieSchema = Yup.object().shape({
   title: Yup.string()
     .matches(/^[A-Z]./, "Must start with a capital letter")
     .required("Required"),
-  tagline: Yup.string()
+  description: Yup.string()
     .matches(/^[A-Z]./, "Must start with a capital letter")
     .required("Required"),
   released: Yup.number()
@@ -25,11 +25,11 @@ const ModifyMovieForm = ({ selectedMovie }: { selectedMovie: Movie }) => {
   return (
     <Formik
       initialValues={{
-        title: selectedMovie.title,
-        tagline: selectedMovie.tagline,
-        released: selectedMovie.released,
-        imageUrl: selectedMovie.imageUrl,
-        trailer: selectedMovie.trailer,
+        title: selectedMovie.title || "",
+        description: selectedMovie.description || "",
+        released: selectedMovie.released || 2024,
+        imageUrl: selectedMovie.imageUrl || "",
+        trailer: selectedMovie.trailer || "",
       }}
       validationSchema={MovieSchema}
       onSubmit={(values) => {
@@ -60,10 +60,10 @@ const ModifyMovieForm = ({ selectedMovie }: { selectedMovie: Movie }) => {
             {errors.title && touched.title && errors.title}
           </div>
           <div>
-            <label htmlFor="tagline">Tagline: </label>
-            <Field name="tagline" type="textarea" />
+            <label htmlFor="description">Description: </label>
+            <Field name="description" type="textarea" />
             <br />
-            {errors.tagline && touched.tagline && errors.tagline}
+            {errors.description && touched.description && errors.description}
           </div>
           <div>
             <label className="pr-2 " htmlFor="released">

@@ -12,7 +12,7 @@ const MovieDetails = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
     if (!currMovie) return <div>Movie not found</div>;
     return (
       <div>
-        {currMovie.title} | {currMovie.tagline} | {currMovie.released} |{" "}
+        {currMovie.title} | {currMovie.description} | {currMovie.released} |{" "}
         {currMovie.imageUrl} | {currMovie.trailer}
         <div className="collapse bg-base-200">
           <input type="checkbox" />

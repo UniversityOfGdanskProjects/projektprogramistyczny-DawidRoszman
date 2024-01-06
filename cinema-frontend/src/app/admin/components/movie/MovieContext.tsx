@@ -1,5 +1,6 @@
-import { Dispatch, createContext, useContext, useReducer } from "react";
-import { Action, Movie, MovieReducer } from "./movieReducer";
+import { Dispatch, createContext, useContext, useReducer, useEffect } from "react";
+import { Action, Movie, MovieReducer, Type } from "./movieReducer";
+import axios from "axios";
 
 export const MovieContext = createContext<Movie[] | null>(null);
 export const DispatchContext = createContext<Dispatch<Action> | null>(null);
@@ -11,18 +12,17 @@ export function useMovieDispatch() {
   return useContext(DispatchContext);
 }
 
-const initialState: Movie[] = [
-  {
-    title: "The Godfather",
-    tagline: "An offer you can't refuse",
-    released: 1972,
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg",
-    trailer: "https://www.youtube.com/watch?v=sY1S34973zA",
-  },
-];
 export function MovieProvider({ children }: any) {
-  const [movie, dispatch] = useReducer(MovieReducer, initialState);
+  const [movie, dispatch] = useReducer(MovieReducer, []);
+
+  useEffect(() => {
+    axios
+      .get("https://pi.dawidroszman.eu:8080/api/v1/cinema/movies")
+      .then((response) => {
+        const movies = response.data;
+        dispatch({ type: Type.SET_MOVIES, payload: { movies: movies } }); // Assuming you have a 'SET_MOVIES' action in your reducer
+      });
+  }, []);
 
   return (
     <MovieContext.Provider value={movie}>

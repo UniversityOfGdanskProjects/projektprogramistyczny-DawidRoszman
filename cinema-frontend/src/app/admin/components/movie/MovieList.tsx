@@ -6,7 +6,6 @@ const MovieList = ({
   setSelectedMovie,
 }: {
   setSelectedMovie: React.Dispatch<React.SetStateAction<Movie | null>>;
-  search: string;
 }) => {
   const movies: Movie[] | null = useMovie();
   const dispatch = useMovieDispatch();
