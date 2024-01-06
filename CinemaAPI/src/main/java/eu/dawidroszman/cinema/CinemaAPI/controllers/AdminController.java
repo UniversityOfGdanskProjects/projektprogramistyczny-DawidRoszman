@@ -34,13 +34,13 @@ public class AdminController {
         movieService.addMovie(movie);
     }
 
-    @DeleteMapping("/delete-movie")
-    public void deleteMovie(@RequestBody String movieTitle, Principal principal) {
+    @DeleteMapping("/delete-movie/{title}")
+    public void deleteMovie(@PathVariable String title, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             throw new RuntimeException("You are not an admin!");
         }
-        System.out.println(movieTitle);
-        movieService.deleteMovie(movieTitle);
+        System.out.println(title);
+        movieService.deleteMovie(title);
     }
 
     @PutMapping("/update-movie")

@@ -11,15 +11,17 @@ import Loading from "@/components/Loading";
 import Movie from "./components/movie/Movie";
 import { MovieProvider } from "./components/movie/MovieContext";
 
-const page = () => {
+const Page = () => {
   const cookieStore = useCookies();
   const [isAdmin, setIsAdmin] = useState(null);
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | undefined>(undefined);
   useEffect(() => {
     const token = cookieStore.get("token");
     if (token === undefined) {
       redirect("/login");
     }
+    setToken(token);
     const checkIfIsValid = async () => {
       const response = await axios.get(
         "https://pi.dawidroszman.eu:8080/api/v1/user/is-admin",
@@ -42,7 +44,7 @@ const page = () => {
     fetchUser();
   }, [cookieStore]);
 
-  if (isAdmin === null) {
+  if (isAdmin === null || token === undefined) {
     return <Loading />;
   }
 
@@ -57,10 +59,10 @@ const page = () => {
         </h1>
       </div>
       <div>
-        <Movie />
+        <Movie token={token} />
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

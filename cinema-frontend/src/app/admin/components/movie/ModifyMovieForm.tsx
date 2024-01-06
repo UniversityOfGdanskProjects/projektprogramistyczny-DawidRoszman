@@ -19,7 +19,7 @@ const MovieSchema = Yup.object().shape({
   trailer: Yup.string().url("Must be a vaild url").required("Required"),
 });
 
-const ModifyMovieForm = ({ selectedMovie }: { selectedMovie: Movie }) => {
+const ModifyMovieForm = ({ selectedMovie, token }: { selectedMovie: Movie, token: string }) => {
   const dispatch = useMovieDispatch();
   if (!dispatch) return <div>Loading...</div>;
   return (
@@ -36,7 +36,7 @@ const ModifyMovieForm = ({ selectedMovie }: { selectedMovie: Movie }) => {
         dispatch({
           type: Type.MODIFY_MOVIE,
           payload: {
-            token: "",
+            token: token,
             movie: values,
           },
         });

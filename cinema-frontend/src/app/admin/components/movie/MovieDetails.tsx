@@ -3,7 +3,7 @@ import { useMovie } from "./MovieContext";
 import { Movie } from "./movieReducer";
 import ModifyMovieForm from "./ModifyMovieForm";
 
-const MovieDetails = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
+const MovieDetails = ({ selectedMovie, token }: { selectedMovie: Movie | null, token: string }) => {
   const movies = useMovie();
   if (!movies) return <div>Loading...</div>;
   if (selectedMovie) {
@@ -19,6 +19,7 @@ const MovieDetails = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
           <div className="collapse-title text-xl font-medium">Modify Movie</div>
           <div className="collapse-content">
             <ModifyMovieForm
+              token={token}
               key={currMovie.title}
               selectedMovie={selectedMovie}
             />

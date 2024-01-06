@@ -6,14 +6,14 @@ import AddMovieForm from "./AddMovieForm";
 import { useState } from "react";
 import { Movie } from "./movieReducer";
 
-const Movie = () => {
+const Movie = ({token}: {token: string}) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   return (
     <div>
       <MovieProvider>
         <MovieList setSelectedMovie={setSelectedMovie} />
-        <MovieDetails selectedMovie={selectedMovie} />
-        <AddMovieForm />
+        <MovieDetails token={token} selectedMovie={selectedMovie} />
+        <AddMovieForm token={token} />
       </MovieProvider>
     </div>
   );
