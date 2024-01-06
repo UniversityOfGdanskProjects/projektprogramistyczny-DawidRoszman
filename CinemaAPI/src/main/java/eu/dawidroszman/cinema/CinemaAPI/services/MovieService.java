@@ -35,8 +35,7 @@ public class MovieService {
         movieRepository.delete(movie);
     }
 
-    public void updateMovie(String movieTitle) {
-        MovieEntity movie = movieRepository.findByTitle(movieTitle).orElseThrow();
+    public void updateMovie(MovieEntity movie) {
         String title = movie.getTitle();
         String description = movie.getDescription();
         Integer released = movie.getReleased();

@@ -29,8 +29,8 @@ public class AdminController {
     }
 
     @PutMapping("/update-movie")
-    public void updateMovie(@RequestBody String movieTitle) {
-        movieService.updateMovie(movieTitle);
+    public void updateMovie(@RequestBody MovieEntity movie) {
+        movieService.updateMovie(movie);
     }
 
 }
