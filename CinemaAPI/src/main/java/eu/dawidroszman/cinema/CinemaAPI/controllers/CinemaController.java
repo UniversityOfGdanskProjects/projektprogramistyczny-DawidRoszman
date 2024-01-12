@@ -1,7 +1,9 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
+import eu.dawidroszman.cinema.CinemaAPI.models.AuditoriumEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.services.AuditoriumService;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +24,12 @@ public class CinemaController {
 
     private final MovieService movieService;
     private final ScreeningService screeningService;
+    private final AuditoriumService auditoriumService;
 
-    public CinemaController(MovieService movieService, ScreeningService screeningService) {
+    public CinemaController(MovieService movieService, ScreeningService screeningService, AuditoriumService auditoriumService) {
         this.movieService = movieService;
         this.screeningService = screeningService;
+        this.auditoriumService = auditoriumService;
     }
 
     @GetMapping("")
@@ -63,6 +67,11 @@ public class CinemaController {
                                                            @RequestParam(name = "auditorium", required = false) Integer auditoriumNumber,
                                                            @RequestParam(required = false) String title) {
         return screeningService.getScreeningIdByDateAuditoriumAndMovie(date, auditoriumNumber, title);
+    }
+
+    @GetMapping("/auditoriums")
+    public List<AuditoriumEntity> getAllAuditoriums() {
+        return auditoriumService.getAllAuditoriums();
     }
 
 }
