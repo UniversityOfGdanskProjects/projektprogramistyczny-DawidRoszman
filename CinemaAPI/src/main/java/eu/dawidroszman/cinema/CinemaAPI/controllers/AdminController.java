@@ -1,23 +1,29 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
+import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/admin")
 public class AdminController {
 
     private final MovieService movieService;
+    private final ScreeningService screeningSerive;
     private final UserService userService;
 
-    public AdminController(MovieService movieService, UserService userService) {
+
+    public AdminController(MovieService movieService, ScreeningService screeningSerive, UserService userService) {
         this.movieService = movieService;
+        this.screeningSerive = screeningSerive;
         this.userService = userService;
     }
 
@@ -28,17 +34,30 @@ public class AdminController {
         }
         return "Welcome to admin API";
     }
-   @PostMapping("/add-movie")
+
+    @PostMapping("/add-movie")
     public ResponseEntity<String> addMovie(@RequestBody MovieEntity movie, Principal principal) {
-    if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-        return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+        }
+        boolean didAdd = movieService.addMovie(movie);
+        if (!didAdd) {
+            return new ResponseEntity<>("Movie already exists!", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
     }
-    boolean didAdd = movieService.addMovie(movie);
-    if (!didAdd) {
-        return new ResponseEntity<>("Movie already exists!", HttpStatus.CONFLICT);
+
+    @PostMapping("/add-screening")
+    public ResponseEntity<String> addScreening(@RequestBody ScreeningEntity screening, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+        }
+        boolean didAdd = screeningSerive.addScreening(screening);
+        if (!didAdd) {
+            return new ResponseEntity<>("Movie already exists!", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
     }
-    return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
-}
 
     @DeleteMapping("/delete-movie/{title}")
     public ResponseEntity<String> deleteMovie(@PathVariable String title, Principal principal) {
@@ -49,6 +68,16 @@ public class AdminController {
         return new ResponseEntity<>("Movie deleted successfully", HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete-screening/{id}")
+    public ResponseEntity<String> deleteScreening(@PathVariable UUID id, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+        }
+        screeningSerive.deleteScreening(id);
+        return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
+    }
+
+
     @PutMapping("/update-movie")
     public ResponseEntity<String> updateMovie(@RequestBody MovieEntity movie, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
@@ -56,6 +85,15 @@ public class AdminController {
         }
         movieService.updateMovie(movie);
         return new ResponseEntity<>("Movie updated successfully", HttpStatus.OK);
+    }
+
+    @PutMapping("/update-screening")
+    public ResponseEntity<String> updateScreening(@RequestBody ScreeningEntity screening, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+        }
+        screeningSerive.updateScreening(screening);
+        return new ResponseEntity<>("Screening updated successfully", HttpStatus.OK);
     }
 
 }

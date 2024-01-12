@@ -7,6 +7,7 @@ import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,8 +32,33 @@ public class ScreeningService {
         return screeningRepository.findByDateAndTimeAndAuditoriumAndMovie(date, time, auditorium, movie).getId();
     }
 
+    public boolean checkIfScreeningOnDataAndTimeInAuditoriumExists(String date, String time, AuditoriumEntity auditorium) {
+        return screeningRepository.findByDateAndTimeAndAuditorium(date, time, auditorium).isPresent();
+    }
+
     public ScreeningEntity getScreeningById(UUID id) {
         return screeningRepository.findById(id).orElseThrow();
     }
 
+    public boolean addScreening(ScreeningEntity screening) {
+        if (checkIfScreeningOnDataAndTimeInAuditoriumExists(screening.getDate(), screening.getTime(), screening.getAuditorium())) {
+            return false;
+        }
+        screeningRepository.save(screening);
+        return true;
+    }
+
+    public void deleteScreening(UUID screeningId) {
+        ScreeningEntity screening = screeningRepository.findById(screeningId).orElseThrow();
+        screeningRepository.delete(screening);
+    }
+
+    public void updateScreening(ScreeningEntity screening) {
+        UUID id = screening.getId();
+        String date = screening.getDate();
+        String time = screening.getTime();
+        Integer auditoriumNumber = screening.getAuditorium().getNumber();
+        String title = screening.getMovie().getTitle();
+        screeningRepository.modifyScreening(id, date, time, auditoriumNumber, title);
+    }
 }
