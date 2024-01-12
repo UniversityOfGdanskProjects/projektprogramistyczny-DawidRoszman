@@ -6,7 +6,7 @@ import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +28,13 @@ public class ScreeningService {
         return screeningRepository.findAll();
     }
 
-    public UUID getScreeningIdByDateAuditoriumAndMovie(LocalDateTime date, Integer auditoriumNumber, String title) {
+    public UUID getScreeningIdByDateAuditoriumAndMovie(ZonedDateTime date, Integer auditoriumNumber, String title) {
         MovieEntity movie = movieService.getMovieByTitle(title);
         AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
         return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
     }
 
-    public boolean checkIfScreeningOnDateInAuditoriumExists(LocalDateTime date, AuditoriumEntity auditorium) {
+    public boolean checkIfScreeningOnDateInAuditoriumExists(ZonedDateTime date, AuditoriumEntity auditorium) {
         return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
     }
 
@@ -57,7 +57,7 @@ public class ScreeningService {
 
     public void updateScreening(ScreeningEntity screening) {
         UUID id = screening.getId();
-        LocalDateTime date = screening.getDate();
+        ZonedDateTime date = screening.getDate();
         Integer auditoriumNumber = screening.getAuditorium().getNumber();
         String title = screening.getMovie().getTitle();
         screeningRepository.modifyScreening(id, date, auditoriumNumber, title);

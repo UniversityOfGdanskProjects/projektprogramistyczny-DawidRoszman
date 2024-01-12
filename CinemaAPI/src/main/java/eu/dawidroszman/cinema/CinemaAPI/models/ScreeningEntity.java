@@ -5,7 +5,7 @@ import org.springframework.data.neo4j.core.schema.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Getter
@@ -15,20 +15,20 @@ public class ScreeningEntity {
     @GeneratedValue()
     private final UUID id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime date;
+    private ZonedDateTime date;
     @Relationship(type = "IS_IN", direction = Relationship.Direction.OUTGOING)
     private AuditoriumEntity auditorium;
     @Relationship(type = "PLAYS")
     private MovieEntity movie;
 
-    public ScreeningEntity(LocalDateTime date, AuditoriumEntity auditorium, MovieEntity movie) {
+    public ScreeningEntity(ZonedDateTime date, AuditoriumEntity auditorium, MovieEntity movie) {
         this.id = UUID.randomUUID();
         this.date = date;
         this.auditorium = auditorium;
         this.movie = movie;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

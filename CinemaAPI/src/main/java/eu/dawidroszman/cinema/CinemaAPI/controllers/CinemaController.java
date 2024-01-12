@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -58,7 +59,7 @@ public class CinemaController {
     }
 
     @GetMapping("/screenings/search")
-    public UUID getScreeningIdByDateAuditoriumAndMovie(@RequestParam(required = false) LocalDateTime date,
+    public UUID getScreeningIdByDateAuditoriumAndMovie(@RequestParam(required = false) ZonedDateTime date,
                                                            @RequestParam(name = "auditorium", required = false) Integer auditoriumNumber,
                                                            @RequestParam(required = false) String title) {
         return screeningService.getScreeningIdByDateAuditoriumAndMovie(date, auditoriumNumber, title);
