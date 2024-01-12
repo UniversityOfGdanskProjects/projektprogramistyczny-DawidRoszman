@@ -33,8 +33,11 @@ export default async function Explore() {
                     </figure>
                     <div className="card-body">
                       <h2 className="card-title">{screening.movie.title}</h2>
-                      <p>{screening.date}</p>
-                      <p>{screening.time}</p>
+                      <p>
+                        {screening.date.getDay()}/{screening.date.getMonth()}/
+                        {screening.date.getFullYear()}
+                      </p>
+                      <p>{screening.date.getTime()}</p>
                       <div className="card-actions justify-end">
                         <Link
                           href={`/buy-ticket?id=${screening.id}`}

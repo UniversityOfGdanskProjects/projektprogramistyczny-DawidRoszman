@@ -1,7 +1,6 @@
 export interface Screening {
   id: number;
-  date: string;
-  time: string;
+  date: Date;
   movie: Movie;
   auditorium: Auditorium;
 }
