@@ -3,6 +3,8 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,32 +28,34 @@ public class AdminController {
         }
         return "Welcome to admin API";
     }
-    @PostMapping("/add-movie")
-    public void addMovie(@RequestBody MovieEntity movie, Principal principal) {
-        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-            throw new RuntimeException("You are not an admin!");
-        }
-        boolean didAdd = movieService.addMovie(movie);
-        if (!didAdd) {
-            throw new RuntimeException("Movie already exists!");
-        }
+   @PostMapping("/add-movie")
+    public ResponseEntity<String> addMovie(@RequestBody MovieEntity movie, Principal principal) {
+    if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+        return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
     }
+    boolean didAdd = movieService.addMovie(movie);
+    if (!didAdd) {
+        return new ResponseEntity<>("Movie already exists!", HttpStatus.CONFLICT);
+    }
+    return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
+}
 
     @DeleteMapping("/delete-movie/{title}")
-    public void deleteMovie(@PathVariable String title, Principal principal) {
+    public ResponseEntity<String> deleteMovie(@PathVariable String title, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-            throw new RuntimeException("You are not an admin!");
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
         }
-        System.out.println(title);
         movieService.deleteMovie(title);
+        return new ResponseEntity<>("Movie deleted successfully", HttpStatus.OK);
     }
 
     @PutMapping("/update-movie")
-    public void updateMovie(@RequestBody MovieEntity movie, Principal principal) {
+    public ResponseEntity<String> updateMovie(@RequestBody MovieEntity movie, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-            throw new RuntimeException("You are not an admin!");
+            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
         }
         movieService.updateMovie(movie);
+        return new ResponseEntity<>("Movie updated successfully", HttpStatus.OK);
     }
 
 }
