@@ -12,20 +12,20 @@ public class ScreeningEntity {
     @Id
     @GeneratedValue()
     private final UUID id;
-    private Date date;
+    private String date;
     @Relationship(type = "IS_IN", direction = Relationship.Direction.OUTGOING)
     private AuditoriumEntity auditorium;
     @Relationship(type = "PLAYS")
     private MovieEntity movie;
 
-    public ScreeningEntity(Date date, AuditoriumEntity auditorium, MovieEntity movie) {
+    public ScreeningEntity(String date, AuditoriumEntity auditorium, MovieEntity movie) {
         this.id = UUID.randomUUID();
         this.date = date;
         this.auditorium = auditorium;
         this.movie = movie;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

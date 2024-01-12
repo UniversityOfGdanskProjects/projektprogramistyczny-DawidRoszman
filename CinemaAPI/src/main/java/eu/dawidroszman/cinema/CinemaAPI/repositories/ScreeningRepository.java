@@ -15,12 +15,12 @@ public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UU
     @Query("MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium) RETURN m,p,s,i,a")
     List<ScreeningEntity> findAll();
 
-    ScreeningEntity findByDateAndAuditoriumAndMovie(Date date, AuditoriumEntity auditorium, MovieEntity movie);
+    ScreeningEntity findByDateAndAuditoriumAndMovie(String date, AuditoriumEntity auditorium, MovieEntity movie);
 
     Optional<ScreeningEntity> findById(UUID screeningId);
 
-    Optional<List<ScreeningEntity>> findByDateAndAuditorium(Date date, AuditoriumEntity auditorium);
+    Optional<List<ScreeningEntity>> findByDateAndAuditorium(String date, AuditoriumEntity auditorium);
 
     @Query("MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium) WHERE s.id = $id SET s.date = $date, s.time = $time, a.number = $auditoriumNumber")
-    void modifyScreening(UUID id, Date date, Integer auditoriumNumber, String title);
+    void modifyScreening(UUID id, String date, Integer auditoriumNumber, String title);
 }

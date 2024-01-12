@@ -27,13 +27,13 @@ public class ScreeningService {
         return screeningRepository.findAll();
     }
 
-    public UUID getScreeningIdByDateAuditoriumAndMovie(Date date, Integer auditoriumNumber, String title) {
+    public UUID getScreeningIdByDateAuditoriumAndMovie(String date, Integer auditoriumNumber, String title) {
         MovieEntity movie = movieService.getMovieByTitle(title);
         AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
         return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
     }
 
-    public boolean checkIfScreeningOnDateInAuditoriumExists(Date date, AuditoriumEntity auditorium) {
+    public boolean checkIfScreeningOnDateInAuditoriumExists(String date, AuditoriumEntity auditorium) {
         return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
     }
 
@@ -56,7 +56,7 @@ public class ScreeningService {
 
     public void updateScreening(ScreeningEntity screening) {
         UUID id = screening.getId();
-        Date date = screening.getDate();
+        String date = screening.getDate();
         Integer auditoriumNumber = screening.getAuditorium().getNumber();
         String title = screening.getMovie().getTitle();
         screeningRepository.modifyScreening(id, date, auditoriumNumber, title);

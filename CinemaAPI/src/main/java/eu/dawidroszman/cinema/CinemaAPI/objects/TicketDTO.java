@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public record TicketDTO(Integer row, Integer column, Boolean vip, Integer auditoriumNumber, String movieTitle,
-                        Date screeningDate, Double price) {
+                        String screeningDate, Double price) {
 
     public static List<TicketDTO> from(List<TicketEntity> tickets) {
         return tickets.stream().map(ticket -> new TicketDTO(ticket.getSeat().getRow(), ticket.getSeat().getColumn(),
