@@ -1,6 +1,7 @@
 package eu.dawidroszman.cinema.CinemaAPI.models;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Node("Screening")
 public class ScreeningEntity {
     @Id
@@ -25,18 +27,6 @@ public class ScreeningEntity {
         this.id = UUID.randomUUID();
         this.date = date;
         this.auditorium = auditorium;
-        this.movie = movie;
-    }
-
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
-    }
-
-    public void setAuditorium(AuditoriumEntity auditorium) {
-        this.auditorium = auditorium;
-    }
-
-    public void setMovie(MovieEntity movie) {
         this.movie = movie;
     }
 }
