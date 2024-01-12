@@ -6,6 +6,7 @@ import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,14 +27,14 @@ public class ScreeningService {
         return screeningRepository.findAll();
     }
 
-    public UUID getScreeningIdByDateTimeAuditoriumAndMovie(String date, Integer auditoriumNumber, String time, String title) {
+    public UUID getScreeningIdByDateAuditoriumAndMovie(Date date, Integer auditoriumNumber, String title) {
         MovieEntity movie = movieService.getMovieByTitle(title);
         AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
-        return screeningRepository.findByDateAndTimeAndAuditoriumAndMovie(date, time, auditorium, movie).getId();
+        return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
     }
 
-    public boolean checkIfScreeningOnDataAndTimeInAuditoriumExists(String date, String time, AuditoriumEntity auditorium) {
-        return screeningRepository.findByDateAndTimeAndAuditorium(date, time, auditorium).isPresent();
+    public boolean checkIfScreeningOnDataAndTimeInAuditoriumExists(Date date, AuditoriumEntity auditorium) {
+        return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
     }
 
     public ScreeningEntity getScreeningById(UUID id) {
@@ -41,7 +42,7 @@ public class ScreeningService {
     }
 
     public boolean addScreening(ScreeningEntity screening) {
-        if (checkIfScreeningOnDataAndTimeInAuditoriumExists(screening.getDate(), screening.getTime(), screening.getAuditorium())) {
+        if (checkIfScreeningOnDataAndTimeInAuditoriumExists(screening.getDate(), screening.getAuditorium())) {
             return false;
         }
         screeningRepository.save(screening);
@@ -55,10 +56,9 @@ public class ScreeningService {
 
     public void updateScreening(ScreeningEntity screening) {
         UUID id = screening.getId();
-        String date = screening.getDate();
-        String time = screening.getTime();
+        Date date = screening.getDate();
         Integer auditoriumNumber = screening.getAuditorium().getNumber();
         String title = screening.getMovie().getTitle();
-        screeningRepository.modifyScreening(id, date, time, auditoriumNumber, title);
+        screeningRepository.modifyScreening(id, date, auditoriumNumber, title);
     }
 }
