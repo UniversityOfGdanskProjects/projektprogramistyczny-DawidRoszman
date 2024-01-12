@@ -20,11 +20,11 @@ const ScreeningDetails = ({
     return (
       <div className="grid place-items-center pt-10">
         <div className="p-3">
-          <p>Movie: {selectedScreening.movie.title}</p>
-          <p>Screening id: {selectedScreening.id}</p>
-          <p>On: {selectedScreening.date.toLocaleDateString()} </p>
-          <p>At: {selectedScreening.date.toLocaleTimeString()}</p>
-          <p>Auditorium: {selectedScreening.auditorium.number}</p>
+          <p>Movie: {currScreening.movie.title}</p>
+          <p>Screening id: {currScreening.id}</p>
+          <p>On: {currScreening.date.toLocaleDateString()} </p>
+          <p>At: {currScreening.date.toLocaleTimeString()}</p>
+          <p>Auditorium: {currScreening.auditorium.number}</p>
         </div>
 
         <div className="collapse w-fit text-center bg-base-200">

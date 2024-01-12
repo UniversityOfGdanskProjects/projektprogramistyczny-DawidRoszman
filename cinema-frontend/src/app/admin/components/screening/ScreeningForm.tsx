@@ -30,15 +30,18 @@ const ScreeningForm = ({
     null,
   );
   useEffect(() => {
-    const fetchAndSet = async () => {
+    const fetchAndSetMovies = async () => {
       const movies = await fetchMovies();
       setMovies(movies);
+    };
+    const fetchAndSetAuditoriums = async () => {
       const auditoriums = await fetchAuditoriums();
       setAuditoriums(auditoriums);
     };
 
-    fetchAndSet();
-  });
+    fetchAndSetAuditoriums();
+    fetchAndSetMovies();
+  }, []);
   const dispatch = useScreeningDispatch();
   if (!dispatch || movies === null || auditoriums === null)
     return <div className="loading">Loading...</div>;
@@ -46,27 +49,29 @@ const ScreeningForm = ({
     <Formik
       initialValues={{
         id: selectedScreening?.id || uuidv4(),
-        movie: selectedScreening?.movie || "",
+        movie: selectedScreening?.movie.title || movies[0].title,
         date: formatDateForInput(new Date(selectedScreening?.date || "")) || "",
-        auditorium: selectedScreening?.auditorium.number || "",
+        auditorium:
+          selectedScreening?.auditorium.number || auditoriums[0].number,
       }}
       validationSchema={ScreeningSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
+        const data = {
+          token: token,
+          screening: {
+            id: values.id,
+            movie: movies.find((f) => f.title === values.movie)!,
+            date: new Date(values.date),
+            auditorium: auditoriums.find((f) => f.number == values.auditorium)!,
+          },
+        };
         if (selectedScreening === null) {
           try {
+            // await addScreening(data);
+            console.log(data);
             dispatch({
               type: Type.ADD_SCREENING,
-              payload: {
-                token: token,
-                screening: {
-                  id: uuidv4(),
-                  movie: movies.find((f) => f.title === values.movie) || null,
-                  date: new Date(values.date),
-                  auditorium:
-                    auditoriums.find((f) => f.number === values.auditorium) ||
-                    null,
-                },
-              },
+              payload: data,
             });
             alert("Screening added");
           } catch (err: any) {
@@ -80,10 +85,7 @@ const ScreeningForm = ({
           try {
             dispatch({
               type: Type.MODIFY_SCREENING,
-              payload: {
-                token: token,
-                movie: values,
-              },
+              payload: data,
             });
             alert("Screening modified");
           } catch (err: any) {
@@ -102,7 +104,7 @@ const ScreeningForm = ({
         >
           <div>
             <label htmlFor="movie">Movie: </label>
-            <Field name="movie" as="select">
+            <Field name="movie" component={Select}>
               {movies.map((movie) => (
                 <option key={movie.title} value={movie.title}>
                   {movie.title}
@@ -118,10 +120,12 @@ const ScreeningForm = ({
           </div>
           <div>
             <label htmlFor="auditorium">Image: </label>
-            <Field name="auditorium" as="select">
-              <option value={1}>Auditorium 1</option>
-              <option value={2}>Auditorium 2</option>
-              <option value={3}>Auditorium 3</option>
+            <Field name="auditorium" component={Select}>
+              {auditoriums.map((auditorium) => (
+                <option key={auditorium.number} value={auditorium.number}>
+                  Auditorium {auditorium.number}
+                </option>
+              ))}
             </Field>
           </div>
           <div>
@@ -138,6 +142,19 @@ const ScreeningForm = ({
     </Formik>
   );
 };
+
+function Select({ field, form: { touched, errors }, ...props }: any) {
+  return (
+    <div>
+      <select {...field} {...props} className="input input-primary">
+        {props.children}
+      </select>
+      {touched[field.name] && errors[field.name] && (
+        <div className="text-error">{errors[field.name]}</div>
+      )}
+    </div>
+  );
+}
 
 function Input({ field, form: { touched, errors }, ...props }: any) {
   return (

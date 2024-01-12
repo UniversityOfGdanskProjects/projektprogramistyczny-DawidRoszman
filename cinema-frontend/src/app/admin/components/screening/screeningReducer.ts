@@ -20,6 +20,8 @@ export const ScreeningReducer = (state: Screening[], action: Action) => {
     case Type.REMOVE_SCREENING:
       return state.filter((screening) => screening.id !== payload.screening.id);
     case Type.MODIFY_SCREENING:
+      console.log("modify screening");
+      console.log(payload.screening);
       return state.map((screening) =>
         screening.id === payload.screening.id ? payload.screening : screening,
       );

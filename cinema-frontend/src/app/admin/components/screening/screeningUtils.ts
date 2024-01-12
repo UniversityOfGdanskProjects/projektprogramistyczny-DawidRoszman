@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Screening } from "./screeningReducer";
 import { agent } from "@/utils/httpsAgent";
+import { Screening } from "@/types/types";
 
 export const addScreening = async (payload: {
   screening: Screening;
