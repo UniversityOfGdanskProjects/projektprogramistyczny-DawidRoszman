@@ -39,57 +39,57 @@ CREATE (a)-[:HAS]->(:Seat {id: "badb5b97-b688-4017-89de-e35bea041936", row: 3, c
 # creating screenings
 MATCH (m1:Movie), (a1:Auditorium)
 WHERE m1.title = "The Matrix" AND a1.number = 1
-CREATE (m1)<-[:PLAYS]-(:Screening {id: "4e28d143-74c7-41bb-9b55-6fb8093302ce", date: datetime("2024-01-01T10:00:00.00+0100")})-[:IS_IN]->(a1);
+CREATE (m1)<-[:PLAYS]-(:Screening {id: "4e28d143-74c7-41bb-9b55-6fb8093302ce", date: datetime("2024-01-12T10:00:00.522000000Z")})-[:IS_IN]->(a1);
 
 MATCH (m2:Movie), (a2:Auditorium)
 WHERE m2.title = "Top Gun" AND a2.number = 2
-CREATE (m2)<-[:PLAYS]-(:Screening {id: "f100c69e-4f21-42c1-ba86-b7090239d170", date: datetime("2024-01-01T12:00:00.00+0100")})-[:IS_IN]->(a2);
+CREATE (m2)<-[:PLAYS]-(:Screening {id: "f100c69e-4f21-42c1-ba86-b7090239d170", date: datetime("2024-01-13T12:00:00.522000000Z")})-[:IS_IN]->(a2);
 
 MATCH (m3:Movie), (a3:Auditorium)
 WHERE m3.title = "Few Good Man" AND a3.number = 3
-CREATE (m3)<-[:PLAYS]-(:Screening {id: "46c9d5cc-0dc7-4a8a-9fb0-5f9ce2e71bf2", date: datetime("2024-01-01T14:00:00.00+0100")})-[:IS_IN]->(a3);
+CREATE (m3)<-[:PLAYS]-(:Screening {id: "46c9d5cc-0dc7-4a8a-9fb0-5f9ce2e71bf2", date: datetime("2024-01-14T14:00:00.522000000Z")})-[:IS_IN]->(a3);
 
 MATCH (m4:Movie), (a4:Auditorium)
 WHERE m4.title = "Stand By Me" AND a4.number = 1
-CREATE (m4)<-[:PLAYS]-(:Screening {id: "467b7b69-4eb4-4794-99b5-3fbcc50cadd0", date: datetime("2024-01-02T10:00:00.00+0100")})-[:IS_IN]->(a4);
+CREATE (m4)<-[:PLAYS]-(:Screening {id: "467b7b69-4eb4-4794-99b5-3fbcc50cadd0", date: datetime("2024-01-12T10:00:00.522000000Z")})-[:IS_IN]->(a4);
 
 MATCH (m5:Movie), (a5:Auditorium)
 WHERE m5.title = "The Matrix" AND a5.number = 2
-CREATE (m5)<-[:PLAYS]-(:Screening {id: "d79fd9d7-96f1-4559-996a-3068ab1b8f6d", date: datetime("2024-02-01T12:00:00.00+0100")})-[:IS_IN]->(a5);
+CREATE (m5)<-[:PLAYS]-(:Screening {id: "d79fd9d7-96f1-4559-996a-3068ab1b8f6d", date: datetime("2024-01-13T12:00:00.522000000Z")})-[:IS_IN]->(a5);
 
 MATCH (m6:Movie), (a6:Auditorium)
 WHERE m6.title = "Top Gun" AND a6.number = 3
-CREATE (m6)<-[:PLAYS]-(:Screening {id: "11ba8239-8338-491e-bbd6-6128e45c206b", date: datetime("2024-02-01T10:00:00.00+0100")})-[:IS_IN]->(a6);
+CREATE (m6)<-[:PLAYS]-(:Screening {id: "11ba8239-8338-491e-bbd6-6128e45c206b", date: datetime("2024-01-14T14:00:00.522000000Z")})-[:IS_IN]->(a6);
 
 MATCH (m7:Movie), (a7:Auditorium)
 WHERE m7.title = "Few Good Man" AND a7.number = 1
-CREATE (m7)<-[:PLAYS]-(:Screening {id: "219fddf5-d9db-46ce-a00e-66c0b971c183", date: datetime("2024-02-01T10:00:00.00+0100")})-[:IS_IN]->(a7);
+CREATE (m7)<-[:PLAYS]-(:Screening {id: "219fddf5-d9db-46ce-a00e-66c0b971c183", date: datetime("2024-01-11T10:00:00.522000000Z")})-[:IS_IN]->(a7);
 
 MATCH (m8:Movie), (a8:Auditorium)
 WHERE m8.title = "Stand By Me" AND a8.number = 2
-CREATE (m8)<-[:PLAYS]-(:Screening {id: "0170b186-6e60-4c1f-bd33-e1aaf5cccab5", date: datetime("2024-03-01T10:00:00.00+0100")})-[:IS_IN]->(a8);
+CREATE (m8)<-[:PLAYS]-(:Screening {id: "0170b186-6e60-4c1f-bd33-e1aaf5cccab5", date: datetime("2024-01-15T12:00:00.522000000Z")})-[:IS_IN]->(a8);
 
 MATCH (m9:Movie), (a9:Auditorium)
 WHERE m9.title = "The Matrix" AND a9.number = 3
-CREATE (m9)<-[:PLAYS]-(:Screening {id: "c8de882a-5d0d-45a2-905c-c78e8ee42a3f", date: datetime("2024-03-01T10:00:00.00+0100")})-[:IS_IN]->(a9);
+CREATE (m9)<-[:PLAYS]-(:Screening {id: "c8de882a-5d0d-45a2-905c-c78e8ee42a3f", date: datetime("2024-01-18T14:00:00.522000000Z")})-[:IS_IN]->(a9);
 
 MATCH (m10:Movie), (a10:Auditorium)
 WHERE m10.title = "Top Gun" AND a10.number = 1
-CREATE (m10)<-[:PLAYS]-(:Screening {id: "cc812f25-e5b3-4991-9745-486e1622a30a", date: datetime("2024-03-01T10:00:00.00+0100")})-[:IS_IN]->(a10);
+CREATE (m10)<-[:PLAYS]-(:Screening {id: "cc812f25-e5b3-4991-9745-486e1622a30a", date: datetime("2024-01-11T80:00:00.522000000Z")})-[:IS_IN]->(a10);
 
 MATCH (m11:Movie), (a11:Auditorium)
 WHERE m11.title = "Few Good Man" AND a11.number = 2
-CREATE (m11)<-[:PLAYS]-(:Screening {id: "865c262f-9229-4dbe-84e3-9a4478574f0a", date: datetime("2024-03-01T10:00:00.00+0100")})-[:IS_IN]->(a11);
+CREATE (m11)<-[:PLAYS]-(:Screening {id: "865c262f-9229-4dbe-84e3-9a4478574f0a", date: datetime("2024-01-11T12:00:00.522000000Z")})-[:IS_IN]->(a11);
 
 MATCH (m12:Movie), (a12:Auditorium)
 WHERE m12.title = "Stand By Me" AND a12.number = 3
-CREATE (m12)<-[:PLAYS]-(:Screening {id: "a969da5e-508c-4642-89ea-9a96513d8e43", date: datetime("2024-03-01T10:00:00.00+0100")})-[:IS_IN]->(a12);
+CREATE (m12)<-[:PLAYS]-(:Screening {id: "a969da5e-508c-4642-89ea-9a96513d8e43", date: datetime("2024-01-19T16:00:00.522000000Z")})-[:IS_IN]->(a12);
 
 MATCH (m13:Movie), (a13:Auditorium)
 WHERE m13.title = "The Matrix" AND a13.number = 1
-CREATE (m13)<-[:PLAYS]-(:Screening {id: "20b5b227-7967-473e-9362-a7935fd3476c", date: datetime("2024-04-01T10:00:00.00+0100")})-[:IS_IN]->(a13);
+CREATE (m13)<-[:PLAYS]-(:Screening {id: "20b5b227-7967-473e-9362-a7935fd3476c", date: datetime("2024-01-13T12:00:00.522000000Z")})-[:IS_IN]->(a13);
 
 MATCH (m14:Movie), (a14:Auditorium)
 WHERE m14.title = "Top Gun" AND a14.number = 2
-CREATE (m14)<-[:PLAYS]-(:Screening {id: "986c41fb-fe59-412f-8c8d-247240be08c4", date: datetime("2024-04-01T10:00:00.00+0100")})-[:IS_IN]->(a14);
+CREATE (m14)<-[:PLAYS]-(:Screening {id: "986c41fb-fe59-412f-8c8d-247240be08c4", date: datetime("2024-01-12T10:00:00.522000000Z")})-[:IS_IN]->(a14);
 
