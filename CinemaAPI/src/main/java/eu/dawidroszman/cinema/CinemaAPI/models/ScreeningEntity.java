@@ -29,4 +29,11 @@ public class ScreeningEntity {
         this.auditorium = auditorium;
         this.movie = movie;
     }
+
+    public ScreeningEntity(UUID id, ZonedDateTime date, AuditoriumEntity auditorium, MovieEntity movie) {
+        this.id = id;
+        this.date = date;
+        this.auditorium = auditorium;
+        this.movie = movie;
+    }
 }
