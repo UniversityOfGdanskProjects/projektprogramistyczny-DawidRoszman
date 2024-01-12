@@ -33,7 +33,7 @@ public class ScreeningService {
         return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
     }
 
-    public boolean checkIfScreeningOnDataAndTimeInAuditoriumExists(Date date, AuditoriumEntity auditorium) {
+    public boolean checkIfScreeningOnDateInAuditoriumExists(Date date, AuditoriumEntity auditorium) {
         return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
     }
 
@@ -42,7 +42,7 @@ public class ScreeningService {
     }
 
     public boolean addScreening(ScreeningEntity screening) {
-        if (checkIfScreeningOnDataAndTimeInAuditoriumExists(screening.getDate(), screening.getAuditorium())) {
+        if (checkIfScreeningOnDateInAuditoriumExists(screening.getDate(), screening.getAuditorium())) {
             return false;
         }
         screeningRepository.save(screening);
