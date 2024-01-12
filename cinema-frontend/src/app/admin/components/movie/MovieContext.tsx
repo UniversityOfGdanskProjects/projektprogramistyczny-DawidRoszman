@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Action, Movie, MovieReducer, Type } from "./movieReducer";
 import axios from "axios";
+import { fetchMovies } from "@/utils/fetchMovies";
 
 export const MovieContext = createContext<Movie[] | null>(null);
 export const DispatchContext = createContext<Dispatch<Action> | null>(null);
@@ -22,12 +23,14 @@ export function MovieProvider({ children }: any) {
   const [movie, dispatch] = useReducer(MovieReducer, []);
 
   useEffect(() => {
-    axios
-      .get("http://pi.dawidroszman.eu:8080/api/v1/cinema/movies")
-      .then((response) => {
-        const movies = response.data;
-        dispatch({ type: Type.SET_MOVIES, payload: { movies: movies } }); // Assuming you have a 'SET_MOVIES' action in your reducer
+    const fetchAndSetMovies = async () => {
+      const movies = await fetchMovies();
+      dispatch({
+        type: Type.SET_MOVIES,
+        payload: { movies: movies },
       });
+    };
+    fetchAndSetMovies();
   }, []);
 
   return (
@@ -38,4 +41,3 @@ export function MovieProvider({ children }: any) {
     </MovieContext.Provider>
   );
 }
-

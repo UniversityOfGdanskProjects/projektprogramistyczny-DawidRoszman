@@ -1,58 +1,58 @@
 "use client";
+import { Screening } from "@/types/types";
 import React from "react";
-import { Movie, Type } from "./movieReducer";
-import { useMovie, useMovieDispatch } from "./MovieContext";
-import { removeMovie } from "./movieUtils";
+import { useScreening, useScreeningDispatch } from "./ScreeningContext";
+import { Type } from "./screeningReducer";
 
 const ScreeningList = ({
   setSelectedScreening: setSelectedMovie,
   token,
 }: {
-  setSelectedScreening: React.Dispatch<React.SetStateAction<Movie | null>>;
+  setSelectedScreening: React.Dispatch<React.SetStateAction<Screening | null>>;
   token: string;
 }) => {
-  const movies: Movie[] | null = useMovie();
-  const dispatch = useMovieDispatch();
+  const screenings: Screening[] | null = useScreening();
+  const dispatch = useScreeningDispatch();
   if (!dispatch) return null;
-  const handleRemove = async (movie: Movie) => {
+  const handleRemove = async (screening: Screening) => {
     const ans = prompt(
-      `Are you sure you want to remove ${movie.title}? Type "yes" if you want to remove movie`,
+      `Are you sure you want to remove this screening? Type "yes" if you want to remove movie`,
     );
     if (ans !== "yes") return;
     try {
-      await removeMovie({ movie: movie, token });
+      // await removeMovie({ movie: movie, token });
       dispatch({
-        type: Type.REMOVE_MOVIE,
+        type: Type.REMOVE_SCREENING,
         payload: {
           token: token,
-          movie: movie,
+          screening: screening,
         },
       });
-      alert("Movie removed");
+      alert("Screening removed");
     } catch (err) {
       alert(err);
     }
   };
-  if (!movies) return <div>No movies to show</div>;
+  if (!screenings) return <div>No movies to show</div>;
   return (
-    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 p-4">
-      {movies.map((movie) => {
+    <div className="grid lg:grid-cols-2 gap-3 p-4">
+      {screenings.map((screening) => {
         return (
-          <div className="join" key={movie.title}>
+          <div className="join" key={screening.id}>
             <div className="h-[3rem] border border-neutral-content p-2 grid place-items-center justify-center join-item">
-              <div>{movie.title}</div>
+              <div>{screening.id}</div>
             </div>
             <button
               className="join-item btn btn-outline btn-success"
               onClick={() => {
-                setSelectedMovie(movie);
+                setSelectedMovie(screening);
               }}
             >
               Modify
             </button>
             <button
               className="join-item btn btn-outline btn-error"
-              onClick={() => handleRemove(movie)}
+              onClick={() => handleRemove(screening)}
             >
               Remove
             </button>

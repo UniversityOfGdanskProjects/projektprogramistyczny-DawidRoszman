@@ -3,7 +3,7 @@ import ScreeningList from "./ScreeningList";
 import ScreeningDetails from "./ScreeningDetails";
 import { ScreeningProvider } from "./ScreeningContext";
 import { useState } from "react";
-import { Screening } from "./screeningReducer";
+import { Screening } from "@/types/types";
 
 const Screening = ({ token }: { token: string }) => {
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(

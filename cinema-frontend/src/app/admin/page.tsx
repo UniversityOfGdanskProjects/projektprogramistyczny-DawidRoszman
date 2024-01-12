@@ -1,7 +1,5 @@
 "use client";
 
-import { agent } from "@/utils/httpsAgent";
-import axios from "axios";
 import { useCookies } from "next-client-cookies";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,12 +9,14 @@ import Loading from "@/components/Loading";
 import Movie from "./components/movie/Movie";
 import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
 import GoHome from "@/components/GoHome";
+import Screening from "./components/screening/Screening";
 
 const Page = () => {
   const cookieStore = useCookies();
   const [isAdmin, setIsAdmin] = useState(null);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
+  const [currSelected, setCurrSelected] = useState<number | null>(null);
   useEffect(() => {
     const token = cookieStore.get("token");
     if (token === undefined) {
@@ -51,9 +51,37 @@ const Page = () => {
         <h1 className="text-5xl">
           Welcome to admin page {user !== null ? user.firstName : ""}
         </h1>
+        <div className="flex gap-3 justify-center p-4">
+          <button
+            onClick={() => setCurrSelected(0)}
+            className="btn btn-primary"
+          >
+            Movies
+          </button>
+          <button
+            onClick={() => setCurrSelected(1)}
+            className="btn btn-primary"
+          >
+            Screenings
+          </button>
+          <button
+            onClick={() => setCurrSelected(2)}
+            className="btn btn-primary"
+          >
+            Reservations
+          </button>
+        </div>
       </div>
       <div>
-        <Movie token={token} />
+        {currSelected !== null ? (
+          currSelected === 0 ? (
+            <Movie token={token} />
+          ) : currSelected === 1 ? (
+            <Screening token={token} />
+          ) : (
+            <div>Reservation</div>
+          )
+        ) : null}
       </div>
     </div>
   );

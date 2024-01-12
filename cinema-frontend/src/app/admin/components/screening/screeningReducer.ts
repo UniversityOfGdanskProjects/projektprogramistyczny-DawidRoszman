@@ -1,4 +1,4 @@
-import { UUID } from "crypto";
+import { Screening } from "@/types/types";
 
 export interface Action {
   payload: any;
@@ -10,13 +10,6 @@ export enum Type {
   REMOVE_SCREENING,
   MODIFY_SCREENING,
   SET_SCREENING,
-}
-
-export interface Screening {
-  id: UUID;
-  date: Date;
-  auditorium: string;
-  movie: string;
 }
 
 export const ScreeningReducer = (state: Screening[], action: Action) => {

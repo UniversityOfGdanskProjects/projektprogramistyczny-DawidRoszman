@@ -1,24 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
-import { Screening } from "./screeningReducer";
 import { useScreeningDispatch } from "./ScreeningContext";
-import { randomUUID } from "crypto";
 import { addScreening } from "./screeningUtils";
+import { Auditorium, Movie, Screening } from "@/types/types";
+import { Type } from "./screeningReducer";
+import { formatDateForInput } from "@/utils/formatDateForInput";
+import { fetchMovies } from "@/utils/fetchMovies";
+import { v4 as uuidv4 } from "uuid";
+import { fetchAuditoriums } from "@/utils/fetchAuditoriums";
 
 const ScreeningSchema = Yup.object().shape({
-  title: Yup.string()
-    .matches(/^[A-Z]./, "Must start with a capital letter")
-    .required("Required"),
-  description: Yup.string()
-    .matches(/^[A-Z]./, "Must start with a capital letter")
-    .required("Required"),
-  released: Yup.number()
+  movie: Yup.string(),
+  date: Yup.date()
     .required("Required")
-    .min(1900, "Cannot add movies released before 1900")
-    .max(2024, "Cannot add movies from the future"),
-  imageUrl: Yup.string().url("Must be a vaild url").required("Required"),
-  trailer: Yup.string().url("Must be a vaild url").required("Required"),
+    .min(new Date(), "Cannot add past dates"),
+  auditorium: Yup.number().required("Required"),
 });
 
 const ScreeningForm = ({
@@ -28,37 +25,50 @@ const ScreeningForm = ({
   selectedScreening: Screening | null;
   token: string;
 }) => {
+  const [movies, setMovies] = React.useState<Movie[] | null>(null);
+  const [auditoriums, setAuditoriums] = React.useState<Auditorium[] | null>(
+    null,
+  );
+  useEffect(() => {
+    const fetchAndSet = async () => {
+      const movies = await fetchMovies();
+      setMovies(movies);
+      const auditoriums = await fetchAuditoriums();
+      setAuditoriums(auditoriums);
+    };
+
+    fetchAndSet();
+  });
   const dispatch = useScreeningDispatch();
-  if (!dispatch) return <div>Loading...</div>;
+  if (!dispatch || movies === null || auditoriums === null)
+    return <div className="loading">Loading...</div>;
   return (
     <Formik
       initialValues={{
-        id: selectedScreening?.id || randomUUID(),
+        id: selectedScreening?.id || uuidv4(),
         movie: selectedScreening?.movie || "",
-        date: selectedScreening?.date || new Date(),
-        auditorium: selectedScreening?.auditorium || "",
+        date: formatDateForInput(new Date(selectedScreening?.date || "")) || "",
+        auditorium: selectedScreening?.auditorium.number || "",
       }}
       validationSchema={ScreeningSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         if (selectedScreening === null) {
           try {
-            await addScreening({
-              screening: {
-                id: values.id,
-                movie: values.movie,
-                date: `${values.date.getFullYear()}-${values.date.getMonth()}-${values.date.getDay()}`,
-                time: `${values.date.getHours()}:${values.date.getMinutes()}`,
-              },
-              token,
-            });
             dispatch({
-              type: Type.ADD_MOVIE,
+              type: Type.ADD_SCREENING,
               payload: {
                 token: token,
-                movie: values,
+                screening: {
+                  id: uuidv4(),
+                  movie: movies.find((f) => f.title === values.movie) || null,
+                  date: new Date(values.date),
+                  auditorium:
+                    auditoriums.find((f) => f.number === values.auditorium) ||
+                    null,
+                },
               },
             });
-            alert("Movie added");
+            alert("Screening added");
           } catch (err: any) {
             alert(err.response.data);
             console.log(err);
@@ -68,15 +78,14 @@ const ScreeningForm = ({
           }
         } else {
           try {
-            await modifyMovie({ movie: values, token });
             dispatch({
-              type: Type.MODIFY_MOVIE,
+              type: Type.MODIFY_SCREENING,
               payload: {
                 token: token,
                 movie: values,
               },
             });
-            alert("Movie modified");
+            alert("Screening modified");
           } catch (err: any) {
             alert(err);
             console.log(err.response.data);
@@ -92,32 +101,28 @@ const ScreeningForm = ({
           className="flex flex-col gap-4 border-2 border-neutral rounded-lg justify-center items-center p-4"
         >
           <div>
-            {selectedScreening ? (
-              <div>{selectedScreening.title}</div>
-            ) : (
-              <>
-                <label htmlFor="title">Title: </label>
-                <Field id="title" name="title" type="text" component={Input} />
-              </>
-            )}
+            <label htmlFor="movie">Movie: </label>
+            <Field name="movie" as="select">
+              {movies.map((movie) => (
+                <option key={movie.title} value={movie.title}>
+                  {movie.title}
+                </option>
+              ))}
+            </Field>
           </div>
           <div>
-            <label htmlFor="description">Description: </label>
-            <Field name="description" type="textarea" component={Input} />
-          </div>
-          <div>
-            <label className="pr-2 " htmlFor="released">
-              Year of release:{" "}
+            <label className="pr-2 " htmlFor="date">
+              Date:
             </label>
-            <Field name="released" type="number" component={Input} />
+            <Field name="date" type="datetime-local" component={Input} />
           </div>
           <div>
-            <label htmlFor="imageUrl">Image: </label>
-            <Field name="imageUrl" type="text" component={Input} />
-          </div>
-          <div>
-            <label htmlFor="trailer">Trailer: </label>
-            <Field name="trailer" type="text" component={Input} />
+            <label htmlFor="auditorium">Image: </label>
+            <Field name="auditorium" as="select">
+              <option value={1}>Auditorium 1</option>
+              <option value={2}>Auditorium 2</option>
+              <option value={3}>Auditorium 3</option>
+            </Field>
           </div>
           <div>
             <button

@@ -1,6 +1,7 @@
 import React from "react";
-import { Screening } from "./screeningReducer";
 import { useScreening } from "./ScreeningContext";
+import { Screening } from "@/types/types";
+import ScreeningForm from "./ScreeningForm";
 
 const ScreeningDetails = ({
   selectedScreening: selectedScreening,
@@ -9,31 +10,32 @@ const ScreeningDetails = ({
   selectedScreening: Screening | null;
   token: string;
 }) => {
-  const movies = useScreening();
-  if (!movies) return <div>Loading...</div>;
+  const screening = useScreening();
+  if (!screening) return <div>Loading...</div>;
   if (selectedScreening) {
+    selectedScreening.date = new Date(selectedScreening.date);
     const currScreening =
-      movies.find((f) => f.id === selectedScreening?.id) || null;
-    if (!currScreening) return <div>Movie not found</div>;
+      screening.find((f) => f.id === selectedScreening?.id) || null;
+    if (!currScreening) return <div>Screening not found</div>;
     return (
       <div className="grid place-items-center pt-10">
         <div className="p-3">
-          <p>Movie: {currScreening.movie}</p>
-          <p>
-            On: {currScreening.date.getDay()}/{currScreening.date.getMonth()}/
-            {currScreening.date.getFullYear()}
-          </p>
-          <p>At: {currScreening.time.getTime()}</p>
-          <p>Auditorium: {currScreening.auditorium}</p>
+          <p>Movie: {selectedScreening.movie.title}</p>
+          <p>Screening id: {selectedScreening.id}</p>
+          <p>On: {selectedScreening.date.toLocaleDateString()} </p>
+          <p>At: {selectedScreening.date.toLocaleTimeString()}</p>
+          <p>Auditorium: {selectedScreening.auditorium.number}</p>
         </div>
 
         <div className="collapse w-fit text-center bg-base-200">
           <input type="checkbox" />
-          <div className="collapse-title text-xl font-medium">Modify Movie</div>
+          <div className="collapse-title text-xl font-medium">
+            Modify Screening
+          </div>
           <div className="collapse-content">
             <ScreeningForm
               token={token}
-              key={currScreening.id}
+              key={selectedScreening.id}
               selectedScreening={selectedScreening}
             />
           </div>
@@ -45,12 +47,12 @@ const ScreeningDetails = ({
     <div className="m-5">
       <div className="collapse w-fit text-center bg-base-200">
         <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">Add Movie</div>
+        <div className="collapse-title text-xl font-medium">Add Screening</div>
         <div className="collapse-content">
-          <MovieForm
+          <ScreeningForm
             token={token}
             key={"add-movie"}
-            selectedMovie={selectedMovie}
+            selectedScreening={selectedScreening}
           />
         </div>
       </div>

@@ -1,11 +1,11 @@
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
-import { screeningsComparator } from "@/utils/sortingScreenings";
 import NavBar from "../../components/NavBar";
 import { Suspense } from "react";
 import Loading from "@/components/Loading";
 import Link from "next/link";
 import { Screening } from "@/types/types";
+import { formatDateForView } from "@/utils/formatDateForView";
 
 export default async function Explore() {
   const data = await axios.get(
@@ -22,8 +22,14 @@ export default async function Explore() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 place-items-center">
             {screenings
               .toSorted((a, b) => {
-                if (a.date > b.date) return 1;
-                if (a.date < b.date) return -1;
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                if (dateA.getMonth() < dateB.getMonth()) return -1;
+                if (dateA.getMonth() > dateB.getMonth()) return 1;
+                if (dateA.getDay() < dateB.getDay()) return -1;
+                if (dateA.getDay() > dateB.getDay()) return 1;
+                if (dateA.getHours() < dateB.getHours()) return -1;
+                if (dateA.getHours() > dateB.getHours()) return 1;
                 return 0;
               })
               .map((screening) => {
@@ -38,22 +44,7 @@ export default async function Explore() {
                     </figure>
                     <div className="card-body">
                       <h2 className="card-title">{screening.movie.title}</h2>
-                      <p>
-                        {date.getDay() < 10
-                          ? "0" + date.getDay()
-                          : date.getDay()}
-                        /
-                        {date.getMonth() < 10
-                          ? "0" + date.getMonth()
-                          : date.getMonth()}
-                        /{date.getFullYear()}
-                      </p>
-                      <p>
-                        {date.getHours()}:
-                        {date.getMinutes() < 10
-                          ? date.getMinutes() + "0"
-                          : date.getMinutes()}
-                      </p>
+                      <p>{formatDateForView(date)}</p>
                       <div className="card-actions justify-end">
                         <Link
                           href={`/buy-ticket?id=${screening.id}`}

@@ -6,7 +6,8 @@ import {
   useEffect,
 } from "react";
 import axios from "axios";
-import { Action, Screening, ScreeningReducer, Type } from "./screeningReducer";
+import { Action, ScreeningReducer, Type } from "./screeningReducer";
+import { Screening } from "@/types/types";
 
 export const ScreeningContext = createContext<Screening[] | null>(null);
 export const DispatchContext = createContext<Dispatch<Action> | null>(null);
@@ -23,12 +24,13 @@ export function ScreeningProvider({ children }: any) {
 
   useEffect(() => {
     axios
-      .get("http://pi.dawidroszman.eu:8080/api/v1/cinema/movies")
+      .get("http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings")
       .then((response) => {
-        const screening = response.data;
+        console.log(response.data);
+        const screenings = response.data;
         dispatch({
           type: Type.SET_SCREENING,
-          payload: { screening: screening },
+          payload: { screenings: screenings },
         });
       });
   }, []);

@@ -30,9 +30,9 @@ export default async function Details({
     return (
       <Suspense fallback={<Loading />}>
         <NavBar />
+        <GoHome />
         <div className="grid place-items-center md:mt-20">
           <div className="card bg-base-200 shadow-xl md:card-side lg:max-w-screen-md relative">
-            <GoHome />
             <div className="md:hidden block">
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
