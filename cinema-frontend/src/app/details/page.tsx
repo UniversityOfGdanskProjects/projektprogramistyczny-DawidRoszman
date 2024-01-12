@@ -6,7 +6,6 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import WatchTrailer from "./components/WatchTrailer";
-import GoBackBtn from "@/components/GoBackBtn";
 import NavBar from "@/components/NavBar";
 import GoHome from "@/components/GoHome";
 
@@ -49,7 +48,7 @@ export default async function Details({
                 <div>
                   <p className="text-accent">Directors:</p>
                   <ul>
-                    {screening.movie.directors.map((director) => (
+                    {screening.movie.directors?.map((director) => (
                       <li key={director.name}>
                         <p>{director.name}</p>
                       </li>
@@ -59,7 +58,7 @@ export default async function Details({
                 <div>
                   <p className="text-accent">Actors:</p>
                   <ul>
-                    {screening.movie.actors.map((actor) => (
+                    {screening.movie.actors?.map((actor) => (
                       <li key={actor.name}>
                         <p>{actor.name}</p>
                       </li>

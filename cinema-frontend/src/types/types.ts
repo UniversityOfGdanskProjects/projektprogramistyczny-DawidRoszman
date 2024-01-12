@@ -17,8 +17,8 @@ export interface Movie {
   released: number;
   imageUrl: string;
   trailer: string;
-  directors: Person[];
-  actors: Person[];
+  directors?: Person[];
+  actors?: Person[];
 }
 
 export interface Person {
