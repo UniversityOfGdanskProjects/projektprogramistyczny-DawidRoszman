@@ -31,7 +31,10 @@ public class AdminController {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             throw new RuntimeException("You are not an admin!");
         }
-        movieService.addMovie(movie);
+        boolean didAdd = movieService.addMovie(movie);
+        if (!didAdd) {
+            throw new RuntimeException("Movie already exists!");
+        }
     }
 
     @DeleteMapping("/delete-movie/{title}")

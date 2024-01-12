@@ -28,14 +28,14 @@ public class MovieService {
     return movieRepository.findByTitleContaining(title);
   }
 
-  public void addMovie(MovieEntity movie) {
+  public boolean addMovie(MovieEntity movie) {
     Optional<MovieEntity> movieOptional = movieRepository.findByTitle(movie.getTitle());
     if (movieOptional.isPresent()) {
-      throw new RuntimeException("Movie already exists");
+        return false;
     }
     movieRepository.save(movie);
+    return true;
   }
-
   public void deleteMovie(String movieTitle) {
     MovieEntity movie = movieRepository.findByTitle(movieTitle)
         .orElseThrow(() -> new RuntimeException("Movie not found"));
