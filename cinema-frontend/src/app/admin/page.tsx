@@ -24,7 +24,7 @@ const Page = () => {
     setToken(token);
     const checkIfIsValid = async () => {
       const response = await axios.get(
-        "https://pi.dawidroszman.eu:8080/api/v1/user/is-admin",
+        "http://pi.dawidroszman.eu:8080/api/v1/user/is-admin",
         {
           headers: {
             Authorization: "Bearer " + token,

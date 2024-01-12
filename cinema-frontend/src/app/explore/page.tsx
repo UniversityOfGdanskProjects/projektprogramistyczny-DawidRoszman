@@ -9,7 +9,7 @@ import { Screening } from "@/types/types";
 
 export default async function Explore() {
   const data = await axios.get(
-    "https://pi.dawidroszman.eu:8080/api/v1/cinema/screenings",
+    "http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings",
     { httpsAgent: agent },
   );
   const screenings: Screening[] = data.data;

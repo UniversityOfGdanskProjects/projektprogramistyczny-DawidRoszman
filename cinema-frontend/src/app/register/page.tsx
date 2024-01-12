@@ -38,7 +38,7 @@ function Register() {
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
           await axios.post(
-            "https://pi.dawidroszman.eu:8080/api/v1/auth/register",
+            "http://pi.dawidroszman.eu:8080/api/v1/auth/register",
             values,
             { httpsAgent: agent },
           );

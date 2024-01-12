@@ -29,7 +29,7 @@ function Login() {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             const tokenRequest = await axios.post(
-              "https://pi.dawidroszman.eu:8080/api/v1/auth/login",
+              "http://pi.dawidroszman.eu:8080/api/v1/auth/login",
               values,
               { httpsAgent: agent },
             );

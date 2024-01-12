@@ -21,7 +21,7 @@ export default async function Details({
   }
   try {
     const data = await axios.get(
-      `https://pi.dawidroszman.eu:8080/api/v1/cinema/screenings/${searchParams?.id}`,
+      `http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings/${searchParams?.id}`,
       { httpsAgent: agent },
     );
 
@@ -37,7 +37,6 @@ export default async function Details({
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
             <div className="card-body grid place-items-center lg:w-1/2">
-              
               <div>
                 <h1 className="text-center mb-4 text-3xl text-primary font-bold">
                   {screening.movie.title}
@@ -72,7 +71,7 @@ export default async function Details({
             <div className="hidden md:block">
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
-            </div>
+          </div>
         </div>
       </Suspense>
     );
@@ -85,13 +84,11 @@ export default async function Details({
   }
 }
 
-const MovieImage = ({imageUrl}: {imageUrl: string}) => {
-return <figure>
-              <img
-                className="w-96"
-                src={imageUrl}
-                alt="Movie"
-              />
-            </figure>
+const MovieImage = ({ imageUrl }: { imageUrl: string }) => {
+  return (
+    <figure>
+      <img className="w-96" src={imageUrl} alt="Movie" />
+    </figure>
+  );
+};
 
-}

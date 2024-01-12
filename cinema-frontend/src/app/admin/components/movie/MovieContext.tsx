@@ -1,4 +1,10 @@
-import { Dispatch, createContext, useContext, useReducer, useEffect } from "react";
+import {
+  Dispatch,
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+} from "react";
 import { Action, Movie, MovieReducer, Type } from "./movieReducer";
 import axios from "axios";
 
@@ -17,7 +23,7 @@ export function MovieProvider({ children }: any) {
 
   useEffect(() => {
     axios
-      .get("https://pi.dawidroszman.eu:8080/api/v1/cinema/movies")
+      .get("http://pi.dawidroszman.eu:8080/api/v1/cinema/movies")
       .then((response) => {
         const movies = response.data;
         dispatch({ type: Type.SET_MOVIES, payload: { movies: movies } }); // Assuming you have a 'SET_MOVIES' action in your reducer
@@ -32,3 +38,4 @@ export function MovieProvider({ children }: any) {
     </MovieContext.Provider>
   );
 }
+
