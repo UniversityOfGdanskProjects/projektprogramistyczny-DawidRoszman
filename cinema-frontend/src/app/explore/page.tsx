@@ -21,8 +21,13 @@ export default async function Explore() {
         <section className="p-5">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 place-items-center">
             {screenings
-              .toSorted((a, b) => screeningsComparator(a, b))
+              .toSorted((a, b) => {
+                if (a.date > b.date) return 1;
+                if (a.date < b.date) return -1;
+                return 0;
+              })
               .map((screening) => {
+                const date = new Date(screening.date);
                 return (
                   <div
                     key={screening.id}
@@ -34,10 +39,21 @@ export default async function Explore() {
                     <div className="card-body">
                       <h2 className="card-title">{screening.movie.title}</h2>
                       <p>
-                        {screening.date.getDay()}/{screening.date.getMonth()}/
-                        {screening.date.getFullYear()}
+                        {date.getDay() < 10
+                          ? "0" + date.getDay()
+                          : date.getDay()}
+                        /
+                        {date.getMonth() < 10
+                          ? "0" + date.getMonth()
+                          : date.getMonth()}
+                        /{date.getFullYear()}
                       </p>
-                      <p>{screening.date.getTime()}</p>
+                      <p>
+                        {date.getHours()}:
+                        {date.getMinutes() < 10
+                          ? date.getMinutes() + "0"
+                          : date.getMinutes()}
+                      </p>
                       <div className="card-actions justify-end">
                         <Link
                           href={`/buy-ticket?id=${screening.id}`}
