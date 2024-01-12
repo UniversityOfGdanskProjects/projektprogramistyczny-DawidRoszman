@@ -51,8 +51,8 @@ const MovieForm = ({
               },
             });
             alert("Movie added");
-          } catch (err) {
-            alert(err);
+          } catch (err: any) {
+            alert(err.response.data);
             console.log(err);
           } finally {
             setSubmitting(false);
@@ -69,9 +69,9 @@ const MovieForm = ({
               },
             });
             alert("Movie modified");
-          } catch (err) {
+          } catch (err: any) {
             alert(err);
-            console.log(err);
+            console.log(err.response.data);
           } finally {
             setSubmitting(false);
           }

@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import WatchTrailer from "./components/WatchTrailer";
 import GoBackBtn from "@/components/GoBackBtn";
 import NavBar from "@/components/NavBar";
+import GoHome from "@/components/GoHome";
 
 export default async function Details({
   params,
@@ -32,7 +33,7 @@ export default async function Details({
         <NavBar />
         <div className="grid place-items-center md:mt-20">
           <div className="card bg-base-200 shadow-xl md:card-side lg:max-w-screen-md relative">
-            <GoBackBtn />
+            <GoHome />
             <div className="md:hidden block">
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
@@ -91,4 +92,3 @@ const MovieImage = ({ imageUrl }: { imageUrl: string }) => {
     </figure>
   );
 };
-

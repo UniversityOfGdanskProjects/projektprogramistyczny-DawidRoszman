@@ -35,7 +35,7 @@ const MovieList = ({
   };
   if (!movies) return <div>No movies to show</div>;
   return (
-    <div className="flex flex-col gap-3">
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 p-4">
       {movies.map((movie) => {
         return (
           <div className="join" key={movie.title}>

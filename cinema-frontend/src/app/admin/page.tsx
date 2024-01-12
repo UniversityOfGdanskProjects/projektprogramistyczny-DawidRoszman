@@ -9,7 +9,8 @@ import fetchUserData from "@/utils/fetchUserData";
 import { User } from "@/types/types";
 import Loading from "@/components/Loading";
 import Movie from "./components/movie/Movie";
-import { MovieProvider } from "./components/movie/MovieContext";
+import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
+import GoHome from "@/components/GoHome";
 
 const Page = () => {
   const cookieStore = useCookies();
@@ -23,17 +24,7 @@ const Page = () => {
     }
     setToken(token);
     const checkIfIsValid = async () => {
-      const response = await axios.get(
-        "http://pi.dawidroszman.eu:8080/api/v1/user/is-admin",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          httpsAgent: agent,
-        },
-      );
-      const isAdmin = response.data;
-      console.log(isAdmin);
+      const isAdmin = await checkIfIsAdmin(token);
       setIsAdmin(isAdmin);
     };
     checkIfIsValid();
@@ -53,7 +44,10 @@ const Page = () => {
   }
   return (
     <div>
-      <div className="text-center mt-10">
+      <div className="">
+        <GoHome />
+      </div>
+      <div className="text-center pt-10">
         <h1 className="text-5xl">
           Welcome to admin page {user !== null ? user.firstName : ""}
         </h1>

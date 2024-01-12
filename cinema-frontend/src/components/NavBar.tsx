@@ -5,10 +5,12 @@ import { useCookies } from "next-client-cookies";
 import { User } from "@/types/types";
 import fetchUserData from "@/utils/fetchUserData";
 import ThemeToggler from "./ThemeToggler";
+import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const cookieStore = useCookies();
 
   useEffect(() => {
@@ -20,9 +22,19 @@ function NavBar() {
           cookieStore.remove("token");
           return;
         }
+        if (!userData) {
+          cookieStore.remove("token");
+          window.location.reload();
+        }
         setUser(userData);
       }
     };
+    const checkIfIsValid = async () => {
+      if (token === undefined) return;
+      const isAdmin = await checkIfIsAdmin(token);
+      setIsAdmin(isAdmin);
+    };
+    checkIfIsValid();
 
     fetchUser();
   }, [token, cookieStore]);
@@ -46,6 +58,11 @@ function NavBar() {
               >
                 Sign out
               </button>
+              {isAdmin && (
+                <Link className="btn btn-primary" href="/admin">
+                  Admin Page
+                </Link>
+              )}
             </div>
           ) : (
             <div className="flex space-x-4">
