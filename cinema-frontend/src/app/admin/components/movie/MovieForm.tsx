@@ -53,6 +53,7 @@ const MovieForm = ({
             alert("Movie added");
           } catch (err) {
             alert(err);
+            console.log(err);
           } finally {
             setSubmitting(false);
             resetForm();
@@ -70,6 +71,7 @@ const MovieForm = ({
             alert("Movie modified");
           } catch (err) {
             alert(err);
+            console.log(err);
           } finally {
             setSubmitting(false);
           }
