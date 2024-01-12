@@ -3,10 +3,10 @@ package eu.dawidroszman.cinema.CinemaAPI.services;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.MovieRepository;
 
-import org.apache.el.stream.Optional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -30,13 +30,10 @@ public class MovieService {
 
   public void addMovie(MovieEntity movie) {
     Optional<MovieEntity> movieOptional = movieRepository.findByTitle(movie.getTitle());
-    movieOptional.ifPresentOrElse(
-        m -> {
-          throw new RuntimeException("Movie already exists");
-        },
-        () -> {
-          movieRepository.save(movie);
-        });
+    if (movieOptional.isPresent()) {
+      throw new RuntimeException("Movie already exists");
+    }
+    movieRepository.save(movie);
   }
 
   public void deleteMovie(String movieTitle) {
