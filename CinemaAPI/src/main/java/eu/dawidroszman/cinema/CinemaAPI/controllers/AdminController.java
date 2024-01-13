@@ -2,6 +2,7 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.requests.CreateScreeningRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
@@ -50,13 +51,13 @@ public class AdminController {
     }
 
     @PostMapping("/add-screening")
-    public ResponseEntity<ScreeningEntity> addScreening(@RequestBody String date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
+    public ResponseEntity<ScreeningEntity> addScreening(@RequestBody CreateScreeningRequest screeningRequest, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        ZonedDateTime formattedDate = ZonedDateTime.parse(date, formatter);
-        ScreeningEntity screening = screeningSerive.addScreening(formattedDate, movieTitle, auditoriumNumber);
+        ZonedDateTime formattedDate = ZonedDateTime.parse(screeningRequest.getDate(), formatter);
+        ScreeningEntity screening = screeningSerive.addScreening(formattedDate, screeningRequest.getMovieTitle(), screeningRequest.getAuditoriumNumber());
         if (screening == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
