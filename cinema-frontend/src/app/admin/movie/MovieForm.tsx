@@ -4,6 +4,7 @@ import { Field, Form, Formik } from "formik";
 import { Movie, Type } from "./movieReducer";
 import { useMovieDispatch } from "./MovieContext";
 import { addMovie, modifyMovie } from "./movieUtils";
+import { useToken } from "@/app/components/TokenContext";
 
 const MovieSchema = Yup.object().shape({
   title: Yup.string()
@@ -25,12 +26,12 @@ const MovieSchema = Yup.object().shape({
 
 const MovieForm = ({
   selectedMovie,
-  token,
 }: {
   selectedMovie: Movie | null;
-  token: string;
 }) => {
   const dispatch = useMovieDispatch();
+  const token = useToken();
+  if (token === null) return <div>Loading...</div>;
   if (!dispatch) return <div>Loading...</div>;
   return (
     <Formik
@@ -45,7 +46,7 @@ const MovieForm = ({
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         if (selectedMovie === null) {
           try {
-            await addMovie({ movie: values, token });
+            await addMovie({ movie: values, token: token.token });
             dispatch({
               type: Type.ADD_MOVIE,
               payload: {
@@ -63,7 +64,7 @@ const MovieForm = ({
           }
         } else {
           try {
-            await modifyMovie({ movie: values, token });
+            await modifyMovie({ movie: values, token: token.token });
             dispatch({
               type: Type.MODIFY_MOVIE,
               payload: {

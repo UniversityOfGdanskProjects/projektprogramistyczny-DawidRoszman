@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { CookiesProvider } from "next-client-cookies/server";
 import ThemeProvider from "@/components/theme/ThemeContext";
+import TokenProvider from "./components/TokenContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <ThemeProvider>
       <body className={inter.className}>
+        <TokenProvider>
         <CookiesProvider>{children}</CookiesProvider>
+        </TokenProvider>
       </body>
     </ThemeProvider>
   );

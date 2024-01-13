@@ -2,13 +2,12 @@ import React from "react";
 import { useMovie } from "./MovieContext";
 import { Movie } from "./movieReducer";
 import MovieForm from "./MovieForm";
+import { useToken } from "@/app/components/TokenContext";
 
 const MovieDetails = ({
   selectedMovie,
-  token,
 }: {
   selectedMovie: Movie | null;
-  token: string;
 }) => {
   const movies = useMovie();
   if (!movies) return <div>Loading...</div>;
@@ -33,7 +32,6 @@ const MovieDetails = ({
           <div className="collapse-title text-xl font-medium">Modify Movie</div>
           <div className="collapse-content">
             <MovieForm
-              token={token}
               key={currMovie.title}
               selectedMovie={selectedMovie}
             />
@@ -49,7 +47,6 @@ const MovieDetails = ({
         <div className="collapse-title text-xl font-medium">Add Movie</div>
         <div className="collapse-content">
           <MovieForm
-            token={token}
             key={"add-movie"}
             selectedMovie={selectedMovie}
           />

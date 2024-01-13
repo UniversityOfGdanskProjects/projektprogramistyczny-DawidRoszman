@@ -10,6 +10,7 @@ import { fetchMovies } from "@/utils/fetchMovies";
 import { fetchAuditoriums } from "@/utils/fetchAuditoriums";
 import { UUID } from "crypto";
 import { v4 } from "uuid";
+import { useToken } from "@/app/components/TokenContext";
 
 const ScreeningSchema = Yup.object().shape({
   movie: Yup.string(),
@@ -21,15 +22,14 @@ const ScreeningSchema = Yup.object().shape({
 
 const ScreeningForm = ({
   selectedScreening: selectedScreening,
-  token,
 }: {
   selectedScreening: Screening | null;
-  token: string;
 }) => {
   const [movies, setMovies] = React.useState<Movie[] | null>(null);
   const [auditoriums, setAuditoriums] = React.useState<Auditorium[] | null>(
     null,
   );
+  const token = useToken();
   useEffect(() => {
     const fetchAndSetMovies = async () => {
       const movies = await fetchMovies();
@@ -44,6 +44,7 @@ const ScreeningForm = ({
     fetchAndSetMovies();
   }, []);
   const dispatch = useScreeningDispatch();
+  if (!token) return null;
   if (!dispatch || movies === null || auditoriums === null)
     return <div className="loading">Loading...</div>;
   return (
@@ -58,7 +59,7 @@ const ScreeningForm = ({
       validationSchema={ScreeningSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         const data = {
-          token: token,
+          token: token.token,
           screening: {
             movieTitle: values.movie,
             date: new Date(values.date),
@@ -83,7 +84,7 @@ const ScreeningForm = ({
         } else {
           try {
             const screening = await updateScreening({
-              token: token,
+              token: token.token,
               screening: {
                 id: values.id,
                 movieTitle: values.movie,

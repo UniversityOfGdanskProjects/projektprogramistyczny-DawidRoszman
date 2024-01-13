@@ -5,10 +5,8 @@ import ScreeningForm from "./ScreeningForm";
 
 const ScreeningDetails = ({
   selectedScreening: selectedScreening,
-  token,
 }: {
   selectedScreening: Screening | null;
-  token: string;
 }) => {
   const screening = useScreening();
   if (!screening) return <div>Loading...</div>;
@@ -35,7 +33,6 @@ const ScreeningDetails = ({
           </div>
           <div className="collapse-content">
             <ScreeningForm
-              token={token}
               key={selectedScreening.id}
               selectedScreening={selectedScreening}
             />
@@ -51,7 +48,6 @@ const ScreeningDetails = ({
         <div className="collapse-title text-xl font-medium">Add Screening</div>
         <div className="collapse-content">
           <ScreeningForm
-            token={token}
             key={"add-movie"}
             selectedScreening={selectedScreening}
           />

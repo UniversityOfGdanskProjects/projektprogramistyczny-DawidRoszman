@@ -5,26 +5,26 @@ import { useScreening, useScreeningDispatch } from "./ScreeningContext";
 import { Type } from "./screeningReducer";
 import { formatDateForView } from "@/utils/formatDateForView";
 import { removeScreening } from "./screeningUtils";
-import Search from "../Search";
+import Search from "../components/Search";
+import { useToken } from "@/app/components/TokenContext";
 
 const ScreeningList = ({
   setSelectedScreening: setSelectedMovie,
-  token,
 }: {
   setSelectedScreening: React.Dispatch<React.SetStateAction<Screening | null>>;
-  token: string;
 }) => {
   const screenings: Screening[] | null = useScreening();
   const [searchTerm, setSearchTerm] = React.useState("");
   const dispatch = useScreeningDispatch();
-  if (!dispatch) return null;
+  const token = useToken();
+  if (!dispatch || !token) return null;
   const handleRemove = async (screening: Screening) => {
     const ans = prompt(
       `Are you sure you want to remove this screening? Type "yes" if you want to remove movie`,
     );
     if (ans !== "yes") return;
     try {
-      await removeScreening({ screening: { id: screening.id }, token });
+      await removeScreening({ screening: { id: screening.id }, token: token.token });
       dispatch({
         type: Type.REMOVE_SCREENING,
         payload: screening,

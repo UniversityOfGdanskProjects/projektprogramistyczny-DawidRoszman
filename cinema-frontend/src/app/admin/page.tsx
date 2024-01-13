@@ -1,39 +1,34 @@
 "use client";
 
-import { useCookies } from "next-client-cookies";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import fetchUserData from "@/utils/fetchUserData";
 import { User } from "@/types/types";
 import Loading from "@/components/Loading";
-import Movie from "./components/movie/Movie";
 import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
 import GoHome from "@/components/GoHome";
-import Screening from "./components/screening/Screening";
+import { useToken } from "../components/TokenContext";
+import Link from "next/link";
 
 const Page = () => {
-  const cookieStore = useCookies();
   const [isAdmin, setIsAdmin] = useState(null);
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | undefined>(undefined);
-  const [currSelected, setCurrSelected] = useState<number | null>(null);
+  const token = useToken();
   useEffect(() => {
-    const token = cookieStore.get("token");
-    if (token === undefined) {
-      redirect("/login");
+    if (token === null) return;
+    if (token.token === "") {
+      return
     }
-    setToken(token);
     const checkIfIsValid = async () => {
-      const isAdmin = await checkIfIsAdmin(token);
+      const isAdmin = await checkIfIsAdmin(token.token);
       setIsAdmin(isAdmin);
     };
     checkIfIsValid();
     const fetchUser = async () => {
-      const userData = await fetchUserData(token);
+      const userData = await fetchUserData(token.token);
       setUser(userData);
     };
     fetchUser();
-  }, [cookieStore]);
+  }, [token]);
 
   if (isAdmin === null || token === undefined) {
     return <Loading />;
@@ -52,30 +47,15 @@ const Page = () => {
           Welcome to admin page {user !== null ? user.firstName : ""}
         </h1>
         <div className="flex gap-3 justify-center p-4">
-          <button
-            onClick={() => setCurrSelected(0)}
-            className="btn btn-primary"
-          >
+          <Link className="btn btn-outline btn-primary" href="/admin/movie">
             Movies
-          </button>
-          <button
-            onClick={() => setCurrSelected(1)}
-            className="btn btn-primary"
-          >
+            </Link>
+            <Link className="btn btn-outline btn-primary" href="/admin/screening">
             Screenings
-          </button>
-        </div>
+            </Link>
+                  </div>
       </div>
-      <div>
-        {currSelected !== null ? (
-          currSelected === 0 ? (
-            <Movie token={token} />
-          ) : (
-            <Screening token={token} />
-          )
-        ) : null}
-      </div>
-    </div>
+          </div>
   );
 };
 

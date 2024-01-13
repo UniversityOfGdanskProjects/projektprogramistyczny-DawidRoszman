@@ -3,30 +3,29 @@ import React from "react";
 import { Movie, Type } from "./movieReducer";
 import { useMovie, useMovieDispatch } from "./MovieContext";
 import { removeMovie } from "./movieUtils";
-import Search from "../Search";
+import Search from "../components/Search";
+import { useToken } from "@/app/components/TokenContext";
 
 const MovieList = ({
   setSelectedMovie,
-  token,
 }: {
   setSelectedMovie: React.Dispatch<React.SetStateAction<Movie | null>>;
-  token: string;
 }) => {
   const movies: Movie[] | null = useMovie();
   const [searchTerm, setSearchTerm] = React.useState("");
+  const token = useToken();
   const dispatch = useMovieDispatch();
-  if (!dispatch) return null;
+  if (!dispatch || !token) return null;
   const handleRemove = async (movie: Movie) => {
     const ans = prompt(
       `Are you sure you want to remove ${movie.title}? Type "yes" if you want to remove movie`,
     );
     if (ans !== "yes") return;
     try {
-      await removeMovie({ movie: movie, token });
+      await removeMovie({ movie: movie, token: token.token });
       dispatch({
         type: Type.REMOVE_MOVIE,
         payload: {
-          token: token,
           movie: movie,
         },
       });

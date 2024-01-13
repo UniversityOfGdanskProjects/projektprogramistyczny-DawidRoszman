@@ -7,6 +7,8 @@ import { useCookies } from "next-client-cookies";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
+import { useToken, useTokenDispatch } from "../components/TokenContext";
+import { Type } from "../components/tokenReducer";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -15,10 +17,13 @@ const LoginSchema = Yup.object().shape({
 
 function Login() {
   const cookieStore = useCookies();
+  const tokenStore = useToken();
+  const dispatch = useTokenDispatch();
 
   const [loginError, setLoginError] = useState("");
+  if (!tokenStore || !dispatch) return null;
 
-  if (cookieStore.get("token") !== undefined) {
+  if (tokenStore.token !== "") {
     return redirect("/explore");
   }
 
@@ -34,7 +39,9 @@ function Login() {
               values,
               { httpsAgent: agent },
             );
+            dispatch({ type: Type.SET_TOKEN, payload: tokenRequest.data });
             cookieStore.set("token", tokenRequest.data, { expires: 31 });
+
             window.history.back();
           } catch (err) {
             console.log(err);
