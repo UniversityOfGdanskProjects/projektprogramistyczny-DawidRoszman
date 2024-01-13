@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UUID> {
-    @Query("MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium) RETURN m,p,s,i,a")
+    @Query("MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium) RETURN m,p,s,i,a ORDER BY s.date ASC")
     List<ScreeningEntity> findAll();
 
     @Query("""

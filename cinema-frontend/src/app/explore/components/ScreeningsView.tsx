@@ -16,17 +16,6 @@ export default function ScreeningsView({
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 place-items-center">
       {screenings
         .slice((page - 1) * limit, page * limit)
-        .toSorted((a, b) => {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          if (dateA.getMonth() < dateB.getMonth()) return -1;
-          if (dateA.getMonth() > dateB.getMonth()) return 1;
-          if (dateA.getDay() < dateB.getDay()) return -1;
-          if (dateA.getDay() > dateB.getDay()) return 1;
-          if (dateA.getHours() < dateB.getHours()) return -1;
-          if (dateA.getHours() > dateB.getHours()) return 1;
-          return 0;
-        })
         .map((screening) => {
           const date = new Date(screening.date);
           return (

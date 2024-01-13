@@ -2,7 +2,6 @@ import React from "react";
 import { useMovie } from "./MovieContext";
 import { Movie } from "./movieReducer";
 import MovieForm from "./MovieForm";
-import { useToken } from "@/app/components/TokenContext";
 
 const MovieDetails = ({
   selectedMovie,
@@ -17,7 +16,7 @@ const MovieDetails = ({
     if (!currMovie) return <div>Movie not found</div>;
     return (
       <div className="grid place-items-center pt-10">
-        <div className="p-3">
+        <div className="p-3 max-w-screen-md">
           <p>Title: {currMovie.title}</p>
           <p>Description: {currMovie.description}</p>
           <p>Release date: {currMovie.released}</p>

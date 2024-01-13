@@ -11,13 +11,13 @@ const Movie = () => {
   return (
     <MovieProvider>
       <div className="grid place-items-center">
-        <div className="relative mx-5">
+        <div className="relative mx-5 mt-20">
           {selectedMovie !== null && (
             <button
               className="btn btn-primary absolute left-0 top-0"
               onClick={() => setSelectedMovie(null)}
             >
-              Go back
+              Go to list
             </button>
           )}
           <MovieDetails selectedMovie={selectedMovie} />
