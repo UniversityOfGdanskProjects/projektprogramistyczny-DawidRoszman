@@ -5,6 +5,7 @@ import { useMovie, useMovieDispatch } from "./MovieContext";
 import { removeMovie } from "./movieUtils";
 import Search from "../components/Search";
 import { useToken } from "@/app/components/TokenContext";
+import Sort from "./Sort";
 
 const MovieList = ({
   setSelectedMovie,
@@ -13,6 +14,7 @@ const MovieList = ({
 }) => {
   const movies: Movie[] | null = useMovie();
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [sort, setSort] = React.useState<string>("asc"); 
   const token = useToken();
   const dispatch = useMovieDispatch();
   if (!dispatch || !token) return null;
@@ -37,10 +39,20 @@ const MovieList = ({
   if (!movies) return <div>No movies to show</div>;
   return (
     <div>
+      <div className="flex">
       <Search search={searchTerm} setSearch={setSearchTerm} />
+      <Sort sort={sort} setSort={setSort} />
+      </div>
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 p-4">
         {movies
           .filter((movie) => movie.title.includes(searchTerm))
+          .sort((a, b) => {
+            if (sort === "asc") {
+              return a.title.localeCompare(b.title);
+            } else {
+              return b.title.localeCompare(a.title);
+            }
+          })
           .map((movie) => {
             return (
               <div className="join" key={movie.title}>

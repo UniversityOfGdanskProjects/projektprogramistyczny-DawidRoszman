@@ -23,6 +23,7 @@ const RegisterSchema = Yup.object().shape({
     .matches(/[0-9]+/, "Must include at least one number")
     .matches(/[!@#$%^&&*()/, .:;<>?]+/, "Must include at least one symbol")
     .required("Required"),
+  repeatPassword: Yup.string().required('Required').oneOf([Yup.ref('password')], 'Passwords must match')
 });
 
 function Register() {
@@ -35,6 +36,7 @@ function Register() {
           email: "",
           username: "",
           password: "",
+          repeatPassword: "",
         }}
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
@@ -140,6 +142,27 @@ function Register() {
               />
               <ErrorMessage
                 name="password"
+                component="div"
+                className="text-error text-xs italic"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-sm font-bold mb-2"
+                htmlFor="repeatPassword"
+              >
+                Repeat Password
+              </label>
+              <Field
+                name="repeatPassword"
+                type="password"
+                className={
+                  "shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" +
+                  (errors.repeatPassword && touched.repeatPassword ? " border-error" : "")
+                }
+              />
+              <ErrorMessage
+                name="repeatPassword"
                 component="div"
                 className="text-error text-xs italic"
               />

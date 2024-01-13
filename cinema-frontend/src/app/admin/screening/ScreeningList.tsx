@@ -7,6 +7,7 @@ import { formatDateForView } from "@/utils/formatDateForView";
 import { removeScreening } from "./screeningUtils";
 import Search from "../components/Search";
 import { useToken } from "@/app/components/TokenContext";
+import Sort from "./Sort";
 
 const ScreeningList = ({
   setSelectedScreening: setSelectedMovie,
@@ -15,6 +16,7 @@ const ScreeningList = ({
 }) => {
   const screenings: Screening[] | null = useScreening();
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [sort, setSort] = React.useState<string>("asc");
   const dispatch = useScreeningDispatch();
   const token = useToken();
   if (!dispatch || !token) return null;
@@ -34,13 +36,24 @@ const ScreeningList = ({
       alert(err);
     }
   };
-  if (!screenings) return <div>No movies to show</div>;
+  if (!screenings) return <div>No screenings to show</div>;
   return (
     <div>
-      <Search search={searchTerm} setSearch={setSearchTerm} />
+      <div className="flex">
+      <Search  search={searchTerm} setSearch={setSearchTerm} />
+      <Sort sort={sort} setSort={setSort} />
+      </div>
       <div className="grid lg:grid-cols-2 gap-3 p-4">
         {screenings
           .filter((screening) => screening.movie.title.includes(searchTerm))
+          .sort((a, b) => {
+            if (sort === "asc") {
+              return new Date(a.date).getTime() - new Date(b.date).getTime();
+            } else {
+              return new Date(b.date).getTime() - new Date(a.date).getTime();
+            }
+          }
+          )
           .map((screening) => {
             return (
               <div className="join" key={screening.id}>
