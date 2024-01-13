@@ -21,60 +21,14 @@ export interface Movie {
   trailer: string;
 }
 
-
-const addMovie = async (payload: { movie: Movie; token: string }) => {
-  const { movie, token } = payload;
-  const response = await axios.post(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/add-movie",
-    movie,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      httpsAgent: agent,
-    },
-  );
-  return response.data;
-};
-
-const removeMovie = async (payload: { movie: Movie; token: string }) => {
-  const { movie, token } = payload;
-  const response = await axios.delete(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/delete-movie/" + movie.title,
-    {
-      headers: { Authorization: "Bearer " + token },
-      httpsAgent: agent,
-    },
-  );
-  return response.data;
-};
-
-const modifyMovie = async (payload: { movie: Movie; token: string }) => {
-  const { movie, token } = payload;
-  const response = await axios.put(
-    "https://pi.dawidroszman.eu:8080/api/v1/admin/update-movie",
-    movie,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      httpsAgent: agent,
-    },
-  );
-  return response.data;
-};
-
 export const MovieReducer = (state: Movie[], action: Action) => {
   const { payload, type } = action;
   switch (type) {
     case Type.ADD_MOVIE:
-      addMovie(payload);
       return [...state, payload.movie];
     case Type.REMOVE_MOVIE:
-      removeMovie(payload);
       return state.filter((movie) => movie.title !== payload.movie.title);
     case Type.MODIFY_MOVIE:
-      modifyMovie(payload);
       return state.map((movie) =>
         movie.title === payload.movie.title ? payload.movie : movie,
       );

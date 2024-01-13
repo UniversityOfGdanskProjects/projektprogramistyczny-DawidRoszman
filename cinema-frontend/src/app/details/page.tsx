@@ -6,8 +6,9 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import WatchTrailer from "./components/WatchTrailer";
-import GoBackBtn from "@/components/GoBackBtn";
 import NavBar from "@/components/NavBar";
+import GoHome from "@/components/GoHome";
+import { api } from "@/utils/apiAddress";
 
 export default async function Details({
   params,
@@ -21,7 +22,7 @@ export default async function Details({
   }
   try {
     const data = await axios.get(
-      `https://pi.dawidroszman.eu:8080/api/v1/cinema/screenings/${searchParams?.id}`,
+      api+`/api/v1/cinema/screenings/${searchParams?.id}`,
       { httpsAgent: agent },
     );
 
@@ -30,14 +31,13 @@ export default async function Details({
     return (
       <Suspense fallback={<Loading />}>
         <NavBar />
+        <GoHome />
         <div className="grid place-items-center md:mt-20">
           <div className="card bg-base-200 shadow-xl md:card-side lg:max-w-screen-md relative">
-            <GoBackBtn />
             <div className="md:hidden block">
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
             <div className="card-body grid place-items-center lg:w-1/2">
-              
               <div>
                 <h1 className="text-center mb-4 text-3xl text-primary font-bold">
                   {screening.movie.title}
@@ -49,7 +49,7 @@ export default async function Details({
                 <div>
                   <p className="text-accent">Directors:</p>
                   <ul>
-                    {screening.movie.directors.map((director) => (
+                    {screening.movie.directors?.map((director) => (
                       <li key={director.name}>
                         <p>{director.name}</p>
                       </li>
@@ -59,7 +59,7 @@ export default async function Details({
                 <div>
                   <p className="text-accent">Actors:</p>
                   <ul>
-                    {screening.movie.actors.map((actor) => (
+                    {screening.movie.actors?.map((actor) => (
                       <li key={actor.name}>
                         <p>{actor.name}</p>
                       </li>
@@ -72,7 +72,7 @@ export default async function Details({
             <div className="hidden md:block">
               <MovieImage imageUrl={screening.movie.imageUrl} />
             </div>
-            </div>
+          </div>
         </div>
       </Suspense>
     );
@@ -85,13 +85,10 @@ export default async function Details({
   }
 }
 
-const MovieImage = ({imageUrl}: {imageUrl: string}) => {
-return <figure>
-              <img
-                className="w-96"
-                src={imageUrl}
-                alt="Movie"
-              />
-            </figure>
-
-}
+const MovieImage = ({ imageUrl }: { imageUrl: string }) => {
+  return (
+    <figure>
+      <img className="w-96" src={imageUrl} alt="Movie" />
+    </figure>
+  );
+};

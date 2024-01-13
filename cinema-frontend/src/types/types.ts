@@ -1,7 +1,8 @@
+import { UUID } from "crypto";
+
 export interface Screening {
-  id: number;
-  date: string;
-  time: string;
+  id: UUID;
+  date: Date;
   movie: Movie;
   auditorium: Auditorium;
 }
@@ -17,8 +18,8 @@ export interface Movie {
   released: number;
   imageUrl: string;
   trailer: string;
-  directors: Person[];
-  actors: Person[];
+  directors?: Person[];
+  actors?: Person[];
 }
 
 export interface Person {
