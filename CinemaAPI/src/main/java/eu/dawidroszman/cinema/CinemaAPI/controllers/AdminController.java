@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @RestController
@@ -49,11 +50,13 @@ public class AdminController {
     }
 
     @PostMapping("/add-screening")
-    public ResponseEntity<ScreeningEntity> addScreening(@RequestBody ZonedDateTime date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
+    public ResponseEntity<ScreeningEntity> addScreening(@RequestBody String date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        ScreeningEntity screening = screeningSerive.addScreening(date, movieTitle, auditoriumNumber);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        ZonedDateTime formattedDate = ZonedDateTime.parse(date, formatter);
+        ScreeningEntity screening = screeningSerive.addScreening(formattedDate, movieTitle, auditoriumNumber);
         if (screening == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
