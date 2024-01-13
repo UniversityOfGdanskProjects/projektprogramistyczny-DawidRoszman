@@ -1,5 +1,7 @@
+import { UUID } from "crypto";
+
 export interface Screening {
-  id: number;
+  id: UUID;
   date: Date;
   movie: Movie;
   auditorium: Auditorium;

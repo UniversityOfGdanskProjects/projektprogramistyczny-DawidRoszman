@@ -5,6 +5,7 @@ import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
+import { api } from "@/utils/apiAddress";
 
 const RegisterSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -37,12 +38,9 @@ function Register() {
         }}
         validationSchema={RegisterSchema}
         onSubmit={async (values) => {
-          await axios.post(
-            "http://pi.dawidroszman.eu:8080/api/v1/auth/register",
-            values,
-            { httpsAgent: agent },
-          );
-          console.log(values);
+          await axios.post(api + "/api/v1/auth/register", values, {
+            httpsAgent: agent,
+          });
         }}
       >
         {({ errors, touched }) => (

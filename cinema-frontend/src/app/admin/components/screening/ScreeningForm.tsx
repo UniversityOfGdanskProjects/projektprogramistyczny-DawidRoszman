@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
 import { useScreeningDispatch } from "./ScreeningContext";
-import { addScreening } from "./screeningUtils";
+import { addScreening, updateScreening } from "./screeningUtils";
 import { Auditorium, Movie, Screening } from "@/types/types";
 import { Type } from "./screeningReducer";
 import { formatDateForInput } from "@/utils/formatDateForInput";
 import { fetchMovies } from "@/utils/fetchMovies";
-import { v4 as uuidv4 } from "uuid";
 import { fetchAuditoriums } from "@/utils/fetchAuditoriums";
+import { UUID } from "crypto";
+import { v4 } from "uuid";
 
 const ScreeningSchema = Yup.object().shape({
   movie: Yup.string(),
@@ -48,7 +49,7 @@ const ScreeningForm = ({
   return (
     <Formik
       initialValues={{
-        id: selectedScreening?.id || uuidv4(),
+        id: selectedScreening?.id || (v4() as UUID),
         movie: selectedScreening?.movie.title || movies[0].title,
         date: formatDateForInput(new Date(selectedScreening?.date || "")) || "",
         auditorium:
@@ -59,19 +60,17 @@ const ScreeningForm = ({
         const data = {
           token: token,
           screening: {
-            id: values.id,
-            movie: movies.find((f) => f.title === values.movie)!,
+            movieTitle: values.movie,
             date: new Date(values.date),
-            auditorium: auditoriums.find((f) => f.number == values.auditorium)!,
+            auditoriumNumber: values.auditorium,
           },
         };
         if (selectedScreening === null) {
           try {
-            // await addScreening(data);
-            console.log(data);
+            const screening = await addScreening(data);
             dispatch({
               type: Type.ADD_SCREENING,
-              payload: data,
+              payload: screening,
             });
             alert("Screening added");
           } catch (err: any) {
@@ -83,9 +82,18 @@ const ScreeningForm = ({
           }
         } else {
           try {
+            const screening = await updateScreening({
+              token: token,
+              screening: {
+                id: values.id,
+                movieTitle: values.movie,
+                date: new Date(values.date),
+                auditoriumNumber: values.auditorium,
+              },
+            });
             dispatch({
               type: Type.MODIFY_SCREENING,
-              payload: data,
+              payload: screening,
             });
             alert("Screening modified");
           } catch (err: any) {
@@ -146,7 +154,11 @@ const ScreeningForm = ({
 function Select({ field, form: { touched, errors }, ...props }: any) {
   return (
     <div>
-      <select {...field} {...props} className="input input-primary">
+      <select
+        {...field}
+        {...props}
+        className="select select-bordered select-primary"
+      >
         {props.children}
       </select>
       {touched[field.name] && errors[field.name] && (

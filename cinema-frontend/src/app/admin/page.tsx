@@ -64,22 +64,14 @@ const Page = () => {
           >
             Screenings
           </button>
-          <button
-            onClick={() => setCurrSelected(2)}
-            className="btn btn-primary"
-          >
-            Reservations
-          </button>
         </div>
       </div>
       <div>
         {currSelected !== null ? (
           currSelected === 0 ? (
             <Movie token={token} />
-          ) : currSelected === 1 ? (
-            <Screening token={token} />
           ) : (
-            <div>Reservation</div>
+            <Screening token={token} />
           )
         ) : null}
       </div>

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { agent } from "./httpsAgent";
+import { api } from "./apiAddress";
 
 export const checkIfIsAdmin = async (token: string) => {
   try {
     const response = await axios.get(
-      "http://pi.dawidroszman.eu:8080/api/v1/user/is-admin",
+      api+"/api/v1/user/is-admin",
       {
         headers: {
           Authorization: "Bearer " + token,

@@ -6,10 +6,11 @@ import Loading from "@/components/Loading";
 import Link from "next/link";
 import { Screening } from "@/types/types";
 import { formatDateForView } from "@/utils/formatDateForView";
+import { api } from "@/utils/apiAddress";
 
 export default async function Explore() {
   const data = await axios.get(
-    "http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings",
+    api+"/api/v1/cinema/screenings",
     { httpsAgent: agent },
   );
   const screenings: Screening[] = data.data;

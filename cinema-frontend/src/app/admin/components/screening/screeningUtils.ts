@@ -1,14 +1,19 @@
 import axios from "axios";
 import { agent } from "@/utils/httpsAgent";
-import { Screening } from "@/types/types";
+import { UUID } from "crypto";
+import { api } from "@/utils/apiAddress";
 
 export const addScreening = async (payload: {
-  screening: Screening;
+  screening: {
+    date: Date;
+    movieTitle: string;
+    auditoriumNumber: number;
+  };
   token: string;
 }) => {
   const { screening: screening, token } = payload;
   const response = await axios.post(
-    "http://pi.dawidroszman.eu:8080/api/v1/admin/add-screening",
+    api + "/api/v1/admin/screening/add",
     screening,
     {
       headers: {
@@ -21,13 +26,12 @@ export const addScreening = async (payload: {
 };
 
 export const removeScreening = async (payload: {
-  screening: Screening;
+  screening: { id: UUID };
   token: string;
 }) => {
   const { screening, token } = payload;
   const response = await axios.delete(
-    "http://pi.dawidroszman.eu:8080/api/v1/admin/delete-screening/" +
-      screening.id,
+    api + "/api/v1/admin/screening/delete/" + screening.id,
     {
       headers: { Authorization: "Bearer " + token },
       httpsAgent: agent,
@@ -36,13 +40,18 @@ export const removeScreening = async (payload: {
   return response.data;
 };
 
-export const modifyScreening = async (payload: {
-  screening: Screening;
+export const updateScreening = async (payload: {
+  screening: {
+    id: UUID;
+    date: Date;
+    movieTitle: string;
+    auditoriumNumber: number;
+  };
   token: string;
 }) => {
   const { screening: screening, token } = payload;
   const response = await axios.put(
-    "http://pi.dawidroszman.eu:8080/api/v1/admin/update-screening",
+    api + "/api/v1/admin/screening/update",
     screening,
     {
       headers: {

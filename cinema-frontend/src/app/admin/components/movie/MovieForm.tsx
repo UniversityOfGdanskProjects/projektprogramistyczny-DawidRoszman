@@ -17,7 +17,10 @@ const MovieSchema = Yup.object().shape({
     .min(1900, "Cannot add movies released before 1900")
     .max(2024, "Cannot add movies from the future"),
   imageUrl: Yup.string().url("Must be a vaild url").required("Required"),
-  trailer: Yup.string().url("Must be a vaild url").required("Required"),
+  trailer: Yup.string()
+    .matches(/https:\/\/www.youtube.com\/embed\/.*/, "Must be a embed video")
+    .url("Must be a vaild url")
+    .required("Required"),
 });
 
 const MovieForm = ({

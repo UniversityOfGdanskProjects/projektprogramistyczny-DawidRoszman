@@ -17,6 +17,7 @@ const ScreeningDetails = ({
     const currScreening =
       screening.find((f) => f.id === selectedScreening?.id) || null;
     if (!currScreening) return <div>Screening not found</div>;
+    currScreening.date = new Date(currScreening.date);
     return (
       <div className="grid place-items-center pt-10">
         <div className="p-3">

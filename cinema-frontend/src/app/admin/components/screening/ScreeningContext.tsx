@@ -8,6 +8,7 @@ import {
 import axios from "axios";
 import { Action, ScreeningReducer, Type } from "./screeningReducer";
 import { Screening } from "@/types/types";
+import { api } from "@/utils/apiAddress";
 
 export const ScreeningContext = createContext<Screening[] | null>(null);
 export const DispatchContext = createContext<Dispatch<Action> | null>(null);
@@ -23,16 +24,13 @@ export function ScreeningProvider({ children }: any) {
   const [screening, dispatch] = useReducer(ScreeningReducer, []);
 
   useEffect(() => {
-    axios
-      .get("http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings")
-      .then((response) => {
-        console.log(response.data);
-        const screenings = response.data;
-        dispatch({
-          type: Type.SET_SCREENING,
-          payload: { screenings: screenings },
-        });
+    axios.get(api + "/api/v1/cinema/screenings").then((response) => {
+      const screenings = response.data;
+      dispatch({
+        type: Type.SET_SCREENING,
+        payload: screenings,
       });
+    });
   }, []);
 
   return (

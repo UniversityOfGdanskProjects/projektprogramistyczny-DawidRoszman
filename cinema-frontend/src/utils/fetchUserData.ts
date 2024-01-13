@@ -1,10 +1,11 @@
 import axios from "axios";
 import { agent } from "./httpsAgent";
+import { api } from "./apiAddress";
 
 const fetchUser = async (token: String) => {
   try {
     const userData = await axios.get(
-      "http://pi.dawidroszman.eu:8080/api/v1/user/get-info",
+      api+"/api/v1/user/get-info",
       {
         headers: {
           Authorization: "Bearer " + token,

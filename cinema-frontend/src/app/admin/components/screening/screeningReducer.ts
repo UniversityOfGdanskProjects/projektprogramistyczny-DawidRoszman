@@ -16,17 +16,16 @@ export const ScreeningReducer = (state: Screening[], action: Action) => {
   const { payload, type } = action;
   switch (type) {
     case Type.ADD_SCREENING:
-      return [...state, payload.screening];
+      return [...state, payload];
     case Type.REMOVE_SCREENING:
-      return state.filter((screening) => screening.id !== payload.screening.id);
+      console.log(payload);
+      return state.filter((screening) => screening.id !== payload.id);
     case Type.MODIFY_SCREENING:
-      console.log("modify screening");
-      console.log(payload.screening);
       return state.map((screening) =>
-        screening.id === payload.screening.id ? payload.screening : screening,
+        screening.id === payload.id ? payload : screening,
       );
     case Type.SET_SCREENING:
-      return payload.screenings;
+      return payload;
     default:
       return state;
   }

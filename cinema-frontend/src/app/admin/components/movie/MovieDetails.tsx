@@ -22,7 +22,9 @@ const MovieDetails = ({
           <p>Title: {currMovie.title}</p>
           <p>Description: {currMovie.description}</p>
           <p>Release date: {currMovie.released}</p>
-          <p>Image url: {currMovie.imageUrl}</p>
+          <p>
+            Image: <img className="w-36" src={currMovie.imageUrl} />
+          </p>
           <p>Trailer url: {currMovie.trailer}</p>
         </div>
 

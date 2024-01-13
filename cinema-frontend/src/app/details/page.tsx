@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import WatchTrailer from "./components/WatchTrailer";
 import NavBar from "@/components/NavBar";
 import GoHome from "@/components/GoHome";
+import { api } from "@/utils/apiAddress";
 
 export default async function Details({
   params,
@@ -21,7 +22,7 @@ export default async function Details({
   }
   try {
     const data = await axios.get(
-      `http://pi.dawidroszman.eu:8080/api/v1/cinema/screenings/${searchParams?.id}`,
+      api+`/api/v1/cinema/screenings/${searchParams?.id}`,
       { httpsAgent: agent },
     );
 
