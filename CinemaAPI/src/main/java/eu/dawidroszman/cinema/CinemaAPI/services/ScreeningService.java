@@ -6,6 +6,7 @@ import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,8 @@ public class ScreeningService {
         return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
     }
 
-    public boolean checkIfScreeningOnDateInAuditoriumExists(ZonedDateTime date, AuditoriumEntity auditorium) {
+    public boolean checkIfScreeningOnDateInAuditoriumExists(ZonedDateTime date, Integer auditoriumNumber) {
+        AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
         return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
     }
 
@@ -42,12 +44,11 @@ public class ScreeningService {
         return screeningRepository.findById(id).orElseThrow();
     }
 
-    public boolean addScreening(ScreeningEntity screening) {
-        if (checkIfScreeningOnDateInAuditoriumExists(screening.getDate(), screening.getAuditorium())) {
-            return false;
+    public ScreeningEntity addScreening(ZonedDateTime date, String movieTitle, Integer auditoriumNumber) {
+        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
+            return null;
         }
-        screeningRepository.save(screening);
-        return true;
+        return screeningRepository.createScreening(UUID.randomUUID(), date, auditoriumNumber, movieTitle);
     }
 
     public void deleteScreening(UUID screeningId) {
@@ -55,11 +56,8 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public void updateScreening(ScreeningEntity screening) {
-        UUID id = screening.getId();
-        ZonedDateTime date = screening.getDate();
-        Integer auditoriumNumber = screening.getAuditorium().getNumber();
-        String title = screening.getMovie().getTitle();
-        screeningRepository.modifyScreening(id, date, auditoriumNumber, title);
+    public ScreeningEntity updateScreening(UUID id, ZonedDateTime date, Integer auditoriumNumber, String title) {
+        screeningRepository.deleteById(id);
+        return screeningRepository.createScreening(id, date, auditoriumNumber, title);
     }
 }

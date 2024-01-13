@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @RestController
@@ -48,15 +49,15 @@ public class AdminController {
     }
 
     @PostMapping("/add-screening")
-    public ResponseEntity<String> addScreening(@RequestBody ScreeningEntity screening, Principal principal) {
+    public ResponseEntity<ScreeningEntity> addScreening(@RequestBody ZonedDateTime date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        boolean didAdd = screeningSerive.addScreening(screening);
-        if (!didAdd) {
-            return new ResponseEntity<>("Movie already exists!", HttpStatus.CONFLICT);
+        ScreeningEntity screening = screeningSerive.addScreening(date, movieTitle, auditoriumNumber);
+        if (screening == null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(screening, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete-movie/{title}")
@@ -88,12 +89,12 @@ public class AdminController {
     }
 
     @PutMapping("/update-screening")
-    public ResponseEntity<String> updateScreening(@RequestBody ScreeningEntity screening, Principal principal) {
+    public ResponseEntity<ScreeningEntity> updateScreening(@RequestBody UUID id, @RequestBody ZonedDateTime date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
-            return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        screeningSerive.updateScreening(screening);
-        return new ResponseEntity<>("Screening updated successfully", HttpStatus.OK);
+        ScreeningEntity screening = screeningSerive.updateScreening(id, date, auditoriumNumber, movieTitle);
+        return new ResponseEntity<>(screening, HttpStatus.OK);
     }
 
 }
