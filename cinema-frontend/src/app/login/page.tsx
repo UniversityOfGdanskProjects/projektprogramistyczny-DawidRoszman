@@ -41,8 +41,7 @@ function Login() {
             );
             dispatch({ type: Type.SET_TOKEN, payload: tokenRequest.data });
             cookieStore.set("token", tokenRequest.data, { expires: 31 });
-
-            window.history.back();
+            redirect("/explore");
           } catch (err) {
             console.log(err);
             setLoginError("Invalid username or password");

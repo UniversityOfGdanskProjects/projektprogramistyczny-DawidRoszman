@@ -6,6 +6,7 @@ import "daisyui/dist/full.css";
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { api } from "@/utils/apiAddress";
+import { redirect } from "next/navigation";
 
 const RegisterSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -43,6 +44,8 @@ function Register() {
           await axios.post(api + "/api/v1/auth/register", values, {
             httpsAgent: agent,
           });
+          alert("Account created");
+          window.location.href = "/login";
         }}
       >
         {({ errors, touched }) => (
