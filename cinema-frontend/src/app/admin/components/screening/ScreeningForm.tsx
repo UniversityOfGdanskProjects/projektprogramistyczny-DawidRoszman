@@ -113,11 +113,15 @@ const ScreeningForm = ({
           <div>
             <label htmlFor="movie">Movie: </label>
             <Field name="movie" component={Select}>
-              {movies.map((movie) => (
-                <option key={movie.title} value={movie.title}>
-                  {movie.title}
-                </option>
-              ))}
+              {movies
+                .toSorted((a, b) => {
+                  return a.title.localeCompare(b.title);
+                })
+                .map((movie) => (
+                  <option key={movie.title} value={movie.title}>
+                    {movie.title}
+                  </option>
+                ))}
             </Field>
           </div>
           <div>
