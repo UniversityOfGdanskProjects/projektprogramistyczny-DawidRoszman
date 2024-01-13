@@ -75,7 +75,7 @@ CREATE (m9)<-[:PLAYS]-(:Screening {id: "c8de882a-5d0d-45a2-905c-c78e8ee42a3f", d
 
 MATCH (m10:Movie), (a10:Auditorium)
 WHERE m10.title = "Top Gun" AND a10.number = 1
-CREATE (m10)<-[:PLAYS]-(:Screening {id: "cc812f25-e5b3-4991-9745-486e1622a30a", date: datetime("2024-01-11T80:00:00.522000000Z")})-[:IS_IN]->(a10);
+CREATE (m10)<-[:PLAYS]-(:Screening {id: "cc812f25-e5b3-4991-9745-486e1622a30a", date: datetime("2024-01-11T18:00:00.522000000Z")})-[:IS_IN]->(a10);
 
 MATCH (m11:Movie), (a11:Auditorium)
 WHERE m11.title = "Few Good Man" AND a11.number = 2

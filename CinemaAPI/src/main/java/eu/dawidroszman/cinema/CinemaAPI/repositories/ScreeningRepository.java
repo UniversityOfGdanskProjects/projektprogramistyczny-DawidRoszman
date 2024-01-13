@@ -7,7 +7,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,18 +15,27 @@ public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UU
     @Query("MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium) RETURN m,p,s,i,a")
     List<ScreeningEntity> findAll();
 
-    ScreeningEntity findByDateAndAuditoriumAndMovie(ZonedDateTime date, AuditoriumEntity auditorium, MovieEntity movie);
+    @Query("""
+            MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium)
+            WHERE m.title = $movieTitle AND a.number = $auditoriumNumber AND s.date = datetime($date)
+            RETURN m,p,s,i,a
+            """)
+    Optional<ScreeningEntity> findByDateAndAuditoriumAndMovie(ZonedDateTime date, Integer auditoriumNumber, String movieTitle);
 
     Optional<ScreeningEntity> findById(UUID screeningId);
 
-    Optional<List<ScreeningEntity>> findByDateAndAuditorium(ZonedDateTime date, AuditoriumEntity auditorium);
+    @Query("""
+            MATCH (m:Movie)<-[p:PLAYS]-(s:Screening)-[i:IS_IN]->(a:Auditorium)
+            WHERE s.date = datetime($date) AND a.number = $auditoriumNumber
+            RETURN m,p,s,i,a
+            """)
+    Optional<ScreeningEntity> findByDateAndAuditorium(ZonedDateTime date, Integer auditoriumNumber);
 
     @Query("""
             MATCH (m:Movie), (a:Auditorium)
             WHERE m.title = $movieTitle AND a.number = $auditoriumNumber
-            CREATE (m)<-[p:PLAYS]-(s:Screening {id: $id, date: datetime($date)})-[i:IS_IN]->(a)
-            RETURN m,p,s,i,a;
+            CREATE (m)<-[p:PLAYS]-(s:Screening {id: $id, date: datetime($date)})-[i:IS_IN]->(a);
             """)
-    ScreeningEntity createScreening(UUID id, ZonedDateTime date, Number auditoriumNumber, String movieTitle);
+    void createScreening(UUID id, ZonedDateTime date, Number auditoriumNumber, String movieTitle);
 
 }

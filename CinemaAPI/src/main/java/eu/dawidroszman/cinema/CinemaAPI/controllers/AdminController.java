@@ -3,6 +3,7 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.requests.CreateScreeningRequest;
+import eu.dawidroszman.cinema.CinemaAPI.requests.UpdateScreeningRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
@@ -38,7 +39,7 @@ public class AdminController {
         return "Welcome to admin API";
     }
 
-    @PostMapping("/add-movie")
+    @PostMapping("/movie/add")
     public ResponseEntity<String> addMovie(@RequestBody MovieEntity movie, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
@@ -50,13 +51,12 @@ public class AdminController {
         return new ResponseEntity<>("Movie added successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/add-screening")
+    @PostMapping("/screening/add")
     public ResponseEntity<ScreeningEntity> addScreening(@RequestBody CreateScreeningRequest screeningRequest, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        ZonedDateTime formattedDate = ZonedDateTime.parse(screeningRequest.getDate(), formatter);
+        ZonedDateTime formattedDate = ZonedDateTime.parse(screeningRequest.getDate(), DateTimeFormatter.ISO_DATE_TIME);
         ScreeningEntity screening = screeningSerive.addScreening(formattedDate, screeningRequest.getMovieTitle(), screeningRequest.getAuditoriumNumber());
         if (screening == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -64,7 +64,7 @@ public class AdminController {
         return new ResponseEntity<>(screening, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete-movie/{title}")
+    @DeleteMapping("/movie/delete/{title}")
     public ResponseEntity<String> deleteMovie(@PathVariable String title, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
@@ -73,7 +73,7 @@ public class AdminController {
         return new ResponseEntity<>("Movie deleted successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete-screening/{id}")
+    @DeleteMapping("/screening/delete/{id}")
     public ResponseEntity<String> deleteScreening(@PathVariable UUID id, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
@@ -83,7 +83,7 @@ public class AdminController {
     }
 
 
-    @PutMapping("/update-movie")
+    @PutMapping("/movie/update")
     public ResponseEntity<String> updateMovie(@RequestBody MovieEntity movie, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>("You are not an admin!", HttpStatus.FORBIDDEN);
@@ -92,12 +92,13 @@ public class AdminController {
         return new ResponseEntity<>("Movie updated successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/update-screening")
-    public ResponseEntity<ScreeningEntity> updateScreening(@RequestBody UUID id, @RequestBody ZonedDateTime date, @RequestBody String movieTitle, @RequestBody Integer auditoriumNumber, Principal principal) {
+    @PutMapping("/screening/update")
+    public ResponseEntity<ScreeningEntity> updateScreening(@RequestBody UpdateScreeningRequest screeningRequest, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        ScreeningEntity screening = screeningSerive.updateScreening(id, date, auditoriumNumber, movieTitle);
+        ZonedDateTime date = ZonedDateTime.parse(screeningRequest.getDate(), DateTimeFormatter.ISO_DATE_TIME);
+        ScreeningEntity screening = screeningSerive.updateScreening(screeningRequest.getId(), date, screeningRequest.getAuditoriumNumber(), screeningRequest.getMovieTitle());
         return new ResponseEntity<>(screening, HttpStatus.OK);
     }
 

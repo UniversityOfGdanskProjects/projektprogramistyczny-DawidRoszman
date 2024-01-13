@@ -16,19 +16,12 @@ public class ScreeningEntity {
     @Id
     @GeneratedValue()
     private final UUID id;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime date;
     @Relationship(type = "IS_IN", direction = Relationship.Direction.OUTGOING)
     private AuditoriumEntity auditorium;
     @Relationship(type = "PLAYS")
     private MovieEntity movie;
-
-    public ScreeningEntity(ZonedDateTime date, AuditoriumEntity auditorium, MovieEntity movie) {
-        this.id = UUID.randomUUID();
-        this.date = date;
-        this.auditorium = auditorium;
-        this.movie = movie;
-    }
 
     public ScreeningEntity(UUID id, ZonedDateTime date, AuditoriumEntity auditorium, MovieEntity movie) {
         this.id = id;

@@ -30,14 +30,12 @@ public class ScreeningService {
     }
 
     public UUID getScreeningIdByDateAuditoriumAndMovie(ZonedDateTime date, Integer auditoriumNumber, String title) {
-        MovieEntity movie = movieService.getMovieByTitle(title);
-        AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
-        return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditorium, movie).getId();
+        Optional<ScreeningEntity> screening =  screeningRepository.findByDateAndAuditoriumAndMovie(date, auditoriumNumber, title);
+        return screening.map(ScreeningEntity::getId).orElse(null);
     }
 
     public boolean checkIfScreeningOnDateInAuditoriumExists(ZonedDateTime date, Integer auditoriumNumber) {
-        AuditoriumEntity auditorium = auditoriumService.getAuditoriumByNumber(auditoriumNumber);
-        return screeningRepository.findByDateAndAuditorium(date, auditorium).isPresent();
+        return screeningRepository.findByDateAndAuditorium(date, auditoriumNumber).isEmpty();
     }
 
     public ScreeningEntity getScreeningById(UUID id) {
@@ -45,10 +43,11 @@ public class ScreeningService {
     }
 
     public ScreeningEntity addScreening(ZonedDateTime date, String movieTitle, Integer auditoriumNumber) {
-        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
-            return null;
-        }
-        return screeningRepository.createScreening(UUID.randomUUID(), date, auditoriumNumber, movieTitle);
+//        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
+//            return null;
+//        }
+        screeningRepository.createScreening(UUID.randomUUID(), date, auditoriumNumber, movieTitle);
+        return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditoriumNumber, movieTitle).orElseThrow();
     }
 
     public void deleteScreening(UUID screeningId) {
@@ -58,6 +57,7 @@ public class ScreeningService {
 
     public ScreeningEntity updateScreening(UUID id, ZonedDateTime date, Integer auditoriumNumber, String title) {
         screeningRepository.deleteById(id);
-        return screeningRepository.createScreening(id, date, auditoriumNumber, title);
+        screeningRepository.createScreening(id, date, auditoriumNumber, title);
+        return screeningRepository.findById(id).orElseThrow();
     }
 }
