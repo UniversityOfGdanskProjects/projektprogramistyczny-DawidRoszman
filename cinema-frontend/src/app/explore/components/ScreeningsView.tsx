@@ -5,22 +5,17 @@ import React from "react";
 
 export default function ScreeningsView({
   screenings,
-  filter,
   page,
   limit
 }: {
   screenings: Screening[];
-  filter: Date | null;
   page: number;
   limit: number;
 }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 place-items-center">
       {screenings
-        .filter((screening) => {
-          if (filter == null) return true;
-          return new Date(screening.date).getDate() == filter.getDate();
-        }).slice((page - 1) * limit, page * limit)
+        .slice((page - 1) * limit, page * limit)
         .toSorted((a, b) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
