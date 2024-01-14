@@ -7,6 +7,17 @@ export interface Screening {
   auditorium: Auditorium;
 }
 
+export interface Ticket {
+  id: UUID;
+  screeningDate: string,
+  movieTitle: string,
+  auditoriumNumber: number,
+  column: number,
+  row: number,
+  vip: boolean,
+  price: number,
+}
+
 export interface Auditorium {
   number: number;
   seats: Seat[];

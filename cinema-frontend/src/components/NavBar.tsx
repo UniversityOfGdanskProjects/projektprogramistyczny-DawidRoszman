@@ -46,9 +46,9 @@ function NavBar() {
         <Suspense fallback={<div>Loading...</div>}>
           {token ? (
             <div className="flex justify-center items-center gap-3">
-              <div className="text-base-conent">
+              <Link href="/account" className="text-base-conent">
                 {user?.firstName} {user?.lastName}
-              </div>
+              </Link>
               <button
                 className="btn btn-warning"
                 onClick={() => {
