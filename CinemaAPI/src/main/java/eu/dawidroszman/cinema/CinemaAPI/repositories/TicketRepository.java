@@ -37,4 +37,7 @@ public interface TicketRepository extends Neo4jRepository<TicketEntity, UUID> {
             CREATE (t)-[:SEAT]->(seat)
             """)
     void buyTicket(UUID uuid, Double price, String username, UUID screeningId, UUID seatId);
+
+    @Query("MATCH (t:Ticket {id: $uuid}) RETURN t.id")
+    UUID getTicketById(UUID uuid);
 }

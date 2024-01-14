@@ -26,11 +26,12 @@ const Page = ({
     const interval = setInterval(async () => {
       if (searchParams === undefined || searchParams.id === undefined || searchParams.seat === undefined) {
         alert("Someone else bought the ticket try buying another one");
-        redirect("/explore");
+        window.location.href = "/explore";
+        return;
       }
       const seatTaken = await isSeatTaken(searchParams.id, searchParams.seat);
       if (seatTaken) {
-        redirect("/tickets?id=" + searchParams.id);
+        window.location.href = "/tickets?id=" + searchParams.id;
       }
     }, 10000);
     return () => clearInterval(interval);
@@ -58,15 +59,22 @@ const Page = ({
       alert("Someone else bought the ticket try buying another one");
       redirect("/explore");
     }
-    await axios.post(api + "/api/v1/tickets/buy",
-      { screeningId: searchParams.id, seatId: searchParams.seat, discount: discount },
-      {
-        headers: {
-          Authorization: "Bearer " + token,
+    try {
+
+      const response = await axios.post(api + "/api/v1/tickets/buy",
+        { screeningId: searchParams.id, seatId: searchParams.seat, discount: discount },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          }
         }
-      }
-    );
-    console.log("Ticket bought");
+      );
+      alert("Ticket bought");
+      window.location.href = `/account/${response.data}`;
+    } catch (e) {
+      alert("Something went wrong");
+      console.log(e);
+    }
   };
 
   return (

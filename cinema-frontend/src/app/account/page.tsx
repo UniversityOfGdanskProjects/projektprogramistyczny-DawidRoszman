@@ -14,7 +14,7 @@ const Page = () => {
   return (
     <div className='md:px-32 pt-16'>
       <div className='text-center text-3xl'>Welcome {user.firstName}</div>
-      <div className='grid md:grid-cols-2 place-items-center'>
+      <div className='grid md:grid-cols-2 gap-3 place-items-center'>
         {tickets.map((ticket) => {
           return (
             <div key={ticket.id} className="card w-96 bg-base-100 shadow-xl">

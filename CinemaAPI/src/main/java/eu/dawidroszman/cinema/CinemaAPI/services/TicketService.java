@@ -26,12 +26,14 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
-    public void buyTicket(String username, UUID screeningId, UUID seatId, String discount) {
+    public UUID buyTicket(String username, UUID screeningId, UUID seatId, String discount) {
 
         SeatEntity seat = seatService.getSeatById(seatId);
         Double price = Price.getPrice(discount, seat.getVip());
+        UUID uuid = UUID.randomUUID();
 
-        ticketRepository.buyTicket(UUID.randomUUID(), price, username, screeningId, seatId);
+        ticketRepository.buyTicket(uuid, price, username, screeningId, seatId);
+        return ticketRepository.getTicketById(uuid);
     }
 
     public List<TicketEntity> getTicketsByUsername(String name){

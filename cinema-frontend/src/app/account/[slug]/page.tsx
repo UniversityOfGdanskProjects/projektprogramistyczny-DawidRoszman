@@ -9,7 +9,7 @@ const TicketDetails = ({ params }: { params: { slug: string; }; }) => {
   const ticket = tickets.find((ticket) => ticket.id === params.slug);
   if (ticket === undefined) return <div>Loading...</div>;
   return (
-    <div className='grid place-items-center'>
+    <div className='pt-12 grid place-items-center'>
       <div className="card max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">{ticket.movieTitle}</h2>

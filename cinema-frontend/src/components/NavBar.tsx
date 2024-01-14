@@ -46,7 +46,7 @@ function NavBar() {
         <Suspense fallback={<div>Loading...</div>}>
           {token ? (
             <div className="flex justify-center items-center gap-3">
-              <Link href="/account" className="text-base-conent">
+              <Link href="/account" className="text-base-conent tooltip tooltip-bottom" data-tip="Go to profile">
                 {user?.firstName} {user?.lastName}
               </Link>
               <button

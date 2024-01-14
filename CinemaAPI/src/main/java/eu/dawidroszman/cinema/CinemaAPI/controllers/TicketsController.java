@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/tickets")
@@ -28,7 +29,7 @@ public class TicketsController {
     }
 
     @PostMapping("/buy")
-    public void buyTicket(Principal principal, @RequestBody TicketRequest ticketRequest) {
-        ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getSeatId(), ticketRequest.getDiscount());
+    public UUID buyTicket(Principal principal, @RequestBody TicketRequest ticketRequest) {
+        return ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getSeatId(), ticketRequest.getDiscount());
     }
 }
