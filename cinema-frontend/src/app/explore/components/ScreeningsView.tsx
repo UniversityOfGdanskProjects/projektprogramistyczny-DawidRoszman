@@ -28,7 +28,7 @@ export default function ScreeningsView({
                 <p>{formatDateForView(date)}</p>
                 <div className="card-actions justify-end">
                   <Link
-                    href={`/buy-ticket?id=${screening.id}`}
+                    href={`/tickets?id=${screening.id}`}
                     className="btn btn-primary"
                   >
                     Buy ticket
