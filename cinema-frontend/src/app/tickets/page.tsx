@@ -1,4 +1,4 @@
-import { Screening } from "@/types/types";
+import { Screening, Seat } from "@/types/types";
 import { api } from "@/utils/apiAddress";
 import { formatDateForView } from "@/utils/formatDateForView";
 import axios from "axios";
@@ -15,6 +15,7 @@ async function Tickets({ params, searchParams }: {
   }
   const screeningId = searchParams.id;
   const screening : Screening = await (await axios.get(api+"/api/v1/cinema/screenings/"+screeningId)).data
+  const seatTaken = await (await axios.get(api+"/api/v1/cinema/screenings/"+screeningId+"/seatsTaken")).data
   return (
     <div>
       <h1>{screening.movie.title}</h1>
@@ -31,7 +32,11 @@ async function Tickets({ params, searchParams }: {
         <div className="grid grid-cols-3 place-items-center w-fit">
           {screening.auditorium.seats.map((seat) => {
             return (
-              <Link href={"/tickets/buy-ticket?id="+screening.id+"&seat="+seat.id} key={seat.id} className="btn btn-outline btn-square"></Link>
+              <>
+              {seatTaken.includes(seat.id) ? <button className="btn btn-outline disabled:bg-secondary btn-square disabled:btn-secondary" disabled ></button> : 
+              <Link href={"/tickets/buy-ticket?id="+screening.id+"&seat="+seat.id} key={seat.id} className={`btn btn-primary btn-outline btn-square`}></Link>
+            }
+              </>
             );
           })}
           </div>

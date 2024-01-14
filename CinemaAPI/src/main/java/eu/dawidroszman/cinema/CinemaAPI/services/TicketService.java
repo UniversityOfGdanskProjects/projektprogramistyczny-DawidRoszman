@@ -28,18 +28,10 @@ public class TicketService {
 
     public void buyTicket(String username, UUID screeningId, UUID seatId, String discount) {
 
-        ScreeningEntity screening = screeningService.getScreeningById(screeningId);
-        UserEntity user = userService.getUserByUsername(username);
         SeatEntity seat = seatService.getSeatById(seatId);
         Double price = Price.getPrice(discount, seat.getVip());
 
-        var ticket = TicketEntity.builder()
-                .screening(screening)
-                .user(user)
-                .seat(seat)
-                .price(price)
-                .build();
-        ticketRepository.save(ticket);
+        ticketRepository.buyTicket(UUID.randomUUID(), price, username, screeningId, seatId);
     }
 
     public List<TicketEntity> getTicketsByUsername(String name){

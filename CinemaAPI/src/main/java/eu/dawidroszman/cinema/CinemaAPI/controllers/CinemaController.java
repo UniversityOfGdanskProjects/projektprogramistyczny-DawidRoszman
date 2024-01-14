@@ -6,15 +6,9 @@ import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.AuditoriumService;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,6 +54,16 @@ public class CinemaController {
     @GetMapping("/screenings/{id}")
     public ScreeningEntity getScreeningById(@PathVariable UUID id) {
         return screeningService.getScreeningById(id);
+    }
+
+    @GetMapping("/screenings/{screeningId}/seat/{seatId}")
+    public boolean checkIfSeatIsTaken(@PathVariable UUID screeningId, @PathVariable UUID seatId) {
+        return screeningService.checkIfSeatIsTaken(screeningId, seatId);
+    }
+
+    @GetMapping("/screenings/{screeningId}/seatsTaken")
+    public List<UUID> getSeatsTaken(@PathVariable UUID screeningId) {
+        return screeningService.getSeatsTaken(screeningId);
     }
 
     @GetMapping("/screenings/search")

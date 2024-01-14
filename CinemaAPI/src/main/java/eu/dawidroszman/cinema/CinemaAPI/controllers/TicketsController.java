@@ -12,10 +12,10 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/tickets")
+@RequestMapping("/api/v1/tickets")
 public class TicketsController {
 
-    TicketService ticketService;
+    private final TicketService ticketService;
 
     public TicketsController(TicketService ticketService) {
         this.ticketService = ticketService;

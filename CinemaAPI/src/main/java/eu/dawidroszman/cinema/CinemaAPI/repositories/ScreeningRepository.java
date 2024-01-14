@@ -3,6 +3,7 @@ package eu.dawidroszman.cinema.CinemaAPI.repositories;
 import eu.dawidroszman.cinema.CinemaAPI.models.AuditoriumEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.SeatEntity;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
@@ -37,5 +38,15 @@ public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UU
             CREATE (m)<-[p:PLAYS]-(s:Screening {id: $id, date: datetime($date)})-[i:IS_IN]->(a);
             """)
     void createScreening(UUID id, ZonedDateTime date, Number auditoriumNumber, String movieTitle);
+
+    @Query("""
+            MATCH (seat:Seat {id: $seatId})<-[:SEAT]-(t:Ticket)-[:FOR]->(s:Screening {id: $screeningId}) RETURN count(seat) > 0
+            """)
+    boolean isSeatTaken(UUID screeningId, UUID seatId);
+
+    @Query("""
+            MATCH (seat:Seat)<-[:SEAT]-(t:Ticket)-[:FOR]->(s:Screening {id: $screeningId}) RETURN seat.id
+            """)
+    List<UUID> getSeatsTaken(UUID screeningId);
 
 }

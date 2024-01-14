@@ -3,6 +3,7 @@ package eu.dawidroszman.cinema.CinemaAPI.services;
 import eu.dawidroszman.cinema.CinemaAPI.models.AuditoriumEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.SeatEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +60,13 @@ public class ScreeningService {
         screeningRepository.deleteById(id);
         screeningRepository.createScreening(id, date, auditoriumNumber, title);
         return screeningRepository.findById(id).orElseThrow();
+    }
+
+    public boolean checkIfSeatIsTaken(UUID screeningId, UUID seatId) {
+        return screeningRepository.isSeatTaken(screeningId, seatId);
+    }
+
+    public List<UUID> getSeatsTaken(UUID screeningId) {
+        return screeningRepository.getSeatsTaken(screeningId);
     }
 }

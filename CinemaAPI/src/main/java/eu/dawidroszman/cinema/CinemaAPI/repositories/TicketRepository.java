@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.SeatEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.UserEntity;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
@@ -25,4 +28,13 @@ public interface TicketRepository extends Neo4jRepository<TicketEntity, UUID> {
 
     Optional<TicketEntity> findById(UUID ticketId);
 
+    @Query("""
+            MATCH (u:User), (s:Screening), (seat:Seat)
+            WHERE u.username = $username AND s.id = $screeningId AND seat.id = $seatId
+            CREATE (t:Ticket {id: $uuid, price: $price})
+            CREATE (t)-[:OWNED_BY]->(u)
+            CREATE (t)-[:FOR]->(s)
+            CREATE (t)-[:SEAT]->(seat)
+            """)
+    void buyTicket(UUID uuid, Double price, String username, UUID screeningId, UUID seatId);
 }
