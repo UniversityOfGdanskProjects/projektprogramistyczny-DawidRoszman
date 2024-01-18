@@ -6,7 +6,6 @@ import {
   useEffect,
 } from "react";
 import { Action, Movie, MovieReducer, Type } from "./movieReducer";
-import axios from "axios";
 import { fetchMovies } from "@/utils/fetchMovies";
 
 export const MovieContext = createContext<Movie[] | null>(null);
@@ -24,6 +23,7 @@ export function MovieProvider({ children }: any) {
 
   useEffect(() => {
     const fetchAndSetMovies = async () => {
+      if (movie.length !== 0) return;
       const movies = await fetchMovies();
       dispatch({
         type: Type.SET_MOVIES,

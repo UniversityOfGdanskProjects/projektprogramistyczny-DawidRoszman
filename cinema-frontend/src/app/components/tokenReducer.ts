@@ -1,17 +1,15 @@
-import { useCookies } from "next-client-cookies";
-
 export interface Action {
-  payload: Token;
+  payload: any;
   type: Type;
 }
 
 export enum Type {
   SET_TOKEN,
-  REMOVE_TOKEN
+  REMOVE_TOKEN,
 }
 
 export interface Token {
-  token: string;
+  token: string | null;
 }
 
 export const TokenReducer = (state: Token, action: Action) => {
@@ -20,7 +18,7 @@ export const TokenReducer = (state: Token, action: Action) => {
     case Type.SET_TOKEN:
       return {
         ...state,
-        token: payload.token,
+        token: payload,
       };
     case Type.REMOVE_TOKEN:
       return {
@@ -29,3 +27,4 @@ export const TokenReducer = (state: Token, action: Action) => {
       };
   }
 };
+

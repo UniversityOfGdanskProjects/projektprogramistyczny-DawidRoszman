@@ -6,12 +6,18 @@ import { User } from "@/types/types";
 import fetchUserData from "@/utils/fetchUserData";
 import ThemeToggler from "./ThemeToggler";
 import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
+import { useRouter } from "next/navigation";
+import { useTokenDispatch } from "@/app/components/TokenContext";
+import { Type } from "@/app/components/tokenReducer";
+import Loading from "./Loading";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const cookieStore = useCookies();
+  const router = useRouter();
+  const tokenDispatch = useTokenDispatch();
 
   useEffect(() => {
     setToken(cookieStore.get("token"));
@@ -24,7 +30,7 @@ function NavBar() {
         }
         if (!userData) {
           cookieStore.remove("token");
-          window.location.reload();
+          router.refresh();
         }
         setUser(userData);
       }
@@ -39,6 +45,8 @@ function NavBar() {
     fetchUser();
   }, [token, cookieStore]);
 
+  if (tokenDispatch === null) return <Loading />;
+
   return (
     <nav className="bg-base-200 p-4 px-10 flex justify-between items-center">
       <h1 className="font-bold">Cinema</h1>
@@ -46,13 +54,18 @@ function NavBar() {
         <Suspense fallback={<div>Loading...</div>}>
           {token ? (
             <div className="flex justify-center items-center gap-3">
-              <Link href="/account" className="text-base-conent tooltip tooltip-bottom" data-tip="Go to profile">
+              <Link
+                href="/account"
+                className="text-base-conent tooltip tooltip-bottom"
+                data-tip="Go to profile"
+              >
                 {user?.firstName} {user?.lastName}
               </Link>
               <button
                 className="btn btn-warning"
                 onClick={() => {
                   cookieStore.remove("token");
+                  tokenDispatch({ type: Type.REMOVE_TOKEN, payload: "" });
                   window.location.reload();
                 }}
               >

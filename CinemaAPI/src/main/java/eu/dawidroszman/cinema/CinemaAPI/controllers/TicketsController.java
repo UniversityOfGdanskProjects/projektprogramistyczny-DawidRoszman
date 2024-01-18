@@ -30,6 +30,6 @@ public class TicketsController {
 
     @PostMapping("/buy")
     public UUID buyTicket(Principal principal, @RequestBody TicketRequest ticketRequest) {
-        return ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getSeatId(), ticketRequest.getDiscount());
+        return ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getOrders());
     }
 }

@@ -1,5 +1,11 @@
 "use client";
-import { Dispatch, createContext, useContext, useEffect, useReducer } from "react";
+import {
+  Dispatch,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import { Action, Token, TokenReducer, Type } from "./tokenReducer";
 import { useCookies } from "next-client-cookies";
 
@@ -14,23 +20,23 @@ export function useTokenDispatch() {
 }
 
 const initialState: Token = {
-  token: "",
+  token: null,
 };
 export function TokenProvider({ children }: { children: React.ReactNode }) {
   const [Token, dispatch] = useReducer(TokenReducer, initialState);
   const cookieStore = useCookies();
   useEffect(() => {
-  dispatch({
-    type: Type.SET_TOKEN,
-    payload: {token : cookieStore.get("token") || ""},
-  })
-}, [cookieStore]);
+    dispatch({
+      type: Type.SET_TOKEN,
+      payload: { token: cookieStore.get("token") || "" },
+    });
+  }, [cookieStore]);
   return (
-      <TokenContext.Provider value={Token}>
-        <DispatchContext.Provider value={dispatch}>
-          {children}
-        </DispatchContext.Provider>
-      </TokenContext.Provider>
+    <TokenContext.Provider value={Token}>
+      <DispatchContext.Provider value={dispatch}>
+        {children}
+      </DispatchContext.Provider>
+    </TokenContext.Provider>
   );
 }
 

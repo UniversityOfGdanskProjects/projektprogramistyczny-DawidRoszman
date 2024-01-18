@@ -6,7 +6,7 @@ import "daisyui/dist/full.css";
 import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { api } from "@/utils/apiAddress";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const RegisterSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -24,10 +24,13 @@ const RegisterSchema = Yup.object().shape({
     .matches(/[0-9]+/, "Must include at least one number")
     .matches(/[!@#$%^&&*()/, .:;<>?]+/, "Must include at least one symbol")
     .required("Required"),
-  repeatPassword: Yup.string().required('Required').oneOf([Yup.ref('password')], 'Passwords must match')
+  repeatPassword: Yup.string()
+    .required("Required")
+    .oneOf([Yup.ref("password")], "Passwords must match"),
 });
 
 function Register() {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
       <Formik
@@ -45,7 +48,7 @@ function Register() {
             httpsAgent: agent,
           });
           alert("Account created");
-          window.location.href = "/login";
+          router.push("/login");
         }}
       >
         {({ errors, touched }) => (
@@ -161,7 +164,9 @@ function Register() {
                 type="password"
                 className={
                   "shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" +
-                  (errors.repeatPassword && touched.repeatPassword ? " border-error" : "")
+                  (errors.repeatPassword && touched.repeatPassword
+                    ? " border-error"
+                    : "")
                 }
               />
               <ErrorMessage

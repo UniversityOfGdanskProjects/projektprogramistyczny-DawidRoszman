@@ -4,7 +4,7 @@ import { agent } from "@/utils/httpsAgent";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useCookies } from "next-client-cookies";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useToken, useTokenDispatch } from "../components/TokenContext";
@@ -19,13 +19,15 @@ function Login() {
   const cookieStore = useCookies();
   const tokenStore = useToken();
   const dispatch = useTokenDispatch();
+  const router = useRouter();
 
   const [loginError, setLoginError] = useState("");
   if (!tokenStore || !dispatch) return null;
 
-  if (tokenStore.token !== "") {
-    return redirect("/explore");
-  }
+  console.log(tokenStore.token);
+  // if (tokenStore.token !== "") {
+  //   return redirect("/explore");
+  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral">
@@ -35,13 +37,16 @@ function Login() {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             const tokenRequest = await axios.post(
-              api+"/api/v1/auth/login",
+              api + "/api/v1/auth/login",
               values,
               { httpsAgent: agent },
             );
-            dispatch({ type: Type.SET_TOKEN, payload: tokenRequest.data });
+            dispatch({
+              type: Type.SET_TOKEN,
+              payload: tokenRequest.data,
+            });
             cookieStore.set("token", tokenRequest.data, { expires: 31 });
-            redirect("/explore");
+            router.replace("/explore");
           } catch (err) {
             console.log(err);
             setLoginError("Invalid username or password");

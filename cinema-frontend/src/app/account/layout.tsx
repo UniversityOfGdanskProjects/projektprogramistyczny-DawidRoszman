@@ -7,6 +7,7 @@ import axios from "axios";
 import { TicketsContext, UserContext } from "./context";
 import GoBackBtn from "@/components/GoBackBtn";
 import { api } from "@/utils/apiAddress";
+import Loading from "@/components/Loading";
 
 const AccountLayout = ({ children }: { children: React.ReactNode }) => {
   const token = useToken();
@@ -19,6 +20,7 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     const fetchU = async () => {
+      if (token.token === null) return;
       const userData = await fetchUser(token.token);
       setUser(userData);
     };
@@ -29,7 +31,7 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
         },
       });
       setTickets(tickets.data);
-      console.log(tickets.data);
+      console.log("Tickets", tickets.data);
     };
     fetchTickets();
     fetchU();
@@ -37,8 +39,8 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (token === null) return <div>Unauthorized</div>;
   if (token.token === "") return <div>Unauthorized</div>;
-  if (user === null) return <div>Loading...</div>;
-  if (tickets === null) return <div>Loading...</div>;
+  if (user === null) return <Loading />;
+  if (tickets === null) return <Loading />;
   return (
     <UserContext.Provider value={user}>
       <TicketsContext.Provider value={tickets}>
@@ -50,4 +52,3 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default AccountLayout;
-

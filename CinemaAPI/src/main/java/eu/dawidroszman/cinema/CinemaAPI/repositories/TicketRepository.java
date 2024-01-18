@@ -29,14 +29,22 @@ public interface TicketRepository extends Neo4jRepository<TicketEntity, UUID> {
     Optional<TicketEntity> findById(UUID ticketId);
 
     @Query("""
-            MATCH (u:User), (s:Screening), (seat:Seat)
-            WHERE u.username = $username AND s.id = $screeningId AND seat.id = $seatId
-            CREATE (t:Ticket {id: $uuid, price: $price})
+            CALL apoc.create.uuids(1) YIELD uuid
+            CREATE (t:Ticket {id: uuid, price: $price})
+            WITH t, uuid
+            MATCH (u:User {username: $username})
             CREATE (t)-[:OWNED_BY]->(u)
+            WITH t, uuid
+            MATCH (s:Screening {id: $screeningId})
             CREATE (t)-[:FOR]->(s)
+            WITH t, uuid
+            UNWIND $seatIds AS seatId
+            MATCH (seat:Seat {id: seatId})
             CREATE (t)-[:SEAT]->(seat)
+            WITH uuid
+            RETURN uuid
             """)
-    void buyTicket(UUID uuid, Double price, String username, UUID screeningId, UUID seatId);
+    List<UUID> buyTicket(Double price, String username, UUID screeningId, List<UUID> seatIds);
 
     @Query("MATCH (t:Ticket {id: $uuid}) RETURN t.id")
     UUID getTicketById(UUID uuid);

@@ -3,12 +3,13 @@ import React, { useContext } from "react";
 import { formatDateForView } from "@/utils/formatDateForView";
 import { TicketsContext, UserContext } from "./context";
 import Link from "next/link";
+import Loading from "@/components/Loading";
 
 const Page = () => {
   const user = useContext(UserContext);
   const tickets = useContext(TicketsContext);
 
-  if (user === null || tickets === null) return <div>Loading...</div>;
+  if (user === null || tickets === null) return <Loading />;
 
   return (
     <div className="md:px-32 pt-16">
@@ -40,4 +41,3 @@ const Page = () => {
 };
 
 export default Page;
-

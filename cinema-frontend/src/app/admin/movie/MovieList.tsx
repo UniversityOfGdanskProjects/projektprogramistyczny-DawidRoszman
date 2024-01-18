@@ -14,7 +14,7 @@ const MovieList = ({
 }) => {
   const movies: Movie[] | null = useMovie();
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [sort, setSort] = React.useState<string>("asc"); 
+  const [sort, setSort] = React.useState<string>("asc");
   const token = useToken();
   const dispatch = useMovieDispatch();
   if (!dispatch || !token) return null;
@@ -24,6 +24,7 @@ const MovieList = ({
     );
     if (ans !== "yes") return;
     try {
+      if (token.token === null) return;
       await removeMovie({ movie: movie, token: token.token });
       dispatch({
         type: Type.REMOVE_MOVIE,
@@ -40,8 +41,8 @@ const MovieList = ({
   return (
     <div>
       <div className="flex">
-      <Search search={searchTerm} setSearch={setSearchTerm} />
-      <Sort sort={sort} setSort={setSort} />
+        <Search search={searchTerm} setSearch={setSearchTerm} />
+        <Sort sort={sort} setSort={setSort} />
       </div>
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 p-4">
         {movies

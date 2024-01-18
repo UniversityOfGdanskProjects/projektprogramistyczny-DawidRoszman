@@ -24,6 +24,7 @@ export function ScreeningProvider({ children }: any) {
   const [screening, dispatch] = useReducer(ScreeningReducer, []);
 
   useEffect(() => {
+    if (screening.length !== 0) return;
     axios.get(api + "/api/v1/cinema/screenings").then((response) => {
       const screenings = response.data;
       dispatch({

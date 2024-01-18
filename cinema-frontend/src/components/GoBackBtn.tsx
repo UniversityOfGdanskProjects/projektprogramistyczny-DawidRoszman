@@ -1,12 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 function GoBackBtn() {
+  const router = useRouter();
   const goBack = () => {
-    const currLocation = window.location.href;
-    const split = currLocation.split("/");
-    split.pop();
-    const newLocation = split.join("/");
-    window.location.href = newLocation;
+    router.back();
   };
   return (
     <button

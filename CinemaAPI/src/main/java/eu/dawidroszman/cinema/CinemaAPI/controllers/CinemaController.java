@@ -6,6 +6,7 @@ import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.AuditoriumService;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
+import eu.dawidroszman.cinema.CinemaAPI.services.SeatService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
@@ -20,10 +21,13 @@ public class CinemaController {
     private final ScreeningService screeningService;
     private final AuditoriumService auditoriumService;
 
-    public CinemaController(MovieService movieService, ScreeningService screeningService, AuditoriumService auditoriumService) {
+    private final SeatService seatService;
+
+    public CinemaController(MovieService movieService, ScreeningService screeningService, AuditoriumService auditoriumService, SeatService seatService) {
         this.movieService = movieService;
         this.screeningService = screeningService;
         this.auditoriumService = auditoriumService;
+        this.seatService = seatService;
     }
 
     @GetMapping("")
@@ -64,6 +68,12 @@ public class CinemaController {
     @GetMapping("/screenings/{screeningId}/seatsTaken")
     public List<UUID> getSeatsTaken(@PathVariable UUID screeningId) {
         return screeningService.getSeatsTaken(screeningId);
+    }
+
+    @GetMapping("/seats/price")
+    public Double getSeatPrice(@RequestParam(name = "seatId") UUID seatId,
+                               @RequestParam(name = "discount") String discount) {
+        return seatService.getSeatPrice(seatId, discount);
     }
 
     @GetMapping("/screenings/search")

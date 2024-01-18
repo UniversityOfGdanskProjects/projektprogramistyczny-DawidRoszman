@@ -1,5 +1,6 @@
 package eu.dawidroszman.cinema.CinemaAPI.models;
 
+import java.util.List;
 import java.util.UUID;
 
 import eu.dawidroszman.cinema.CinemaAPI.enums.Price;
@@ -32,7 +33,7 @@ public class TicketEntity {
     private ScreeningEntity screening;
 
     @Relationship("SEAT")
-    private SeatEntity seat;
+    private List<SeatEntity> seats;
 
     public void setUser(UserEntity user) {
         this.user = user;
@@ -42,8 +43,5 @@ public class TicketEntity {
         this.screening = screening;
     }
 
-    public void setSeat(SeatEntity seat) {
-        this.seat = seat;
-    }
 
 }

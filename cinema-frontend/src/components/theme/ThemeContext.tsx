@@ -1,5 +1,11 @@
 "use client";
-import { Dispatch, createContext, useContext, useReducer } from "react";
+import {
+  Dispatch,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import { Action, Theme, ThemeReducer } from "./themeReducer";
 
 export const ThemeContext = createContext<Theme | null>(null);
@@ -13,10 +19,14 @@ export function useThemeDispatch() {
 }
 
 const initialState: Theme = {
-  theme: localStorage.getItem("theme") === "true" ? true : false,
+  theme: false,
 };
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, dispatch] = useReducer(ThemeReducer, initialState);
+
+  useEffect(() => {
+    theme.theme = localStorage.getItem("theme") === "true" ? true : false;
+  }, []);
   return (
     <html lang="en" data-theme={theme.theme ? "light" : "dark"}>
       <ThemeContext.Provider value={theme}>

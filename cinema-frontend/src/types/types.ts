@@ -9,13 +9,11 @@ export interface Screening {
 
 export interface Ticket {
   id: UUID;
-  screeningDate: string,
-  movieTitle: string,
-  auditoriumNumber: number,
-  column: number,
-  row: number,
-  vip: boolean,
-  price: number,
+  screeningDate: string;
+  movieTitle: string;
+  auditoriumNumber: number;
+  seats: Seat[];
+  price: number;
 }
 
 export interface Auditorium {
@@ -39,7 +37,7 @@ export interface Person {
 }
 
 export interface Seat {
-  id: number;
+  id: string;
   row: number;
   column: number;
   vip: boolean;
