@@ -43,7 +43,7 @@ function NavBar() {
     checkIfIsValid();
 
     fetchUser();
-  }, [token, cookieStore]);
+  }, [token, cookieStore, router]);
 
   if (tokenDispatch === null) return <Loading />;
 

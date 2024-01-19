@@ -14,6 +14,6 @@ export const checkIfIsAdmin = async (token: string) => {
     return isAdmin;
   } catch (error) {
     console.log(error);
-    window.location.href = "/login";
+    return false;
   }
 };

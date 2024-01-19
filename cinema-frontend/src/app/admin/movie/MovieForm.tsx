@@ -24,11 +24,7 @@ const MovieSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const MovieForm = ({
-  selectedMovie,
-}: {
-  selectedMovie: Movie | null;
-}) => {
+const MovieForm = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
   const dispatch = useMovieDispatch();
   const token = useToken();
   if (token === null) return <div>Loading...</div>;
@@ -46,6 +42,7 @@ const MovieForm = ({
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         if (selectedMovie === null) {
           try {
+            if (token.token === null) return;
             await addMovie({ movie: values, token: token.token });
             dispatch({
               type: Type.ADD_MOVIE,
@@ -64,6 +61,7 @@ const MovieForm = ({
           }
         } else {
           try {
+            if (token.token === null) return;
             await modifyMovie({ movie: values, token: token.token });
             dispatch({
               type: Type.MODIFY_MOVIE,

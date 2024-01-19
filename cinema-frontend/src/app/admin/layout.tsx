@@ -5,6 +5,7 @@ import { useToken } from "../components/TokenContext";
 import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
 import Loading from "@/components/Loading";
 import fetchUserData from "@/utils/fetchUserData";
+import GoBackBtn from "@/components/GoBackBtn";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(null);
@@ -24,7 +25,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!isAdmin) {
-    return <div className="text-5xl text-center">Unauthorized</div>;
+    return (
+      <div className="text-5xl text-center">
+        Unauthorized
+        <br /> <GoBackBtn />
+      </div>
+    );
   }
   return <div>{children}</div>;
 };
