@@ -51,6 +51,8 @@ const StepThree = ({
     fetchPricesOfSeats(discountEntries);
   }, []);
 
+  if (seatPrices.length === 0) return <Loading />;
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-3 gap-2 m-5">
@@ -75,9 +77,11 @@ const StepThree = ({
               setSubmitted(true);
               handleBuyTicket(discountEntries);
             }}
+            {...(submitted ? { disabled: true } : {})}
             className={"btn btn-primary" + (submitted ? " disabled" : "")}
           >
-            Confirm and pay
+            {submitted && <div className="loading"></div>}
+            {!submitted && "Confirm and pay"}
           </button>
         </div>
       </div>

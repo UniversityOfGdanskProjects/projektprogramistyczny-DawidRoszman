@@ -35,6 +35,9 @@ const Page = () => {
           <Link className="btn btn-outline btn-primary" href="/admin/screening">
             Screenings
           </Link>
+          <Link className="btn btn-outline btn-primary" href="/admin/report">
+            Report
+          </Link>
         </div>
       </div>
     </div>

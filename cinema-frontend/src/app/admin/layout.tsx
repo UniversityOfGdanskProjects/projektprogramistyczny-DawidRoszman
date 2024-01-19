@@ -1,18 +1,19 @@
 "use client";
-import { User } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { useToken } from "../components/TokenContext";
 import { checkIfIsAdmin } from "@/utils/checkIfIsAdmin";
 import Loading from "@/components/Loading";
-import fetchUserData from "@/utils/fetchUserData";
 import GoBackBtn from "@/components/GoBackBtn";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(null);
   const token = useToken();
   useEffect(() => {
-    if (token === null || token.token === "" || token.token === null) return;
+    if (token === null || token.token === "" || token.token === null) {
+      return;
+    }
     const checkIfIsValid = async () => {
+      if (token === null) return;
       if (token.token === null) return;
       const isAdmin = await checkIfIsAdmin(token.token);
       setIsAdmin(isAdmin);

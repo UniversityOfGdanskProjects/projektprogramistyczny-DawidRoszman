@@ -31,7 +31,6 @@ const AccountLayout = ({ children }: { children: React.ReactNode }) => {
         },
       });
       setTickets(tickets.data);
-      console.log("Tickets", tickets.data);
     };
     fetchTickets();
     fetchU();

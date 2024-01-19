@@ -48,3 +48,9 @@ export interface User {
   lastName: string;
   email: string;
 }
+
+export interface Report {
+  date: string;
+  ticketCount: number;
+  totalSum: number;
+}

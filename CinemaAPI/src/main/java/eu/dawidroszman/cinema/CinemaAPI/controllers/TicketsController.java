@@ -1,6 +1,7 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.enums.Price;
+import eu.dawidroszman.cinema.CinemaAPI.models.SeatEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.TicketEntity;
 import eu.dawidroszman.cinema.CinemaAPI.objects.TicketDTO;
 import eu.dawidroszman.cinema.CinemaAPI.requests.TicketRequest;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -28,8 +30,15 @@ public class TicketsController {
         return TicketDTO.from(tickets);
     }
 
+    @GetMapping("/get/{id}")
+    public List<SeatEntity> getTicketById(@PathVariable UUID id) {
+        return ticketService.getSeatByTicketId(id);
+    }
+
     @PostMapping("/buy")
     public UUID buyTicket(Principal principal, @RequestBody TicketRequest ticketRequest) {
         return ticketService.buyTicket(principal.getName(), ticketRequest.getScreeningId(), ticketRequest.getOrders());
     }
+
+
 }

@@ -28,7 +28,7 @@ export function TokenProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     dispatch({
       type: Type.SET_TOKEN,
-      payload: { token: cookieStore.get("token") || "" },
+      payload: cookieStore.get("token"),
     });
   }, [cookieStore]);
   return (

@@ -2,10 +2,12 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
+import eu.dawidroszman.cinema.CinemaAPI.objects.TicketSalesReportObject;
 import eu.dawidroszman.cinema.CinemaAPI.requests.CreateScreeningRequest;
 import eu.dawidroszman.cinema.CinemaAPI.requests.UpdateScreeningRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
 import eu.dawidroszman.cinema.CinemaAPI.services.ScreeningService;
+import eu.dawidroszman.cinema.CinemaAPI.services.TicketService;
 import eu.dawidroszman.cinema.CinemaAPI.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -24,11 +28,14 @@ public class AdminController {
     private final ScreeningService screeningSerive;
     private final UserService userService;
 
+    private final TicketService ticketService;
 
-    public AdminController(MovieService movieService, ScreeningService screeningSerive, UserService userService) {
+
+    public AdminController(MovieService movieService, ScreeningService screeningSerive, UserService userService, TicketService ticketService) {
         this.movieService = movieService;
         this.screeningSerive = screeningSerive;
         this.userService = userService;
+        this.ticketService = ticketService;
     }
 
     @GetMapping()
@@ -101,5 +108,32 @@ public class AdminController {
         ScreeningEntity screening = screeningSerive.updateScreening(screeningRequest.getId(), date, screeningRequest.getAuditoriumNumber(), screeningRequest.getMovieTitle());
         return new ResponseEntity<>(screening, HttpStatus.OK);
     }
+    @GetMapping("/report/range/{startDate}/{endDate}")
+    public ResponseEntity<List<TicketSalesReportObject>> getTicketReportByDateRange(@PathVariable String startDate, @PathVariable String endDate, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        List<TicketSalesReportObject> report = ticketService.getTicketReportByDateRange(startDate, endDate);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
 
+    @GetMapping("/report/day/{date}")
+    public ResponseEntity<TicketSalesReportObject> getTicketReportByDate(@PathVariable String date, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        TicketSalesReportObject report = ticketService.getTicketReportByDate(date);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @GetMapping("/report/month/{date}")
+    public ResponseEntity<TicketSalesReportObject> getTicketReportByMonth(@PathVariable String date, Principal principal) {
+        if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        TicketSalesReportObject report = ticketService.getTicketReportByMonth(date);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
 }
