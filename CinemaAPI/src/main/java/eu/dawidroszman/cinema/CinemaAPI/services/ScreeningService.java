@@ -44,9 +44,9 @@ public class ScreeningService {
     }
 
     public ScreeningEntity addScreening(ZonedDateTime date, String movieTitle, Integer auditoriumNumber) {
-//        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
-//            return null;
-//        }
+        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
+            return null;
+        }
         screeningRepository.createScreening(UUID.randomUUID(), date, auditoriumNumber, movieTitle);
         return screeningRepository.findByDateAndAuditoriumAndMovie(date, auditoriumNumber, movieTitle).orElseThrow();
     }

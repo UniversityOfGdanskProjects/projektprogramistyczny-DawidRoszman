@@ -66,7 +66,7 @@ public class AdminController {
         ZonedDateTime formattedDate = ZonedDateTime.parse(screeningRequest.getDate(), DateTimeFormatter.ISO_DATE_TIME);
         ScreeningEntity screening = screeningSerive.addScreening(formattedDate, screeningRequest.getMovieTitle(), screeningRequest.getAuditoriumNumber());
         if (screening == null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT );
         }
         return new ResponseEntity<>(screening, HttpStatus.CREATED);
     }
