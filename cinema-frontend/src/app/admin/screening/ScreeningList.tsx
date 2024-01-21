@@ -26,7 +26,11 @@ const ScreeningList = ({
     );
     if (ans !== "yes") return;
     try {
-      await removeScreening({ screening: { id: screening.id }, token: token.token });
+      if (token.token === null) return null;
+      await removeScreening({
+        screening: { id: screening.id },
+        token: token.token,
+      });
       dispatch({
         type: Type.REMOVE_SCREENING,
         payload: screening,
@@ -40,8 +44,8 @@ const ScreeningList = ({
   return (
     <div>
       <div className="flex">
-      <Search  search={searchTerm} setSearch={setSearchTerm} />
-      <Sort sort={sort} setSort={setSort} />
+        <Search search={searchTerm} setSearch={setSearchTerm} />
+        <Sort sort={sort} setSort={setSort} />
       </div>
       <div className="grid lg:grid-cols-2 gap-3 p-4">
         {screenings
@@ -52,8 +56,7 @@ const ScreeningList = ({
             } else {
               return new Date(b.date).getTime() - new Date(a.date).getTime();
             }
-          }
-          )
+          })
           .map((screening) => {
             return (
               <div className="join" key={screening.id}>

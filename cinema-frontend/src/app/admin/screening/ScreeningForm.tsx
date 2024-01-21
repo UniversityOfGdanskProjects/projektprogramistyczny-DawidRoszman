@@ -58,6 +58,7 @@ const ScreeningForm = ({
       }}
       validationSchema={ScreeningSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
+        if (token.token === null) return null;
         const data = {
           token: token.token,
           screening: {
