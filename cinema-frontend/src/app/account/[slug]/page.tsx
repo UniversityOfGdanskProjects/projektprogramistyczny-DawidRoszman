@@ -57,7 +57,7 @@ const TicketDetails = ({ params }: { params: { slug: string } }) => {
             <br /> {ticket.id}
           </p>
           <p className="grid place-items-center">
-            <Image
+            <img
               alt="qr code"
               src={
                 "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" +

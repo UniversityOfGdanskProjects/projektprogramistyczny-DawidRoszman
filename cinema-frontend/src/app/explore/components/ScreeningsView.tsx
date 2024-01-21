@@ -20,7 +20,7 @@ export default function ScreeningsView({
         return (
           <div key={screening.id} className="card w-96 bg-base-100 shadow-xl">
             <figure>
-              <Image src={screening.movie.imageUrl} alt="Movie posters" />
+              <img src={screening.movie.imageUrl} alt="Movie posters" />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{screening.movie.title}</h2>

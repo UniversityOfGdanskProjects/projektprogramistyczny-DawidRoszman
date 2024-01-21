@@ -89,7 +89,7 @@ export default async function Details({
 const MovieImage = ({ imageUrl }: { imageUrl: string }) => {
   return (
     <figure>
-      <Image className="w-96" src={imageUrl} alt="Movie" />
+      <img className="w-96" src={imageUrl} alt="Movie" />
     </figure>
   );
 };

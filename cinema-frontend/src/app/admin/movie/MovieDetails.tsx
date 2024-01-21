@@ -19,11 +19,7 @@ const MovieDetails = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
           <p>Release date: {currMovie.released}</p>
           <p>
             Image:{" "}
-            <Image
-              alt="movie poster"
-              className="w-36"
-              src={currMovie.imageUrl}
-            />
+            <img alt="movie poster" className="w-36" src={currMovie.imageUrl} />
           </p>
           <p>Trailer url: {currMovie.trailer}</p>
         </div>
