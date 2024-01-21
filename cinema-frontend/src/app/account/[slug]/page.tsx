@@ -7,29 +7,32 @@ import { useToken } from "@/app/components/TokenContext";
 import { api } from "@/utils/apiAddress";
 import { Seat } from "@/types/types";
 import Loading from "@/components/Loading";
+import Image from "next/image";
 
 const TicketDetails = ({ params }: { params: { slug: string } }) => {
   const token = useToken();
-  if (token === null) return <div>Unauthorized</div>;
   const tickets = useContext(TicketsContext);
-  if (tickets === null) return <div>Loading...</div>;
-  const ticket = tickets.find((ticket) => ticket.id === params.slug);
-  if (ticket === undefined) return <div>Loading...</div>;
   const [seats, setSeats] = useState<Seat[] | null>(null);
+  const ticket = tickets?.find((ticket) => ticket.id === params.slug);
   useEffect(() => {
     const fetchSeats = async () => {
+      if (token === null || ticket === null || ticket === undefined) return;
       const response = await axios.get(
         api + "/api/v1/tickets/get/" + ticket.id,
         {
           headers: {
             Authorization: "Bearer " + token.token,
           },
-        },
+        }
       );
       setSeats(response.data);
     };
     fetchSeats();
-  }, []);
+  }, [ticket, token]);
+
+  if (tickets === null) return <div>Loading...</div>;
+  if (ticket === undefined) return <div>Loading...</div>;
+  if (token === null) return <div>Unauthorized</div>;
 
   if (seats === null) return <Loading />;
   return (
@@ -54,7 +57,8 @@ const TicketDetails = ({ params }: { params: { slug: string } }) => {
             <br /> {ticket.id}
           </p>
           <p className="grid place-items-center">
-            <img
+            <Image
+              alt="qr code"
               src={
                 "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" +
                 ticket.id

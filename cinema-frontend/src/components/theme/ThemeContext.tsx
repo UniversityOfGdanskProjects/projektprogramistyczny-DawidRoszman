@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     theme.theme = localStorage.getItem("theme") === "true" ? true : false;
-  }, []);
+  }, [theme]);
   return (
     <html lang="en" data-theme={theme.theme ? "light" : "dark"}>
       <ThemeContext.Provider value={theme}>

@@ -32,7 +32,7 @@ export function ScreeningProvider({ children }: any) {
         payload: screenings,
       });
     });
-  }, []);
+  }, [screening.length]);
 
   return (
     <ScreeningContext.Provider value={screening}>

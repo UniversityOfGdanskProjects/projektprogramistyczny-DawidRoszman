@@ -2,12 +2,9 @@ import React from "react";
 import { useMovie } from "./MovieContext";
 import { Movie } from "./movieReducer";
 import MovieForm from "./MovieForm";
+import Image from "next/image";
 
-const MovieDetails = ({
-  selectedMovie,
-}: {
-  selectedMovie: Movie | null;
-}) => {
+const MovieDetails = ({ selectedMovie }: { selectedMovie: Movie | null }) => {
   const movies = useMovie();
   if (!movies) return <div>Loading...</div>;
   if (selectedMovie) {
@@ -21,7 +18,12 @@ const MovieDetails = ({
           <p>Description: {currMovie.description}</p>
           <p>Release date: {currMovie.released}</p>
           <p>
-            Image: <img className="w-36" src={currMovie.imageUrl} />
+            Image:{" "}
+            <Image
+              alt="movie poster"
+              className="w-36"
+              src={currMovie.imageUrl}
+            />
           </p>
           <p>Trailer url: {currMovie.trailer}</p>
         </div>
@@ -30,10 +32,7 @@ const MovieDetails = ({
           <input type="checkbox" />
           <div className="collapse-title text-xl font-medium">Modify Movie</div>
           <div className="collapse-content">
-            <MovieForm
-              key={currMovie.title}
-              selectedMovie={selectedMovie}
-            />
+            <MovieForm key={currMovie.title} selectedMovie={selectedMovie} />
           </div>
         </div>
       </div>
@@ -45,10 +44,7 @@ const MovieDetails = ({
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">Add Movie</div>
         <div className="collapse-content">
-          <MovieForm
-            key={"add-movie"}
-            selectedMovie={selectedMovie}
-          />
+          <MovieForm key={"add-movie"} selectedMovie={selectedMovie} />
         </div>
       </div>
     </div>

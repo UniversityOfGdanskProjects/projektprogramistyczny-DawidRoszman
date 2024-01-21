@@ -31,7 +31,7 @@ export function MovieProvider({ children }: any) {
       });
     };
     fetchAndSetMovies();
-  }, []);
+  }, [movie.length]);
 
   return (
     <MovieContext.Provider value={movie}>

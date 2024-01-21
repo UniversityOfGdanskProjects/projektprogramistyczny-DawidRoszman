@@ -6,7 +6,6 @@ import { api } from "@/utils/apiAddress";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DataVisualization from "./components/DataVisualization";
-import GoBackBtn from "@/components/GoBackBtn";
 
 const ReportPage = () => {
   const token = useToken();
@@ -27,7 +26,7 @@ const ReportPage = () => {
           headers: {
             Authorization: `Bearer ${token?.token}`,
           },
-        },
+        }
       );
       setReport(response.data);
     };
@@ -39,14 +38,14 @@ const ReportPage = () => {
             headers: {
               Authorization: `Bearer ${token?.token}`,
             },
-          },
+          }
         );
         setCurrMonthStats(response.data);
       }
     };
     fetchCurrMonthStats();
     fetchReport();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, token, currMonthStats, month]);
   if (report === null) {
     return <Loading />;
   }

@@ -15,7 +15,7 @@ const StepThree = ({
     order: {
       id: string;
       discount: string;
-    }[],
+    }[]
   ) => Promise<void>;
 }) => {
   const [submitted, setSubmitted] = React.useState(false);
@@ -31,7 +31,7 @@ const StepThree = ({
 
   useEffect(() => {
     const fetchPricesOfSeats = async (
-      discounts: { id: string; discount: string }[],
+      discounts: { id: string; discount: string }[]
     ) => {
       const x = discounts.map(async (discount) => {
         const response = await axios.get(
@@ -39,7 +39,7 @@ const StepThree = ({
             "/api/v1/cinema/seats/price?seatId=" +
             discount.id +
             "&discount=" +
-            discount.discount,
+            discount.discount
         );
         return {
           id: discount.id,
@@ -49,7 +49,7 @@ const StepThree = ({
       setSeatPrices(await Promise.all(x));
     };
     fetchPricesOfSeats(discountEntries);
-  }, []);
+  }, [discountEntries]);
 
   if (seatPrices.length === 0) return <Loading />;
 

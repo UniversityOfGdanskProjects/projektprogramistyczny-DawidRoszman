@@ -18,7 +18,7 @@ const Page = () => {
       setUser(userData);
     };
     fetchUser();
-  }, []);
+  }, [token]);
   return (
     <div>
       <div className="">

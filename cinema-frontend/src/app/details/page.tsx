@@ -9,6 +9,7 @@ import WatchTrailer from "./components/WatchTrailer";
 import NavBar from "@/components/NavBar";
 import GoHome from "@/components/GoHome";
 import { api } from "@/utils/apiAddress";
+import Image from "next/image";
 
 export default async function Details({
   params,
@@ -22,8 +23,8 @@ export default async function Details({
   }
   try {
     const data = await axios.get(
-      api+`/api/v1/cinema/screenings/${searchParams?.id}`,
-      { httpsAgent: agent },
+      api + `/api/v1/cinema/screenings/${searchParams?.id}`,
+      { httpsAgent: agent }
     );
 
     const screening: Screening = data.data;
@@ -88,7 +89,7 @@ export default async function Details({
 const MovieImage = ({ imageUrl }: { imageUrl: string }) => {
   return (
     <figure>
-      <img className="w-96" src={imageUrl} alt="Movie" />
+      <Image className="w-96" src={imageUrl} alt="Movie" />
     </figure>
   );
 };
