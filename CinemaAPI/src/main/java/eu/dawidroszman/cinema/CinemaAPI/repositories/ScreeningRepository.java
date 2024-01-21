@@ -49,4 +49,11 @@ public interface ScreeningRepository extends Neo4jRepository<ScreeningEntity, UU
             """)
     List<UUID> getSeatsTaken(UUID screeningId);
 
+    @Query("""
+            MATCH (t:Ticket)-[:FOR]->(s:Screening)-[:PLAYS]->(m:Movie)
+            RETURN m.title AS movieTitle, count(t) AS ticketCount
+            ORDER BY ticketCount DESC
+            LIMIT 1
+            """)
+    String mostPopularMovie();
 }

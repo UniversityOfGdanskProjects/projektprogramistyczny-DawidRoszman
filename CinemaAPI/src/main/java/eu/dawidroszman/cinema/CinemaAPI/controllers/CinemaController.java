@@ -78,8 +78,8 @@ public class CinemaController {
 
     @GetMapping("/screenings/search")
     public UUID getScreeningIdByDateAuditoriumAndMovie(@RequestParam(required = false) ZonedDateTime date,
-                                                           @RequestParam(name = "auditorium", required = false) Integer auditoriumNumber,
-                                                           @RequestParam(required = false) String title) {
+                                                       @RequestParam(name = "auditorium", required = false) Integer auditoriumNumber,
+                                                       @RequestParam(required = false) String title) {
         return screeningService.getScreeningIdByDateAuditoriumAndMovie(date, auditoriumNumber, title);
     }
 
@@ -88,4 +88,8 @@ public class CinemaController {
         return auditoriumService.getAllAuditoriums();
     }
 
+    @GetMapping("/mostPopularMovie")
+    public String getMostPopularMovie() {
+        return screeningService.mostPopularMovie();
+    }
 }

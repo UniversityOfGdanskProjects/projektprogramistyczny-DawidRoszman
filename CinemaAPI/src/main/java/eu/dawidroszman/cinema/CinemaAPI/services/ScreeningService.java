@@ -44,7 +44,7 @@ public class ScreeningService {
     }
 
     public ScreeningEntity addScreening(ZonedDateTime date, String movieTitle, Integer auditoriumNumber) {
-        if (checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
+        if (!checkIfScreeningOnDateInAuditoriumExists(date, auditoriumNumber)) {
             return null;
         }
         screeningRepository.createScreening(UUID.randomUUID(), date, auditoriumNumber, movieTitle);
@@ -68,5 +68,8 @@ public class ScreeningService {
 
     public List<UUID> getSeatsTaken(UUID screeningId) {
         return screeningRepository.getSeatsTaken(screeningId);
+    }
+    public String mostPopularMovie() {
+        return screeningRepository.mostPopularMovie();
     }
 }

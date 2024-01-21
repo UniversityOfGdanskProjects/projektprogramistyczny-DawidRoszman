@@ -66,7 +66,7 @@ public class AdminController {
         ZonedDateTime formattedDate = ZonedDateTime.parse(screeningRequest.getDate(), DateTimeFormatter.ISO_DATE_TIME);
         ScreeningEntity screening = screeningSerive.addScreening(formattedDate, screeningRequest.getMovieTitle(), screeningRequest.getAuditoriumNumber());
         if (screening == null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT );
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(screening, HttpStatus.CREATED);
     }
@@ -108,6 +108,7 @@ public class AdminController {
         ScreeningEntity screening = screeningSerive.updateScreening(screeningRequest.getId(), date, screeningRequest.getAuditoriumNumber(), screeningRequest.getMovieTitle());
         return new ResponseEntity<>(screening, HttpStatus.OK);
     }
+
     @GetMapping("/report/range/{startDate}/{endDate}")
     public ResponseEntity<List<TicketSalesReportObject>> getTicketReportByDateRange(@PathVariable String startDate, @PathVariable String endDate, Principal principal) {
         if (!userService.getUserByUsername(principal.getName()).isAdmin()) {
@@ -136,4 +137,10 @@ public class AdminController {
         TicketSalesReportObject report = ticketService.getTicketReportByMonth(date);
         return new ResponseEntity<>(report, HttpStatus.OK);
     }
+
+    @GetMapping("/totalRevenueForMovie/{movieTitle}")
+    public Double getTotalRevenueForMovie(@PathVariable String movieTitle) {
+        return ticketService.getTotalRevenueForMovie(movieTitle);
+    }
+
 }

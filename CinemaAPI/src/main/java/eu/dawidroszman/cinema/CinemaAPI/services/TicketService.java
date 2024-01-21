@@ -68,4 +68,10 @@ public class TicketService {
     public List<SeatEntity> getSeatByTicketId(UUID id) {
         return ticketRepository.getSeatByTicketId(id);
     }
+
+    public Double getTotalRevenueForMovie(String movieTitle) {
+        return ticketRepository.getTotalRevenueForMovie(movieTitle);
+    }
+
+
 }

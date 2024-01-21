@@ -81,4 +81,12 @@ public interface TicketRepository extends Neo4jRepository<TicketEntity, UUID> {
             RETURN s.id AS id, s.row AS row, s.column AS column, s.vip AS vip
             """)
     List<SeatEntity> getSeatByTicketId(UUID id);
+
+    @Query("""
+            MATCH (t:Ticket)-[:FOR]->(s:Screening)-[:PLAYS]->(m:Movie {title: $movieTitle})
+            RETURN sum(t.price)
+            """)
+    Double getTotalRevenueForMovie(String movieTitle);
+
+
 }
