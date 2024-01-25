@@ -39,4 +39,8 @@ public class PersonService {
     public List<String> findAllMoviesWithPerson(String personName) {
         return personRepository.findAllMoviesWithPerson(personName);
     }
+
+    public List<PersonEntity> findAll() {
+        return personRepository.findAll();
+    }
 }

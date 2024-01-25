@@ -1,6 +1,7 @@
 package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.PersonEntity;
 import eu.dawidroszman.cinema.CinemaAPI.requests.PersonMovieRequest;
 import eu.dawidroszman.cinema.CinemaAPI.requests.PersonRequest;
 import eu.dawidroszman.cinema.CinemaAPI.services.PersonService;
@@ -22,6 +23,10 @@ public class PersonController {
         this.userService = userService;
     }
 
+    @GetMapping("/all")
+    List<PersonEntity> findAll(){
+        return personService.findAll();
+    }
     @GetMapping("/all/{personName}")
     List<String> findAllMoviesWithPerson(@PathVariable String personName) {
         return personService.findAllMoviesWithPerson(personName);

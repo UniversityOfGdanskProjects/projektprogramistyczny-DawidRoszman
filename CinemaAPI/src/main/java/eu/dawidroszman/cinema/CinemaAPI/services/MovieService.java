@@ -1,6 +1,7 @@
 package eu.dawidroszman.cinema.CinemaAPI.services;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.PersonEntity;
 import eu.dawidroszman.cinema.CinemaAPI.repositories.MovieRepository;
 
 import org.springframework.stereotype.Service;
@@ -49,5 +50,13 @@ public class MovieService {
     String imageUrl = movie.getImageUrl();
     String trailer = movie.getTrailer();
     movieRepository.modifyMovie(title, description, released, imageUrl, trailer);
+  }
+
+  public List<PersonEntity> getActorsFromMovie(String title) {
+    return movieRepository.findActorsFromMovie(title);
+  }
+
+  public PersonEntity addActorToMovie(String movieTitle, String actorName) {
+    return movieRepository.addActorToMovie(movieTitle, actorName);
   }
 }

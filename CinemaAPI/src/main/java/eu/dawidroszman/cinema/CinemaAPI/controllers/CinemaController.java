@@ -2,6 +2,7 @@ package eu.dawidroszman.cinema.CinemaAPI.controllers;
 
 import eu.dawidroszman.cinema.CinemaAPI.models.AuditoriumEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.MovieEntity;
+import eu.dawidroszman.cinema.CinemaAPI.models.PersonEntity;
 import eu.dawidroszman.cinema.CinemaAPI.models.ScreeningEntity;
 import eu.dawidroszman.cinema.CinemaAPI.services.AuditoriumService;
 import eu.dawidroszman.cinema.CinemaAPI.services.MovieService;
@@ -43,6 +44,17 @@ public class CinemaController {
     @GetMapping("/movies/{title}")
     public MovieEntity getMovieByTitle(@PathVariable String title) {
         return movieService.getMovieByTitle(title);
+    }
+
+    @GetMapping("/movies/{title}/actors")
+    public List<PersonEntity> getActorsFromMovie(@PathVariable String title){
+        return movieService.getActorsFromMovie(title);
+    }
+
+    @PutMapping("/movies/add/actor")
+    public PersonEntity addActorToMovie(@RequestParam(name = "movieTitle") String movieTitle,
+                                  @RequestParam(name = "actorName") String actorName) {
+        return movieService.addActorToMovie(movieTitle, actorName);
     }
 
     @GetMapping("/movies/search")
