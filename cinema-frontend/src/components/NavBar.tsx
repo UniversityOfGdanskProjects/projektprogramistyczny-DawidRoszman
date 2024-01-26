@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { User } from "@/types/types";
 import fetchUserData from "@/utils/fetchUserData";
@@ -10,11 +10,14 @@ import { useRouter } from "next/navigation";
 import { useTokenDispatch } from "@/app/components/TokenContext";
 import { Type } from "@/app/components/tokenReducer";
 import Loading from "./Loading";
+import axios from "axios";
+import SVG from "react-inlinesvg";
 
 function NavBar() {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [avatarImg, setAvatarImg] = useState<string | null>(null);
   const cookieStore = useCookies();
   const router = useRouter();
   const tokenDispatch = useTokenDispatch();
@@ -22,6 +25,7 @@ function NavBar() {
   useEffect(() => {
     setToken(cookieStore.get("token"));
     const fetchUser = async () => {
+      if (user !== null) return;
       if (token !== undefined) {
         const userData = await fetchUserData(token);
         if (!userData) {
@@ -37,13 +41,36 @@ function NavBar() {
     };
     const checkIfIsValid = async () => {
       if (token === undefined) return;
-      const isAdmin = await checkIfIsAdmin(token);
-      setIsAdmin(isAdmin);
+      const checkIsAdmin = await checkIfIsAdmin(token);
+      setIsAdmin(checkIsAdmin);
     };
     checkIfIsValid();
+    const setAvatar = async () => {
+      if (user === null) return "";
+      const avatar = sessionStorage.getItem(
+        `avatar-${user.firstName + user.lastName}`,
+      );
+      if (avatar !== null) {
+        setAvatarImg(avatar);
+        return;
+      }
+      fetch(
+        "https://api.multiavatar.com/" +
+          JSON.stringify(user.firstName + " " + user.lastName),
+      )
+        .then((res) => res.text())
+        .then((svg) => {
+          sessionStorage.setItem(
+            `avatar-${user.firstName + user.lastName}`,
+            svg,
+          );
+          setAvatarImg(svg);
+        });
+    };
 
+    setAvatar();
     fetchUser();
-  }, [token, cookieStore, router]);
+  }, [token, cookieStore, router, user]);
 
   if (tokenDispatch === null) return <Loading />;
 
@@ -59,7 +86,15 @@ function NavBar() {
                 className="text-base-conent tooltip tooltip-bottom"
                 data-tip="Go to profile"
               >
-                {user?.firstName} {user?.lastName}
+                {user !== null &&
+                avatarImg !== null &&
+                user.lastName !== undefined ? (
+                  <div className="w-12 h-12">
+                    <SVG src={avatarImg}></SVG>
+                  </div>
+                ) : (
+                  <div className="loading"></div>
+                )}
               </Link>
               <button
                 className="btn btn-warning"

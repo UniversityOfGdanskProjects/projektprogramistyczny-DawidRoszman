@@ -29,6 +29,9 @@ dependencies:
   react-dom:
     specifier: ^18
     version: 18.2.0(react@18.2.0)
+  react-inlinesvg:
+    specifier: ^4.1.1
+    version: 4.1.1(react@18.2.0)
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -2397,6 +2400,23 @@ packages:
 
   /react-fast-compare@2.0.4:
     resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
+    dev: false
+
+  /react-from-dom@0.6.2(react@18.2.0):
+    resolution: {integrity: sha512-qvWWTL/4xw4k/Dywd41RBpLQUSq97csuv15qrxN+izNeLYlD9wn5W8LspbfYe5CWbaSdkZ72BsaYBPQf2x4VbQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-inlinesvg@4.1.1(react@18.2.0):
+    resolution: {integrity: sha512-nLBkjKaY4WcoU8brUOPn2vitjG3NgrM9oP60iqBWZ6ZiV2mr0F0tGRArWElYmpMYsI9SXhT7HBin8UA3iM2sQA==}
+    peerDependencies:
+      react: 16.8 - 18
+    dependencies:
+      react: 18.2.0
+      react-from-dom: 0.6.2(react@18.2.0)
     dev: false
 
   /react-is@16.13.1:
